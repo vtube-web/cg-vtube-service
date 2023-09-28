@@ -1,0 +1,14 @@
+package com.cgvtube.cgvtubeservice.converter;
+
+import org.springframework.stereotype.Component;
+
+import java.util.List;
+
+@Component
+public interface Converter<S, T> {
+
+    T convert(S source);
+    S revert (T target);
+    List<T> convert(List<S> sources);
+    List<S> revert(List<T> targets);
+}
