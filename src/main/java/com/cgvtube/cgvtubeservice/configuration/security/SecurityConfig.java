@@ -94,7 +94,8 @@ public class SecurityConfig {
                 .configurationSource(corsConfigurationSource())
                 .and()
                 .csrf()
-                .ignoringRequestMatchers("/api/**");
+                .ignoringRequestMatchers("/api/**")
+                .and().formLogin().disable();
 
         return http.build();
     }
