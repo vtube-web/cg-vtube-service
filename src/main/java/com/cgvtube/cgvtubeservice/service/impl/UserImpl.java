@@ -15,6 +15,4 @@ public class UserImpl extends User {
         this.id = id;
         this.userName = userName;
     }
-
-
 }

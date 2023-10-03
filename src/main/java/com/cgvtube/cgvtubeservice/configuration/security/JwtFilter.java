@@ -19,7 +19,6 @@ import java.io.IOException;
 @Component
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
-
     private final JwtTokenProvider jwtUtil;
     private final UserDetailsServiceImpl userDetailsService;
 
@@ -38,7 +37,6 @@ public class JwtFilter extends OncePerRequestFilter {
                                             userDetails,
                                             null,
                                             userDetails.getAuthorities());
-
                             authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                             request.getSession().setAttribute("currentUser", userDetails);
