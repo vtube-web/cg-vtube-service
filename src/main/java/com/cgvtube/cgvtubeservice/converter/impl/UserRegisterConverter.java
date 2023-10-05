@@ -23,12 +23,9 @@ public class UserRegisterConverter implements Converter<UserRegisterRequestDto, 
 
     @Override
     public User convert(UserRegisterRequestDto source) {
-
         Role role = roleService.findById(1L);
-
         Set<Role> roleSet = new HashSet<>();
         roleSet.add(role);
-
         return User.builder()
                 .email(source.getEmail())
                 .password(passwordEncoder.encode(source.getPassword()))

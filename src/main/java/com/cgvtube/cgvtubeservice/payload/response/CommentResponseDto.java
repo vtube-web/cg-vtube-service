@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Builder
@@ -15,11 +17,9 @@ public class CommentResponseDto {
     private Long id;
     private Long like;
     private Long dislike;
-    private Long parentCommentId;
     private Long videoId;
-
     private String content;
-    private LocalDate createAt;
-
+    private List<ReplyResponseDto> replyDtoList;
+    private LocalDateTime createAt;
     private UserResponseDto userResponseDto;
 }

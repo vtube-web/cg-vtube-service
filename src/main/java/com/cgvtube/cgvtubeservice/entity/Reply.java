@@ -7,7 +7,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,7 +15,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @Setter
@@ -24,10 +22,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "comments")
-public class Comment {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+@Table(name = "replies")
+public class Reply {
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long like;
     private Long dislike;
@@ -38,18 +35,15 @@ public class Comment {
 
     @ManyToOne
     @JoinColumn(
+            name = "comment_id",
+            nullable = false,
+            referencedColumnName = "id")
+    private Comment comment;
+
+    @ManyToOne
+    @JoinColumn(
             name = "user_id",
             nullable = false,
             referencedColumnName = "id")
     private User user;
-
-    @ManyToOne
-    @JoinColumn(
-            name = "video_id",
-            nullable = false,
-            referencedColumnName = "id")
-    private Video video;
-
-    @OneToMany(mappedBy = "comment")
-    private List<Reply> replyList;
 }

@@ -21,4 +21,10 @@ public class VideoServiceImpl implements VideoService {
         List<Video> videoList = videoRepository.findFirst40Videos();
         return videoConverter.convert(videoList);
     }
+
+    @Override
+    public VideoResponseDto getVideoById(Long videoId) {
+        Video video = videoRepository.findById(videoId).orElse(null);
+        return videoConverter.convert(video);
+    }
 }

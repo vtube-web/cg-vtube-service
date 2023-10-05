@@ -1,43 +1,38 @@
 package com.cgvtube.cgvtubeservice.converter.impl;
 
 import com.cgvtube.cgvtubeservice.converter.Converter;
-import com.cgvtube.cgvtubeservice.entity.Comment;
+import com.cgvtube.cgvtubeservice.entity.Reply;
 import com.cgvtube.cgvtubeservice.payload.response.CommentResponseDto;
+import com.cgvtube.cgvtubeservice.payload.response.ReplyResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-
 @Component
 @RequiredArgsConstructor
-public class CommentConverter implements Converter<Comment, CommentResponseDto> {
+public class ReplyConverter implements Converter<Reply,ReplyResponseDto> {
     private final UserResponseDtoConverter userResponseDtoConverter;
-    private final ReplyConverter replyConverter;
     @Override
-    public CommentResponseDto convert(Comment source) {
-        CommentResponseDto target = new CommentResponseDto();
+    public ReplyResponseDto convert(Reply source) {
+        ReplyResponseDto target = new ReplyResponseDto();
         BeanUtils.copyProperties(source, target);
-        target.setVideoId(source.getVideo().getId());
         target.setUserResponseDto(userResponseDtoConverter.revert(source.getUser()));
-        target.setCreateAt(source.getCreateAt());
-        target.setReplyDtoList(replyConverter.convert(source.getReplyList()));
         return target;
     }
 
     @Override
-    public Comment revert(CommentResponseDto target) {
+    public Reply revert(ReplyResponseDto target) {
         return null;
     }
 
     @Override
-    public List<CommentResponseDto> convert(List<Comment> sources) {
+    public List<ReplyResponseDto> convert(List<Reply> sources) {
         return sources.stream().map(this::convert).toList();
-
     }
 
     @Override
-    public List<Comment> revert(List<CommentResponseDto> targets) {
-        return targets.stream().map(this::revert).toList();
+    public List<Reply> revert(List<ReplyResponseDto> targets) {
+        return null;
     }
 }

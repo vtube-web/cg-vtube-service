@@ -21,6 +21,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -53,8 +54,8 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfig = new CorsConfiguration();
-        corsConfig.addAllowedOriginPattern("**");
-        corsConfig.addAllowedHeader("*");
+        corsConfig.setAllowedOriginPatterns(List.of("**"));
+        corsConfig.addAllowedHeader("**");
         corsConfig.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfig);
@@ -62,7 +63,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         http.authorizeHttpRequests()
@@ -70,7 +71,8 @@ public class SecurityConfig {
                         "/api/auth/login",
                         "/api/users/check_email",
                         "/api/forgot_password",
-                        "/api/videos")
+                        "/api/videos"
+                )
                 .permitAll();
 
         http.authorizeHttpRequests()
@@ -94,9 +96,10 @@ public class SecurityConfig {
                 .configurationSource(corsConfigurationSource())
                 .and()
                 .csrf()
-                .ignoringRequestMatchers("/api/**")
-                .and().formLogin().disable();
+                .ignoringRequestMatchers("/api/**");
 
         return http.build();
     }
+
+
 }

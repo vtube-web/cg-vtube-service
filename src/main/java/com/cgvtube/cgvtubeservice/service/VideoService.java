@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface VideoService {
     List<VideoResponseDto> getFirst40Videos();
+
+    VideoResponseDto getVideoById(Long videoId);
 }

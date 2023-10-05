@@ -25,7 +25,7 @@ public class TagConverter implements Converter<Tag, TagResponseDto> {
 
     @Override
     public List<TagResponseDto> convert(List<Tag> sources) {
-        return null;
+        return sources.stream().map(this::convert).toList();
     }
 
     @Override

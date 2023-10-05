@@ -16,8 +16,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -35,11 +37,12 @@ public class Video {
     private String title;
     private String description;
     private String videoUrl;
+    private String thumbnail;
     private Long views;
     private Long like;
     private Long dislike;
-    @Column(name = "createAt")
-    private Timestamp createAt;
+    @Column(name = "create_at")
+    private LocalDateTime createAt;
 
     @OneToMany(mappedBy = "video")
     private List<Comment> commentList;
