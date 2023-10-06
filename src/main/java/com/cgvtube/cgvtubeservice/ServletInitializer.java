@@ -1,4 +1,4 @@
-package com.example.cgvtubeservice;
+package com.cgvtube.cgvtubeservice;
 
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;

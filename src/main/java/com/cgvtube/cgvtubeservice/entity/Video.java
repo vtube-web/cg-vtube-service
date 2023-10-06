@@ -16,8 +16,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
+
 import java.util.List;
 
 @Getter
@@ -34,12 +37,16 @@ public class Video {
     private Long id;
     private String title;
     private String description;
+    private String thumbnail;
     private String videoUrl;
+    private LocalDateTime release_date;
+    private Boolean is_private;
     private Long views;
-    private Long like;
+    private Long likes;
     private Long dislike;
-    @Column(name = "createAt")
-    private Timestamp createAt;
+    @Column(name = "create_at")
+    private LocalDateTime createAt;
+
 
     @OneToMany(mappedBy = "video")
     private List<Comment> commentList;
@@ -50,6 +57,7 @@ public class Video {
             joinColumns = @JoinColumn(name = "video_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
+    @Cascade(CascadeType.MERGE)
     private List<Tag> tagSet;
 
     @ManyToOne

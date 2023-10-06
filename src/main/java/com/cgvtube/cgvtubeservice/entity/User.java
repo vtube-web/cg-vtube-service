@@ -1,5 +1,6 @@
 package com.cgvtube.cgvtubeservice.entity;
 
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -66,4 +67,7 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<Comment> commentList;
+
+    @OneToMany(mappedBy = "user")
+    private List<Reply> replyList;
 }

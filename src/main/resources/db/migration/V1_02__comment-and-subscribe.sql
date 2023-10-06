@@ -19,4 +19,4 @@ CREATE TABLE IF NOT EXISTS subscribe
     subscriber_id BIGINT,
     FOREIGN KEY (user_id) REFERENCES user (id),
     FOREIGN KEY (subscriber_id) REFERENCES user (id)
-)
+);
