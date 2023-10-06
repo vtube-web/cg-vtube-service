@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS video
     title       TEXT,
     description TEXT,
     video_url   TEXT,
+    thumbnail    TEXT,
     views       BIGINT,
     `like`      BIGINT,
     `dislike`   BIGINT,

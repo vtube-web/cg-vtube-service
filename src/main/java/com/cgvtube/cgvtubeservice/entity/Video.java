@@ -35,10 +35,11 @@ public class Video {
     private String title;
     private String description;
     private String videoUrl;
+    private String thumbnail;
     private Long views;
     private Long like;
     private Long dislike;
-    @Column(name = "createAt")
+    @Column(name = "create_at")
     private Timestamp createAt;
 
     @OneToMany(mappedBy = "video")
@@ -59,4 +60,6 @@ public class Video {
             referencedColumnName = "id")
     private User user;
 
+    @OneToMany(mappedBy = "video")
+    private List<WatchedVideo> watchedVideos;
 }
