@@ -63,7 +63,6 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         http.authorizeHttpRequests()
                 .requestMatchers(
@@ -72,11 +71,12 @@ public class SecurityConfig {
                         "/api/forgot_password",
                         "/api/friends/status",
                         "/ws/**",
-                        "/docs/**")
+                        "/docs/**",
+                        "/api/videos/update")
                 .permitAll();
 
         http.authorizeHttpRequests()
-                .requestMatchers(HttpMethod.POST, "/api/users", "/api/oauth2/google/**")
+                .requestMatchers(HttpMethod.POST, "/api/users/**", "/api/oauth2/google/**")
                 .permitAll();
 
         http.authorizeHttpRequests()
@@ -97,6 +97,7 @@ public class SecurityConfig {
                 .and()
                 .csrf()
                 .ignoringRequestMatchers("/api/**");
+        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
