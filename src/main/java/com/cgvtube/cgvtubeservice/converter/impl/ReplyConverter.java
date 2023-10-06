@@ -2,7 +2,6 @@ package com.cgvtube.cgvtubeservice.converter.impl;
 
 import com.cgvtube.cgvtubeservice.converter.Converter;
 import com.cgvtube.cgvtubeservice.entity.Reply;
-import com.cgvtube.cgvtubeservice.payload.response.CommentResponseDto;
 import com.cgvtube.cgvtubeservice.payload.response.ReplyResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -11,8 +10,10 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 @Component
 @RequiredArgsConstructor
-public class ReplyConverter implements Converter<Reply,ReplyResponseDto> {
+public class ReplyConverter implements Converter<Reply, ReplyResponseDto> {
     private final UserResponseDtoConverter userResponseDtoConverter;
+    private final CommentResponseConverter commentResponseConverter;
+
     @Override
     public ReplyResponseDto convert(Reply source) {
         ReplyResponseDto target = new ReplyResponseDto();
@@ -23,7 +24,11 @@ public class ReplyConverter implements Converter<Reply,ReplyResponseDto> {
 
     @Override
     public Reply revert(ReplyResponseDto target) {
-        return null;
+        Reply source = new Reply();
+        BeanUtils.copyProperties(target, source);
+        source.setUser(userResponseDtoConverter.convert(target.getUserResponseDto()));
+        source.setComment(commentResponseConverter.revert(target.getCommentDto()));
+        return source;
     }
 
     @Override
@@ -33,6 +38,6 @@ public class ReplyConverter implements Converter<Reply,ReplyResponseDto> {
 
     @Override
     public List<Reply> revert(List<ReplyResponseDto> targets) {
-        return null;
+        return targets.stream().map(this::revert).toList();
     }
 }

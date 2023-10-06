@@ -12,10 +12,10 @@ CREATE TABLE IF NOT EXISTS video
     video_url   TEXT,
     thumbnail   TEXT,
     views       BIGINT,
-    `like`      BIGINT,
-    `dislike`   BIGINT,
+    likes       BIGINT    DEFAULT 0,
+    dislikes    BIGINT    DEFAULT 0,
     user_id     BIGINT,
-    create_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    create_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES user (id)
 );
 

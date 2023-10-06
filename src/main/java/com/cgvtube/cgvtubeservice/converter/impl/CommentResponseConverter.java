@@ -11,7 +11,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class CommentConverter implements Converter<Comment, CommentResponseDto> {
+public class CommentResponseConverter implements Converter<Comment, CommentResponseDto> {
     private final UserResponseDtoConverter userResponseDtoConverter;
     private final ReplyConverter replyConverter;
     @Override

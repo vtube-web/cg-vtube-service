@@ -22,6 +22,7 @@ public class AuthController {
     public ResponseEntity<UserLoginResponseDto> authentication(@RequestBody UserLoginRequestDto userLoginRequestDto) {
         try {
             UserLoginResponseDto userLoginResponseDto = userService.authenticate(userLoginRequestDto);
+            System.out.println(userService.getCurrentUser());
             return new ResponseEntity<>(userLoginResponseDto, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);

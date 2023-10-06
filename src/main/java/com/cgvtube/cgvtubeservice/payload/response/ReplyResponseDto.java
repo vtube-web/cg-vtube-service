@@ -18,4 +18,5 @@ public class ReplyResponseDto {
     private String content;
     private LocalDateTime createAt;
     private UserResponseDto userResponseDto;
+    private CommentResponseDto commentDto;
 }

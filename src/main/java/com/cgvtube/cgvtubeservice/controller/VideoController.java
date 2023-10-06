@@ -2,7 +2,6 @@ package com.cgvtube.cgvtubeservice.controller;
 
 import com.cgvtube.cgvtubeservice.payload.response.VideoResponseDto;
 import com.cgvtube.cgvtubeservice.service.VideoService;
-import com.cgvtube.cgvtubeservice.service.impl.VideoServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
