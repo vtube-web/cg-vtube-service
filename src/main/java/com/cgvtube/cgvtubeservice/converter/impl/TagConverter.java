@@ -3,7 +3,6 @@ package com.cgvtube.cgvtubeservice.converter.impl;
 import com.cgvtube.cgvtubeservice.converter.Converter;
 import com.cgvtube.cgvtubeservice.entity.Tag;
 import com.cgvtube.cgvtubeservice.payload.response.TagResponseDto;
-import com.cgvtube.cgvtubeservice.payload.response.VideoResponseDto;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
