@@ -1,5 +1,4 @@
-package com.cgvtube.cgvtubeservice.entiny;
-
+package com.cgvtube.cgvtubeservice.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -7,6 +6,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -15,8 +16,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 import java.time.LocalDateTime;
+
 import java.util.List;
 
 @Getter
@@ -25,17 +29,36 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "comments")
-public class Comment {
+@Table(name = "video")
+public class Video {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long like;
+    private String title;
+    private String description;
+    private String thumbnail;
+    private String videoUrl;
+    private LocalDateTime release_date;
+    private Boolean is_private;
+    private Long views;
+    private Long likes;
     private Long dislike;
-    private String content;
-
     @Column(name = "create_at")
     private LocalDateTime createAt;
+
+
+    @OneToMany(mappedBy = "video")
+    private List<Comment> commentList;
+
+    @ManyToMany
+    @JoinTable(
+            name = "video_tag",
+            joinColumns = @JoinColumn(name = "video_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
+    @Cascade(CascadeType.MERGE)
+    private List<Tag> tagSet;
 
     @ManyToOne
     @JoinColumn(
@@ -44,13 +67,4 @@ public class Comment {
             referencedColumnName = "id")
     private User user;
 
-    @ManyToOne
-    @JoinColumn(
-            name = "video_id",
-            nullable = false,
-            referencedColumnName = "id")
-    private Video video;
-
-    @OneToMany(mappedBy = "comment")
-    private List<Reply> replyList;
 }

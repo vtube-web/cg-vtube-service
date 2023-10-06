@@ -1,6 +1,6 @@
 package com.cgvtube.cgvtubeservice.repository;
 
-import com.cgvtube.cgvtubeservice.entiny.Tag;
+import com.cgvtube.cgvtubeservice.entity.Tag;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

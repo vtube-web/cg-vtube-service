@@ -6,4 +6,4 @@ CREATE TABLE IF NOT EXISTS user_liked_video
     FOREIGN KEY (user_id) REFERENCES user (id),
     FOREIGN KEY (video_id) REFERENCES video (id),
     UNIQUE (user_id, video_id)
-    );
+);

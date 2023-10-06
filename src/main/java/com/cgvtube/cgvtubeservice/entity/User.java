@@ -1,4 +1,4 @@
-package com.cgvtube.cgvtubeservice.entiny;
+package com.cgvtube.cgvtubeservice.entity;
 
 
 import jakarta.persistence.CascadeType;

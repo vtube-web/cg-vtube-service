@@ -1,7 +1,7 @@
 package com.cgvtube.cgvtubeservice.converter.impl;
 
 import com.cgvtube.cgvtubeservice.converter.VideoProcessing;
-import com.cgvtube.cgvtubeservice.entiny.Video;
+import com.cgvtube.cgvtubeservice.entity.Video;
 import com.cgvtube.cgvtubeservice.payload.request.VideoUpdateReqDto;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;

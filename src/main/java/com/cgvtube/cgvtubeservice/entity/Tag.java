@@ -1,6 +1,6 @@
-package com.cgvtube.cgvtubeservice.entiny;
+package com.cgvtube.cgvtubeservice.entity;
 
-import com.cgvtube.cgvtubeservice.entiny.Video;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

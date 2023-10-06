@@ -1,6 +1,6 @@
 package com.cgvtube.cgvtubeservice.service.impl;
 
-import com.cgvtube.cgvtubeservice.entiny.Tag;
+import com.cgvtube.cgvtubeservice.entity.Tag;
 import com.cgvtube.cgvtubeservice.repository.TagRepository;
 import com.cgvtube.cgvtubeservice.service.TagService;
 import lombok.AllArgsConstructor;

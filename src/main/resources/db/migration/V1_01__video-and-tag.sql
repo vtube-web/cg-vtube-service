@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS video
     user_id     BIGINT,
     create_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES user (id)
-    );
+);
 
 CREATE TABLE IF NOT EXISTS video_tag
 (
@@ -28,4 +28,4 @@ CREATE TABLE IF NOT EXISTS video_tag
     tag_id   BIGINT,
     FOREIGN KEY (video_id) REFERENCES video (id),
     FOREIGN KEY (tag_id) REFERENCES tag (id)
-    );
+);
