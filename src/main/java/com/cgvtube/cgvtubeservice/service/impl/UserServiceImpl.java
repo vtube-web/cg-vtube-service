@@ -3,8 +3,10 @@ package com.cgvtube.cgvtubeservice.service.impl;
 import com.cgvtube.cgvtubeservice.configuration.security.JwtTokenProvider;
 import com.cgvtube.cgvtubeservice.converter.impl.UserRegisterConverter;
 import com.cgvtube.cgvtubeservice.entity.User;
+import com.cgvtube.cgvtubeservice.payload.request.CheckEmailReqDto;
 import com.cgvtube.cgvtubeservice.payload.request.UserLoginRequestDto;
 import com.cgvtube.cgvtubeservice.payload.request.UserRegisterRequestDto;
+import com.cgvtube.cgvtubeservice.payload.response.ResponseDto;
 import com.cgvtube.cgvtubeservice.payload.response.UserLoginResponseDto;
 import com.cgvtube.cgvtubeservice.repository.UserRepository;
 import com.cgvtube.cgvtubeservice.service.UserService;
@@ -75,5 +77,26 @@ public class UserServiceImpl implements UserService {
     public String refreshToken() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return jwtUtil.generateToken(authentication);
+    }
+
+    @Override
+    public ResponseDto checkValidEmail(CheckEmailReqDto emailReqDto) {
+
+        Optional<User> user = userRepository.findByEmail(emailReqDto.getEmail());
+        ResponseDto responseDto;
+        if (user.isEmpty()) {
+            responseDto = ResponseDto.builder()
+                    .message("can use email")
+                    .status("200")
+                    .data(true)
+                    .build();
+        } else {
+            responseDto = ResponseDto.builder()
+                    .message("can't use email")
+                    .status("409").
+                    data(false)
+                    .build();
+        }
+        return responseDto;
     }
 }
