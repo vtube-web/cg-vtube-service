@@ -1,6 +1,6 @@
 package com.cgvtube.cgvtubeservice.converter.impl;
 
-import com.cgvtube.cgvtubeservice.entity.LikedVideo;
+import com.cgvtube.cgvtubeservice.entity.UserLikedVideo;
 import com.cgvtube.cgvtubeservice.entity.Video;
 import com.cgvtube.cgvtubeservice.payload.response.LikedVideoDTO;
 import com.cgvtube.cgvtubeservice.repository.VideoRepository;
@@ -13,9 +13,9 @@ import java.util.List;
 import java.util.function.Function;
 @Component
 @RequiredArgsConstructor
-public class LikedVideoConverter implements Function<Page<LikedVideo>, List<LikedVideoDTO>> {
+public class LikedVideoConverter implements Function<Page<UserLikedVideo>, List<LikedVideoDTO>> {
     private final VideoRepository videoRepository;
-    public List<LikedVideoDTO> apply(Page<LikedVideo> likedVideos) {
+    public List<LikedVideoDTO> apply(Page<UserLikedVideo> likedVideos) {
         return likedVideos.map(likedVideo -> {
             LikedVideoDTO likedVideoDTO = new LikedVideoDTO();
             BeanUtils.copyProperties(likedVideos, likedVideoDTO);
