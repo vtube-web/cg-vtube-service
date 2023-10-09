@@ -1,6 +1,6 @@
 package com.cgvtube.cgvtubeservice.converter.impl;
 
-import com.cgvtube.cgvtubeservice.converter.Converter;
+import com.cgvtube.cgvtubeservice.converter.GeneralConverter;
 import com.cgvtube.cgvtubeservice.entity.Comment;
 import com.cgvtube.cgvtubeservice.payload.request.CommentRequestDto;
 import com.cgvtube.cgvtubeservice.repository.UserRepository;
@@ -8,14 +8,16 @@ import com.cgvtube.cgvtubeservice.repository.VideoRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
 @RequiredArgsConstructor
-public class CommentRequestConverter implements Converter<Comment, CommentRequestDto> {
+public class CommentRequestConverter implements GeneralConverter<Comment, CommentRequestDto> {
     private final UserRepository userRepository;
     private final VideoRepository videoRepository;
-    private final ReplyConverter replyConverter;
+    private final ReplyResponseConverter replyConverter;
 
     @Override
     public CommentRequestDto convert(Comment source) {
@@ -37,9 +39,7 @@ public class CommentRequestConverter implements Converter<Comment, CommentReques
                         () -> new EntityNotFoundException(
                                 "Video not foundwith ID: " + target.getVideoId()))
         );
-        source.setReplyList(
-                replyConverter.revert(target.getReplyResponseDtoList())
-        );
+        source.setReplyList(replyConverter.revert(target.getReplyResponseDtoList()));
         return source;
     }
 

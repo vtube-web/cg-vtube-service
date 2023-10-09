@@ -1,6 +1,6 @@
 package com.cgvtube.cgvtubeservice.converter.impl;
 
-import com.cgvtube.cgvtubeservice.converter.Converter;
+import com.cgvtube.cgvtubeservice.converter.GeneralConverter;
 import com.cgvtube.cgvtubeservice.entity.Role;
 import com.cgvtube.cgvtubeservice.entity.User;
 import com.cgvtube.cgvtubeservice.payload.request.UserRegisterRequestDto;
@@ -16,7 +16,7 @@ import java.util.Set;
 
 @Component
 @RequiredArgsConstructor
-public class UserRegisterConverter implements Converter<UserRegisterRequestDto, User> {
+public class UserRegisterConverter implements GeneralConverter<UserRegisterRequestDto, User> {
 
     private final PasswordEncoder passwordEncoder;
     private final RoleService roleService;

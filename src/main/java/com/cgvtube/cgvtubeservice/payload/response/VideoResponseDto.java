@@ -15,8 +15,9 @@ import java.util.List;
 public class VideoResponseDto {
     private Long id;
     private Long views;
-    private Long like;
-    private Long dislike;
+    private Long likes;
+    private Long dislikes;
+    private String thumbnail;
     private String title;
     private String description;
     private String videoUrl;

@@ -1,7 +1,6 @@
 package com.cgvtube.cgvtubeservice.service.impl;
 
 import com.cgvtube.cgvtubeservice.configuration.security.JwtTokenProvider;
-import com.cgvtube.cgvtubeservice.converter.Converter;
 import com.cgvtube.cgvtubeservice.converter.impl.UserRegisterConverter;
 import com.cgvtube.cgvtubeservice.entity.User;
 import com.cgvtube.cgvtubeservice.payload.request.UserLoginRequestDto;

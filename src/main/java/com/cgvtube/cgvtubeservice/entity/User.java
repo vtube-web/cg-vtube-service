@@ -1,5 +1,6 @@
 package com.cgvtube.cgvtubeservice.entity;
 
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

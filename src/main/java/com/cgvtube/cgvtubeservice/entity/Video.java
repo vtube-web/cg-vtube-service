@@ -36,11 +36,16 @@ public class Video {
     private Long id;
     private String title;
     private String description;
-    private String videoUrl;
     private String thumbnail;
+    @Column(name ="video_url")
+    private String videoUrl;
+    @Column(name = "release_date")
+    private LocalDateTime releaseDate;
+    @Column(name = "is_private")
+    private Boolean isPrivate;
     private Long views;
-    private Long like;
-    private Long dislike;
+    private Long likes;
+    private Long dislikes;
     @Column(name = "create_at")
     private LocalDateTime createAt;
 
@@ -53,6 +58,7 @@ public class Video {
             joinColumns = @JoinColumn(name = "video_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
+    @Cascade(CascadeType.MERGE)
     private List<Tag> tagSet;
 
     @ManyToOne

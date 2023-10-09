@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public interface Converter<S, T> {
+public interface GeneralConverter<S, T> {
 
     T convert(S source);
     S revert (T target);

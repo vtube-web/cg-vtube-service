@@ -13,10 +13,10 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class ReplyResponseDto {
     private Long id;
-    private Long like;
-    private Long dislike;
+    private Long likes;
+    private Long dislikes;
     private String content;
     private LocalDateTime createAt;
     private UserResponseDto userResponseDto;
-    private CommentResponseDto commentDto;
+    private Long commentId;
 }

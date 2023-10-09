@@ -53,3 +53,4 @@ public class Comment {
     @OneToMany(mappedBy = "comment")
     private List<Reply> replyList;
 }
+

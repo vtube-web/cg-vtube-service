@@ -1,6 +1,6 @@
 package com.cgvtube.cgvtubeservice.converter.impl;
 
-import com.cgvtube.cgvtubeservice.converter.Converter;
+import com.cgvtube.cgvtubeservice.converter.GeneralConverter;
 import com.cgvtube.cgvtubeservice.entity.Video;
 import com.cgvtube.cgvtubeservice.payload.response.VideoResponseDto;
 import com.cgvtube.cgvtubeservice.service.CommentService;
@@ -12,9 +12,9 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class VideoConverter implements Converter<Video, VideoResponseDto> {
+public class VideoResponseConverter implements GeneralConverter<Video, VideoResponseDto> {
     private final TagConverter tagConverter;
-    private final UserResponseDtoConverter userResponseDtoConverter;
+    private final UserResponseConverter userResponseDtoConverter;
     private final CommentService commentService;
 
     @Override
