@@ -70,9 +70,7 @@ public class SecurityConfig {
                         "/api/auth/login",
                         "/api/users/check_email",
                         "/api/forgot_password",
-                        "/api/friends/status",
-                        "/ws/**",
-                        "/docs/**")
+                        "/api/videos")
                 .permitAll();
 
         http.authorizeHttpRequests()
@@ -96,7 +94,8 @@ public class SecurityConfig {
                 .configurationSource(corsConfigurationSource())
                 .and()
                 .csrf()
-                .ignoringRequestMatchers("/api/**");
+                .ignoringRequestMatchers("/api/**")
+                .and().formLogin().disable();
 
         return http.build();
     }

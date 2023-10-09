@@ -1,7 +1,6 @@
 package com.cgvtube.cgvtubeservice.service;
 
-import com.cgvtube.cgvtubeservice.entiny.Role;
-import org.springframework.stereotype.Service;
+import com.cgvtube.cgvtubeservice.entity.Role;
 
 
 public interface RoleService {

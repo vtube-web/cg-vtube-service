@@ -12,6 +12,6 @@ public class JwtAuthEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
         System.err.println(authException.getMessage());
-        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Full authentication is required to access this resource!");
+        response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Full authentication is required to access this resource!");
     }
 }
