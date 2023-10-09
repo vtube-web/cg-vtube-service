@@ -1,6 +1,8 @@
 package com.cgvtube.cgvtubeservice.controller;
 
+import com.cgvtube.cgvtubeservice.payload.request.CheckEmailReqDto;
 import com.cgvtube.cgvtubeservice.payload.request.UserRegisterRequestDto;
+import com.cgvtube.cgvtubeservice.payload.response.ResponseDto;
 import com.cgvtube.cgvtubeservice.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -42,13 +44,12 @@ public class UserController {
         }
     }
 
-    @GetMapping("/check_email")
-    public ResponseEntity<?> checkEmailIsExist(@RequestParam("email") String email) {
-        if(userService.checkValidEmail(email)) {
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
-        }
+    @PostMapping("/check_email")
+    public ResponseEntity<ResponseDto> checkEmailIsExist(@RequestBody CheckEmailReqDto emailReqDto) {
+        ResponseDto responseDto = userService.checkValidEmail(emailReqDto);
+      return ResponseEntity.ok(responseDto);
+
+
     }
 }
 

@@ -1,7 +1,9 @@
 package com.cgvtube.cgvtubeservice.service;
 
+import com.cgvtube.cgvtubeservice.payload.request.CheckEmailReqDto;
 import com.cgvtube.cgvtubeservice.payload.request.UserLoginRequestDto;
 import com.cgvtube.cgvtubeservice.payload.request.UserRegisterRequestDto;
+import com.cgvtube.cgvtubeservice.payload.response.ResponseDto;
 import com.cgvtube.cgvtubeservice.payload.response.UserLoginResponseDto;
 import com.cgvtube.cgvtubeservice.service.impl.UserImpl;
 
@@ -15,5 +17,5 @@ public interface UserService {
 
     String refreshToken();
 
-    boolean checkValidEmail(String email);
+    ResponseDto checkValidEmail(CheckEmailReqDto emailReqDto);
 }

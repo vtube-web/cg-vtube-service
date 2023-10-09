@@ -27,7 +27,6 @@ import java.util.Date;
 @Service
 @RequiredArgsConstructor
 public class JwtTokenProvider {
-
     private static final Logger logger = LogManager.getLogger();
 
     @Value("${app.jwtSecret}")
