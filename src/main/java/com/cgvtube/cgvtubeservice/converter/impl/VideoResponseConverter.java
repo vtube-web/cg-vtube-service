@@ -1,8 +1,9 @@
 package com.cgvtube.cgvtubeservice.converter.impl;
 
-import com.cgvtube.cgvtubeservice.converter.Converter;
+import com.cgvtube.cgvtubeservice.converter.GeneralConverter;
 import com.cgvtube.cgvtubeservice.entity.Video;
 import com.cgvtube.cgvtubeservice.payload.response.VideoResponseDto;
+import com.cgvtube.cgvtubeservice.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
@@ -11,10 +12,10 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class VideoConverter implements Converter<Video, VideoResponseDto> {
+public class VideoResponseConverter implements GeneralConverter<Video, VideoResponseDto> {
     private final TagConverter tagConverter;
-    private final UserResponseDtoConverter userResponseDtoConverter;
-    private final CommentConverter commentConverter;
+    private final UserResponseConverter userResponseDtoConverter;
+    private final CommentService commentService;
 
     @Override
     public VideoResponseDto convert(Video source) {
@@ -22,7 +23,7 @@ public class VideoConverter implements Converter<Video, VideoResponseDto> {
         BeanUtils.copyProperties(source, target);
         target.setTagDtoList(tagConverter.convert(source.getTagSet()));
         target.setUserDto(userResponseDtoConverter.revert(source.getUser()));
-        target.setCommentDtoList(commentConverter.convert(source.getCommentList()));
+        target.setCommentDtoList(commentService.getListCommentDtoByVideo(source));
         return target;
     }
 

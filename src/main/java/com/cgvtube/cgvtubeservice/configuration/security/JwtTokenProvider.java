@@ -27,11 +27,11 @@ import java.util.Date;
 @Service
 @RequiredArgsConstructor
 public class JwtTokenProvider {
-
     private static final Logger logger = LogManager.getLogger();
 
     @Value("${app.jwtSecret}")
     private String jwtSecret;
+
     @Value("${app.jwtExpirationInMs}") //1hour
     private Long jwtExpirationInMs;
 

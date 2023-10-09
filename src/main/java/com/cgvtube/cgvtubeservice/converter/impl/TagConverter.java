@@ -1,6 +1,6 @@
 package com.cgvtube.cgvtubeservice.converter.impl;
 
-import com.cgvtube.cgvtubeservice.converter.Converter;
+import com.cgvtube.cgvtubeservice.converter.GeneralConverter;
 import com.cgvtube.cgvtubeservice.entity.Tag;
 import com.cgvtube.cgvtubeservice.payload.response.TagResponseDto;
 import org.springframework.beans.BeanUtils;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class TagConverter implements Converter<Tag, TagResponseDto> {
+public class TagConverter implements GeneralConverter<Tag, TagResponseDto> {
     @Override
     public TagResponseDto convert(Tag source) {
         TagResponseDto target = new TagResponseDto();
@@ -24,7 +24,7 @@ public class TagConverter implements Converter<Tag, TagResponseDto> {
 
     @Override
     public List<TagResponseDto> convert(List<Tag> sources) {
-        return null;
+        return sources.stream().map(this::convert).toList();
     }
 
     @Override

@@ -15,7 +15,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UserRegisterRequestDto {
-
     @Email
     @NotBlank
     private String email;
@@ -27,5 +26,4 @@ public class UserRegisterRequestDto {
 
     @NotBlank
     private String userName;
-
 }

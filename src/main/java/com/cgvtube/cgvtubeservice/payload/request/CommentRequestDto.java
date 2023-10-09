@@ -1,25 +1,24 @@
-package com.cgvtube.cgvtubeservice.payload.response;
+package com.cgvtube.cgvtubeservice.payload.request;
 
+import com.cgvtube.cgvtubeservice.payload.response.ReplyResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-public class CommentResponseDto {
-    private Long id;
+@NoArgsConstructor
+public class CommentRequestDto {
+    private Long videoId;
+    private Long userId;
     private Long likes;
     private Long dislikes;
-    private Long videoId;
     private String content;
-    private List<ReplyResponseDto> replyDtoList;
     private LocalDateTime createAt;
-    private UserResponseDto userResponseDto;
+    private List<ReplyResponseDto> replyResponseDtoList;
 }
