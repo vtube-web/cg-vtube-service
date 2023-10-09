@@ -70,4 +70,10 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<Reply> replyList;
+
+    @OneToMany(mappedBy = "user")
+    private List<WatchedVideo> watchedVideos;
+
+    @OneToMany(mappedBy = "user")
+    private List<LikedVideo> likedVideos;
 }

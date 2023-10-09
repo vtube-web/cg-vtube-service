@@ -67,4 +67,9 @@ public class Video {
             referencedColumnName = "id")
     private User user;
 
+    @OneToMany(mappedBy = "video")
+    private List<WatchedVideo> watchedVideos;
+
+    @OneToMany(mappedBy = "video")
+    private List<LikedVideo> likedVideos;
 }
