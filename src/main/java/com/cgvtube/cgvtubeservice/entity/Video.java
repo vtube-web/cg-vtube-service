@@ -69,4 +69,7 @@ public class Video {
 
     @OneToMany(mappedBy = "video")
     private List<WatchedVideo> watchedVideos;
+
+    @OneToMany(mappedBy = "video")
+    private List<LikedVideo> likedVideos;
 }

@@ -5,6 +5,5 @@ CREATE TABLE IF NOT EXISTS user_watched_video
     video_id BIGINT,
     watched_at DATETIME,
     FOREIGN KEY (user_id) REFERENCES user (id),
-    FOREIGN KEY (video_id) REFERENCES video (id),
-    UNIQUE (user_id, video_id)
+    FOREIGN KEY (video_id) REFERENCES video (id)
 );

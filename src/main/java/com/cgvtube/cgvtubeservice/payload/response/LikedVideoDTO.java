@@ -10,14 +10,14 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class WatchedVideoDTO {
+public class LikedVideoDTO {
     private Long videoId;
     private String title;
     private String description;
     private String videoUrl;
     private String thumbnail;
     private Long views;
-    private Timestamp watchedAt;
+    private Timestamp likedAt;
     private LocalDateTime createAt;
     private Long userId;
     private String userName;

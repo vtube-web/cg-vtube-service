@@ -26,6 +26,7 @@ public class WatchedVideoConverter implements Function<Page<WatchedVideo>, List<
                 watchedVideoDTO.setTitle(video.getTitle());
                 watchedVideoDTO.setDescription(video.getDescription());
                 watchedVideoDTO.setVideoUrl(video.getVideoUrl());
+                watchedVideoDTO.setCreateAt(video.getCreateAt());
                 watchedVideoDTO.setThumbnail(video.getThumbnail());
                 watchedVideoDTO.setViews(video.getViews());
                 watchedVideoDTO.setUserId(video.getUser().getId());

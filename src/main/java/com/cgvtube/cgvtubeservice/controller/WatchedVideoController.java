@@ -1,7 +1,6 @@
 package com.cgvtube.cgvtubeservice.controller;
 
-import com.cgvtube.cgvtubeservice.payload.response.PageResponseDTO;
-import com.cgvtube.cgvtubeservice.payload.response.WatchedVideoDTO;
+import com.cgvtube.cgvtubeservice.payload.response.ResponseDto;
 import com.cgvtube.cgvtubeservice.service.impl.VideoWatchedServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -19,31 +18,30 @@ public class WatchedVideoController {
     private final VideoWatchedServiceImpl videoWatchedService;
 
     @GetMapping("/{userId}")
-    public ResponseEntity<PageResponseDTO<WatchedVideoDTO>> getWatchedVideos(@PathVariable Long userId, Pageable pageable) {
-        Pageable pageableRequest = PageRequest.of(pageable.getPageNumber(),pageable.getPageSize(), Sort.Direction.DESC,"watchedAt");
-        PageResponseDTO<WatchedVideoDTO> watchedVideos = videoWatchedService.findAllWatchedVideo(userId, pageableRequest);
-        return new ResponseEntity<>(watchedVideos, HttpStatus.OK);
+    public ResponseEntity<ResponseDto> getWatchedVideos(@PathVariable Long userId, Pageable pageable) {
+        Pageable pageableRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.Direction.DESC, "watchedAt");
+        ResponseDto responseDto = videoWatchedService.findAllWatchedVideo(userId, pageableRequest);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
     @DeleteMapping("/{userId}")
-    public ResponseEntity<?> deleteWatchedVideosByUserId(@PathVariable Long userId) {
-        try {
-            videoWatchedService.deleteWatchedVideosByUserId(userId);
-            return ResponseEntity.ok("All watched videos for the user deleted successfully");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Failed to delete watched videos: " + e.getMessage());
+    public ResponseEntity<ResponseDto> deleteWatchedVideosByUserId(@PathVariable Long userId) throws Exception {
+        ResponseDto responseDto = videoWatchedService.deleteWatchedVideosByUserId(userId);
+        if (responseDto.getStatus() == "200") {
+            return new ResponseEntity<>(responseDto, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(responseDto, HttpStatus.BAD_REQUEST);
         }
+
     }
 
     @DeleteMapping("/{userId}/videos/{videoId}")
-    public ResponseEntity<?> deleteWatchedVideo(@PathVariable Long userId, @PathVariable Long videoId) {
-        try {
-            videoWatchedService.deleteWatchedVideo(userId, videoId);
-            return ResponseEntity.ok("Video watched deleted successfully");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Failed to delete video watched. Error: " + e.getMessage());
+    public ResponseEntity<ResponseDto> deleteWatchedVideo(@PathVariable Long userId, @PathVariable Long videoId) throws Exception {
+        ResponseDto responseDto = videoWatchedService.deleteWatchedVideo(userId, videoId);
+        if (responseDto.getStatus() == "200") {
+            return new ResponseEntity<>(responseDto, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(responseDto, HttpStatus.BAD_REQUEST);
         }
     }
 }
