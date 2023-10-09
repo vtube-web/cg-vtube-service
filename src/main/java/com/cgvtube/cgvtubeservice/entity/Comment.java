@@ -29,17 +29,12 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long like;
-    private Long dislike;
+    private Long likes;
+    private Long dislikes;
     private String content;
 
     @Column(name = "create_at")
     private LocalDateTime createAt;
-    @ManyToOne
-    @JoinColumn(
-            name = "parentComment_id",
-            referencedColumnName = "id")
-    private Comment parentComment;
 
     @ManyToOne
     @JoinColumn(
@@ -58,3 +53,4 @@ public class Comment {
     @OneToMany(mappedBy = "comment")
     private List<Reply> replyList;
 }
+

@@ -1,15 +1,14 @@
 package com.cgvtube.cgvtubeservice.service.impl;
 
 import com.cgvtube.cgvtubeservice.converter.VideoProcessing;
-import com.cgvtube.cgvtubeservice.converter.impl.VideoConverter;
-
+import com.cgvtube.cgvtubeservice.converter.impl.VideoResponseConverter;
 import com.cgvtube.cgvtubeservice.entity.Tag;
 import com.cgvtube.cgvtubeservice.entity.User;
 import com.cgvtube.cgvtubeservice.entity.Video;
 import com.cgvtube.cgvtubeservice.payload.request.AddVideoReqDto;
 import com.cgvtube.cgvtubeservice.payload.request.VideoUpdateReqDto;
-import com.cgvtube.cgvtubeservice.payload.response.ResponseDto;
 import com.cgvtube.cgvtubeservice.payload.response.AddVideoResDto;
+import com.cgvtube.cgvtubeservice.payload.response.ResponseDto;
 import com.cgvtube.cgvtubeservice.payload.response.VideoResponseDto;
 import com.cgvtube.cgvtubeservice.repository.UserRepository;
 import com.cgvtube.cgvtubeservice.repository.VideoRepository;
@@ -26,17 +25,25 @@ import java.util.function.Function;
 @Service
 @RequiredArgsConstructor
 public class VideoServiceImpl implements VideoService {
-    private VideoRepository videoRepository;
-    private UserRepository userRepository;
-    private TagService tagService;
-    private Function<AddVideoReqDto, Video> mapToVideo;
-    private Function<Video, AddVideoResDto> mapVideoToResponseDto;
-    private VideoProcessing videoProcessing;
-    private final VideoConverter videoConverter;
-    public List<VideoResponseDto> getFirst40Videos() {
-        List<Video> videoList = videoRepository.findFirst40Videos();
+    private final VideoRepository videoRepository;
+    private final UserRepository userRepository;
+    private final TagService tagService;
+    private final Function<AddVideoReqDto, Video> mapToVideo;
+    private final Function<Video, AddVideoResDto> mapVideoToResponseDto;
+    private final VideoProcessing videoProcessing;
+    private final VideoResponseConverter videoConverter;
+
+    public List<VideoResponseDto> findAllVideos() {
+        List<Video> videoList = videoRepository.findAll();
         return videoConverter.convert(videoList);
     }
+
+    @Override
+    public VideoResponseDto getVideoById(Long videoId) {
+        Video video = videoRepository.findById(videoId).orElse(null);
+        return videoConverter.convert(video);
+    }
+
     @Override
     public ResponseDto addVideo(AddVideoReqDto addVideoReqDto, UserDetails currentUser) {
         User user = userRepository.findByEmail(currentUser.getUsername()).orElse(new User());
@@ -44,8 +51,11 @@ public class VideoServiceImpl implements VideoService {
         video.setUser(user);
         Video videoResult = (Video) videoRepository.save(video);
         AddVideoResDto addVideoResDto = mapVideoToResponseDto.apply(videoResult);
-        ResponseDto responseDto = ResponseDto.builder().message("created").status("200").data(addVideoResDto).build();
-        return responseDto;
+        return ResponseDto.builder()
+                .message("created")
+                .status("200")
+                .data(addVideoResDto)
+                .build();
     }
 
     @Override
@@ -59,13 +69,18 @@ public class VideoServiceImpl implements VideoService {
             videoConvert.setTagSet(tagList);
             videoConvert.setCreateAt(LocalDateTime.now());
             videoRepository.save(videoConvert);
-            responseDto = ResponseDto.builder().message("update").status("200").data(true).build();
+            responseDto = ResponseDto.builder()
+                    .message("update")
+                    .status("200")
+                    .data(true)
+                    .build();
         } else {
-            responseDto = ResponseDto.builder().message("update error").status("403").data(false).build();
+            responseDto = ResponseDto.builder()
+                    .message("update error")
+                    .status("403")
+                    .data(false)
+                    .build();
         }
         return responseDto;
-
     }
-
-
 }
