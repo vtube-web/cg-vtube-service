@@ -35,13 +35,13 @@ public class VideoController {
         VideoResponseDto videoResponseDto = videoService.getVideoById(videoId);
         return new ResponseEntity<>(videoResponseDto, HttpStatus.OK);
     }
-    @PostMapping
+    @PostMapping("/add")
     public ResponseEntity<ResponseDto> addVideo(@RequestBody AddVideoReqDto addVideoReqDto, HttpSession session) {
         UserDetails currentUser = (UserDetails) session.getAttribute("currentUser");
         ResponseDto responseDto = videoService.addVideo(addVideoReqDto, currentUser);
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
-    @PutMapping
+    @PutMapping("/update")
     public ResponseEntity<ResponseDto> updateVideo(@RequestBody VideoUpdateReqDto videoUpdateReqDto, HttpSession session) {
         UserDetails currentUser = (UserDetails) session.getAttribute("currentUser");
         ResponseDto responseDto = videoService.updateVideo(videoUpdateReqDto, currentUser);
