@@ -29,6 +29,7 @@ public class JwtTokenProvider {
 
     @Value("${app.jwtSecret}")
     private String jwtSecret;
+
     @Value("${app.jwtExpirationInMs}") //1hour
     private Long jwtExpirationInMs;
 

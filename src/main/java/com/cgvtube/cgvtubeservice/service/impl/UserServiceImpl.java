@@ -76,4 +76,9 @@ public class UserServiceImpl implements UserService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return jwtUtil.generateToken(authentication);
     }
+
+    @Override
+    public boolean checkValidEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
 }

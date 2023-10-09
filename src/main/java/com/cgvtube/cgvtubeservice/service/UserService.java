@@ -14,4 +14,6 @@ public interface UserService {
     UserLoginResponseDto authenticate(UserLoginRequestDto userLoginRequestDto);
 
     String refreshToken();
+
+    boolean checkValidEmail(String email);
 }
