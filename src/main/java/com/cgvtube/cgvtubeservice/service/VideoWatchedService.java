@@ -2,13 +2,14 @@ package com.cgvtube.cgvtubeservice.service;
 
 import com.cgvtube.cgvtubeservice.payload.response.ResponseDto;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
 
 public interface VideoWatchedService {
 
-    ResponseDto findAllWatchedVideo(Long userId, Pageable pageableRequest);
+    ResponseDto findAllWatchedVideo(UserDetails currentUser, Pageable pageableRequest);
 
-    ResponseDto deleteWatchedVideo(Long userId, Long videoId) throws Exception;
+    ResponseDto deleteWatchedVideo(UserDetails currentUser, Long videoId) throws Exception;
 
-    ResponseDto deleteWatchedVideosByUserId(Long userId) throws Exception;
+    ResponseDto deleteWatchedVideosByUserId(UserDetails currentUser) throws Exception;
 
 }
