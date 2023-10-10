@@ -1,7 +1,7 @@
 package com.cgvtube.cgvtubeservice.converter.impl;
 
-import com.cgvtube.cgvtubeservice.converter.Converter;
-import com.cgvtube.cgvtubeservice.entiny.User;
+import com.cgvtube.cgvtubeservice.converter.GeneralConverter;
+import com.cgvtube.cgvtubeservice.entity.User;
 import com.cgvtube.cgvtubeservice.payload.response.UserResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -10,7 +10,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class UserResponseDtoConverter implements Converter<UserResponseDto, User> {
+public class UserResponseConverter implements GeneralConverter<UserResponseDto, User> {
 
     @Override
     public User convert(UserResponseDto source) {
@@ -19,7 +19,6 @@ public class UserResponseDtoConverter implements Converter<UserResponseDto, User
 
     @Override
     public UserResponseDto revert(User target) {
-
         return UserResponseDto.builder()
                 .id(target.getId())
                 .userName(target.getUserName())

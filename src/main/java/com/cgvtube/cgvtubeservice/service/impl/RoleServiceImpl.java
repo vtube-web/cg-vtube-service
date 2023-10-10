@@ -1,6 +1,6 @@
 package com.cgvtube.cgvtubeservice.service.impl;
 
-import com.cgvtube.cgvtubeservice.entiny.Role;
+import com.cgvtube.cgvtubeservice.entity.Role;
 import com.cgvtube.cgvtubeservice.repository.RoleRepository;
 import com.cgvtube.cgvtubeservice.service.RoleService;
 import lombok.RequiredArgsConstructor;

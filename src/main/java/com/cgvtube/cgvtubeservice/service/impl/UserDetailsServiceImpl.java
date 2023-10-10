@@ -1,8 +1,8 @@
 package com.cgvtube.cgvtubeservice.service.impl;
 
 
-import com.cgvtube.cgvtubeservice.entiny.Role;
-import com.cgvtube.cgvtubeservice.entiny.User;
+import com.cgvtube.cgvtubeservice.entity.Role;
+import com.cgvtube.cgvtubeservice.entity.User;
 import com.cgvtube.cgvtubeservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -23,7 +23,6 @@ import java.util.Set;
 @Transactional
 @RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
-
     private final UserRepository userRepository;
 
     @Override
@@ -41,6 +40,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             grantedAuthorities.add(authority);
         }
 
-        return new UserImpl(user.getId(), user.getEmail(), user.getPassword(), user.getUserName(), grantedAuthorities);
+        return new CurrentUserServiceImpl(user.getId(), user.getEmail(), user.getPassword(), user.getUserName(), grantedAuthorities);
     }
 }

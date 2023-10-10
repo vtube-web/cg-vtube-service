@@ -9,6 +9,7 @@ import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
+import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,18 +18,20 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
 
-@Component
+@Service
+@RequiredArgsConstructor
 public class JwtTokenProvider {
-
     private static final Logger logger = LogManager.getLogger();
 
     @Value("${app.jwtSecret}")
     private String jwtSecret;
+
     @Value("${app.jwtExpirationInMs}") //1hour
     private Long jwtExpirationInMs;
 
