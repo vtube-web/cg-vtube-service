@@ -36,3 +36,5 @@ out/
 ### VS Code ###
 .vscode/
 
+#### Active profile ###
+src/main/resources/application-tam.properties
