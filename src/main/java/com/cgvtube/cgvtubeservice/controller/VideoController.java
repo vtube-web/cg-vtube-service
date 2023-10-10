@@ -18,7 +18,7 @@ import java.util.List;
 @RequestMapping("/api/videos")
 @RequiredArgsConstructor
 public class VideoController {
-    private VideoService videoService;
+    private final VideoService videoService;
 
     @GetMapping
     public ResponseEntity<List<VideoResponseDto>> getFirst40Videos() {

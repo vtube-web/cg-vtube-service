@@ -26,12 +26,12 @@ import java.util.function.Function;
 @Service
 @RequiredArgsConstructor
 public class VideoServiceImpl implements VideoService {
-    private VideoRepository videoRepository;
-    private UserRepository userRepository;
-    private TagService tagService;
-    private Function<AddVideoReqDto, Video> mapToVideo;
-    private Function<Video, AddVideoResDto> mapVideoToResponseDto;
-    private VideoProcessing videoProcessing;
+    private final VideoRepository videoRepository;
+    private final UserRepository userRepository;
+    private final TagService tagService;
+    private final Function<AddVideoReqDto, Video> mapToVideo;
+    private final Function<Video, AddVideoResDto> mapVideoToResponseDto;
+    private final VideoProcessing videoProcessing;
     private final VideoConverter videoConverter;
     public List<VideoResponseDto> getFirst40Videos() {
         List<Video> videoList = videoRepository.findFirst40Videos();

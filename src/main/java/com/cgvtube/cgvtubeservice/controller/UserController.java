@@ -23,7 +23,7 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping
+    @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody
                                       UserRegisterRequestDto userRegisterRequestDto,
                                       BindingResult bindingResult) {
