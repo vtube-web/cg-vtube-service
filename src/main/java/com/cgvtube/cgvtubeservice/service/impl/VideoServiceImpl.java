@@ -4,6 +4,7 @@ import com.cgvtube.cgvtubeservice.converter.VideoProcessing;
 import com.cgvtube.cgvtubeservice.converter.impl.VideoResponseConverter;
 import com.cgvtube.cgvtubeservice.entity.Tag;
 import com.cgvtube.cgvtubeservice.entity.User;
+import com.cgvtube.cgvtubeservice.entity.UserWatchedVideo;
 import com.cgvtube.cgvtubeservice.entity.Video;
 import com.cgvtube.cgvtubeservice.payload.request.AddVideoReqDto;
 import com.cgvtube.cgvtubeservice.payload.request.VideoUpdateReqDto;
@@ -12,14 +13,17 @@ import com.cgvtube.cgvtubeservice.payload.response.ResponseDto;
 import com.cgvtube.cgvtubeservice.payload.response.VideoResponseDto;
 import com.cgvtube.cgvtubeservice.repository.UserRepository;
 import com.cgvtube.cgvtubeservice.repository.VideoRepository;
+import com.cgvtube.cgvtubeservice.repository.VideoWatchedRepository;
 import com.cgvtube.cgvtubeservice.service.TagService;
 import com.cgvtube.cgvtubeservice.service.VideoService;
+import com.cgvtube.cgvtubeservice.service.VideoWatchedService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 
 @Service
@@ -32,6 +36,8 @@ public class VideoServiceImpl implements VideoService {
     private final Function<Video, AddVideoResDto> mapVideoToResponseDto;
     private final VideoProcessing videoProcessing;
     private final VideoResponseConverter videoConverter;
+    private final VideoWatchedService videoWatchedService;
+    private final VideoWatchedRepository videoWatchedRepository;
 
     public List<VideoResponseDto> findAllVideos() {
         List<Video> videoList = videoRepository.findAll();
@@ -39,9 +45,28 @@ public class VideoServiceImpl implements VideoService {
     }
 
     @Override
-    public VideoResponseDto getVideoById(Long videoId) {
+    public ResponseDto getVideoById(Long videoId, UserDetails currentUser) {
         Video video = videoRepository.findById(videoId).orElse(null);
-        return videoConverter.convert(video);
+        if (currentUser != null) {
+            User user = userRepository.findByEmail(currentUser.getUsername()).orElse(null);
+            if (user != null) {
+                LocalDateTime lastWatchedDate = getLastWatchedDate(user, videoId);
+                if (lastWatchedDate != null && isSameDay(lastWatchedDate, LocalDateTime.now())) {
+                    updateLastWatchedDate(user, videoId, LocalDateTime.now());
+                    incrementViews(video);
+                } else {
+                    videoWatchedRepository.save(new UserWatchedVideo(video, user, LocalDateTime.now()));
+                    incrementViews(video);
+                }
+            }
+        } else {
+            incrementViews(video);
+        }
+        return ResponseDto.builder()
+                .message("Successfully retrieve video and record history")
+                .status("200")
+                .data(videoConverter.convert(video))
+                .build();
     }
 
     @Override
@@ -82,5 +107,26 @@ public class VideoServiceImpl implements VideoService {
                     .build();
         }
         return responseDto;
+    }
+    private LocalDateTime getLastWatchedDate(User user, Long videoId) {
+        Optional<UserWatchedVideo> lastWatchedVideo  = videoWatchedRepository.findTopByUserIdAndVideoIdOrderByWatchedAtDesc(user.getId(), videoId);
+        return lastWatchedVideo.map(UserWatchedVideo::getWatchedAt).orElse(null);
+    }
+
+    private void updateLastWatchedDate(User user, Long videoId, LocalDateTime newWatchedDate) {
+        Optional<UserWatchedVideo> lastWatchedVideo = videoWatchedRepository.findTopByUserIdAndVideoIdOrderByWatchedAtDesc(user.getId(), videoId);
+        lastWatchedVideo.ifPresent(video -> {
+            video.setWatchedAt(newWatchedDate);
+            videoWatchedRepository.save(video);
+        });
+    }
+
+    private boolean isSameDay(LocalDateTime date1, LocalDateTime date2) {
+        return date1.toLocalDate().isEqual(date2.toLocalDate());
+    }
+
+    private void incrementViews(Video video) {
+        video.setViews(video.getViews() + 1);
+        videoRepository.save(video);
     }
 }

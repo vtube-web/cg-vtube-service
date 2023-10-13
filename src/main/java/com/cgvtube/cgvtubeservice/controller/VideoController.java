@@ -31,9 +31,10 @@ public class VideoController {
         return new ResponseEntity<>(videoResponseDtoList, HttpStatus.OK);
     }
     @GetMapping("/{id}")
-    public ResponseEntity<VideoResponseDto> getVideo(@PathVariable("id") Long videoId) {
-        VideoResponseDto videoResponseDto = videoService.getVideoById(videoId);
-        return new ResponseEntity<>(videoResponseDto, HttpStatus.OK);
+    public ResponseEntity<ResponseDto> getVideo(@PathVariable("id") Long videoId, HttpSession session) {
+        UserDetails currentUser = (UserDetails) session.getAttribute("currentUser");
+        ResponseDto responseDto = videoService.getVideoById(videoId, currentUser);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
     @PostMapping("/add")
     public ResponseEntity<ResponseDto> addVideo(@RequestBody AddVideoReqDto addVideoReqDto, HttpSession session) {

@@ -1,8 +1,11 @@
 package com.cgvtube.cgvtubeservice.service;
 
+import com.cgvtube.cgvtubeservice.entity.UserWatchedVideo;
 import com.cgvtube.cgvtubeservice.payload.response.ResponseDto;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Optional;
 
 public interface VideoWatchedService {
 

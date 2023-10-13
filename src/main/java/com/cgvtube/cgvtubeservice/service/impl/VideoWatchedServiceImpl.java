@@ -42,7 +42,7 @@ public class VideoWatchedServiceImpl implements VideoWatchedService {
         pageResponseDTO.setHasPrevious(watchedVideos.hasPrevious());
         pageResponseDTO.setTotalElements(watchedVideos.getTotalElements());
         pageResponseDTO.setCurrentPageNumber(watchedVideos.getNumber());
-        ResponseDto responseDto = ResponseDto.builder().message("Successfully retrieved list of watched videos by userId" + user.getId()).status("200").data(pageResponseDTO).build();
+        ResponseDto responseDto = ResponseDto.builder().message("Successfully retrieved list of watched videos by userId: " + user.getId()).status("200").data(pageResponseDTO).build();
         return responseDto;
     }
 

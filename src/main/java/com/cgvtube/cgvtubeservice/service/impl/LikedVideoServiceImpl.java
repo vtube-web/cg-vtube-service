@@ -39,7 +39,7 @@ public class LikedVideoServiceImpl implements LikedVideoService {
         pageResponseDTO.setHasPrevious(likedVideos.hasPrevious());
         pageResponseDTO.setTotalElements(likedVideos.getTotalElements());
         pageResponseDTO.setCurrentPageNumber(likedVideos.getNumber());
-        ResponseDto responseDto = ResponseDto.builder().message("Successfully retrieved list of watched videos by userId" + user.getId()).status("200").data(pageResponseDTO).build();
+        ResponseDto responseDto = ResponseDto.builder().message("Successfully retrieved list of watched videos by userId: " + user.getId()).status("200").data(pageResponseDTO).build();
         return responseDto;
     }
 
