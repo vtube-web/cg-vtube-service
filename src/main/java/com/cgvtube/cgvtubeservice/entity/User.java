@@ -66,4 +66,7 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<UserLikedVideo> likedVideos;
+
+    @OneToMany(mappedBy = "user")
+    private List<Subscription> subscriptions;
 }

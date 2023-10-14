@@ -1,7 +1,7 @@
 package com.cgvtube.cgvtubeservice.controller;
 
 import com.cgvtube.cgvtubeservice.payload.response.ResponseDto;
-import com.cgvtube.cgvtubeservice.service.impl.VideoWatchedServiceImpl;
+import com.cgvtube.cgvtubeservice.service.VideoWatchedService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("/api/watched-videos")
 public class WatchedVideoController {
-    private final VideoWatchedServiceImpl videoWatchedService;
+    private final VideoWatchedService videoWatchedService;
 
     @GetMapping
     public ResponseEntity<ResponseDto> getWatchedVideos(Pageable pageable, HttpSession session) {
@@ -27,7 +27,7 @@ public class WatchedVideoController {
     }
 
     @DeleteMapping
-    public ResponseEntity<ResponseDto> deleteWatchedVideosByUserId(HttpSession session) {
+    public ResponseEntity<ResponseDto> deleteWatchedVideosByUserId(HttpSession session) throws Exception {
         UserDetails currentUser = (UserDetails) session.getAttribute("currentUser");
         ResponseDto responseDto = videoWatchedService.deleteWatchedVideosByUserId(currentUser);
         if (responseDto.getStatus() == "200") {
@@ -39,7 +39,7 @@ public class WatchedVideoController {
     }
 
     @DeleteMapping("/{videoId}")
-    public ResponseEntity<ResponseDto> deleteWatchedVideo(@PathVariable Long videoId, HttpSession session) {
+    public ResponseEntity<ResponseDto> deleteWatchedVideo(@PathVariable Long videoId, HttpSession session) throws Exception {
         UserDetails currentUser = (UserDetails) session.getAttribute("currentUser");
 
         ResponseDto responseDto = videoWatchedService.deleteWatchedVideo(currentUser, videoId);
