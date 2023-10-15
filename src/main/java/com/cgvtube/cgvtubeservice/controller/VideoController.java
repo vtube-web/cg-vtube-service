@@ -26,14 +26,14 @@ import java.util.List;
 public class VideoController {
     private final VideoService videoService;
     @GetMapping
-    public ResponseEntity<List<VideoResponseDto>> findAllVideos() {
-        List<VideoResponseDto> videoResponseDtoList = videoService.findAllVideos();
-        return new ResponseEntity<>(videoResponseDtoList, HttpStatus.OK);
+    public ResponseEntity<ResponseDto> findAllVideos() {
+        ResponseDto responseDto = videoService.findAllVideos();
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
     @GetMapping("/{id}")
-    public ResponseEntity<VideoResponseDto> getVideo(@PathVariable("id") Long videoId) {
-        VideoResponseDto videoResponseDto = videoService.getVideoById(videoId);
-        return new ResponseEntity<>(videoResponseDto, HttpStatus.OK);
+    public ResponseEntity<ResponseDto> getVideo(@PathVariable("id") Long videoId) {
+        ResponseDto responseDto = videoService.getVideoById(videoId);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
     @PostMapping("/add")
     public ResponseEntity<ResponseDto> addVideo(@RequestBody AddVideoReqDto addVideoReqDto, HttpSession session) {

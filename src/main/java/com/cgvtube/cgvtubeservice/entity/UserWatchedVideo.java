@@ -11,23 +11,23 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "user_liked_video")
-public class LikedVideo {
+@Table(name = "user_watched_video")
+public class UserWatchedVideo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "liked_at")
-    private Timestamp likedAt;
+    @Column(name = "watched_at")
+    private Timestamp watchedAt;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(
             name = "user_id",
             nullable = false,
             referencedColumnName = "id")
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(
             name = "video_id",
             nullable = false,
