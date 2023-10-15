@@ -12,7 +12,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @Entity
 @Table(name = "user_liked_video")
-public class userLikedVideo {
+public class UserLikedVideo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
