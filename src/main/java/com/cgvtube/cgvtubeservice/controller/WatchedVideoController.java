@@ -19,7 +19,11 @@ public class WatchedVideoController {
 
     @GetMapping("/{userId}")
     public ResponseEntity<ResponseDto> getWatchedVideos(@PathVariable Long userId, Pageable pageable) {
-        Pageable pageableRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.Direction.DESC, "watchedAt");
+        Pageable pageableRequest = PageRequest.of(
+                pageable.getPageNumber(),
+                pageable.getPageSize(),
+                Sort.Direction.DESC,
+                "watchedAt");
         ResponseDto responseDto = videoWatchedService.findAllWatchedVideo(userId, pageableRequest);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
