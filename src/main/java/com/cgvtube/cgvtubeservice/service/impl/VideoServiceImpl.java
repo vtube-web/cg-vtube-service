@@ -9,7 +9,6 @@ import com.cgvtube.cgvtubeservice.payload.request.AddVideoReqDto;
 import com.cgvtube.cgvtubeservice.payload.request.VideoUpdateReqDto;
 import com.cgvtube.cgvtubeservice.payload.response.AddVideoResDto;
 import com.cgvtube.cgvtubeservice.payload.response.ResponseDto;
-import com.cgvtube.cgvtubeservice.payload.response.VideoResponseDto;
 import com.cgvtube.cgvtubeservice.repository.UserRepository;
 import com.cgvtube.cgvtubeservice.repository.VideoRepository;
 import com.cgvtube.cgvtubeservice.service.TagService;
@@ -20,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Function;
 
 @Service
@@ -33,15 +33,31 @@ public class VideoServiceImpl implements VideoService {
     private final VideoProcessing videoProcessing;
     private final VideoResponseConverter videoConverter;
 
-    public List<VideoResponseDto> findAllVideos() {
+    public ResponseDto findAllVideos() {
         List<Video> videoList = videoRepository.findAll();
-        return videoConverter.convert(videoList);
+        if (videoList.isEmpty()) {
+            return ResponseDto.builder()
+                    .message("Failed get video list")
+                    .status("400")
+                    .data(false)
+                    .build();
+        } else {
+            return ResponseDto.builder()
+                    .message("Succeed get video list")
+                    .status("200")
+                    .data(videoConverter.convert(videoList))
+                    .build();
+        }
     }
 
     @Override
-    public VideoResponseDto getVideoById(Long videoId) {
+    public ResponseDto getVideoById(Long videoId) {
         Video video = videoRepository.findById(videoId).orElse(null);
-        return videoConverter.convert(video);
+        return ResponseDto.builder()
+                .message("Succeed get video id" + videoId)
+                .status("200")
+                .data(videoConverter.convert(video))
+                .build();
     }
 
     @Override
@@ -63,7 +79,7 @@ public class VideoServiceImpl implements VideoService {
         User user = userRepository.findByEmail(currentUser.getUsername()).orElse(new User());
         Video video = videoRepository.findById(videoUpdateReqDto.getId()).orElse(new Video());
         ResponseDto responseDto;
-        if (user.getId() == video.getUser().getId()) {
+        if (Objects.equals(user.getId(), video.getUser().getId())) {
             List<Tag> tagList = tagService.performAddAndCheckTag(videoUpdateReqDto.getHashtags());
             Video videoConvert = videoProcessing.convert(video, videoUpdateReqDto);
             videoConvert.setTagSet(tagList);

@@ -1,7 +1,7 @@
 package com.cgvtube.cgvtubeservice.service.impl;
 
 import com.cgvtube.cgvtubeservice.converter.impl.LikedVideoConverter;
-import com.cgvtube.cgvtubeservice.entity.LikedVideo;
+import com.cgvtube.cgvtubeservice.entity.userLikedVideo;
 import com.cgvtube.cgvtubeservice.entity.User;
 import com.cgvtube.cgvtubeservice.payload.response.LikedVideoDTO;
 import com.cgvtube.cgvtubeservice.payload.response.PageResponseDTO;
@@ -26,7 +26,7 @@ public class LikedVideoServiceImpl implements LikedVideoService {
     @Override
     public ResponseDto getLikedVideos(Long userId, Pageable pageableRequest) {
         User user = userRepository.findById(userId).orElseThrow();
-        Page<LikedVideo> likedVideos = likedVideoRepository.findByUser(user, pageableRequest);
+        Page<userLikedVideo> likedVideos = likedVideoRepository.findByUser(user, pageableRequest);
         List<LikedVideoDTO> likedVideoDTOS = likedVideoConverter.apply(likedVideos);
         PageResponseDTO<LikedVideoDTO> pageResponseDTO = new PageResponseDTO<>();
         pageResponseDTO.setContent(likedVideoDTOS);

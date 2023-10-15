@@ -48,8 +48,6 @@ public class UserController {
     public ResponseEntity<ResponseDto> checkEmailIsExist(@RequestBody CheckEmailReqDto emailReqDto) {
         ResponseDto responseDto = userService.checkValidEmail(emailReqDto);
       return ResponseEntity.ok(responseDto);
-
-
     }
 }
 

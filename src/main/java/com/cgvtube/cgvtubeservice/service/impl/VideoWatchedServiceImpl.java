@@ -2,7 +2,7 @@ package com.cgvtube.cgvtubeservice.service.impl;
 
 import com.cgvtube.cgvtubeservice.converter.impl.WatchedVideoConverter;
 import com.cgvtube.cgvtubeservice.entity.User;
-import com.cgvtube.cgvtubeservice.entity.WatchedVideo;
+import com.cgvtube.cgvtubeservice.entity.UserWatchedVideo;
 import com.cgvtube.cgvtubeservice.payload.response.PageResponseDTO;
 import com.cgvtube.cgvtubeservice.payload.response.ResponseDto;
 import com.cgvtube.cgvtubeservice.payload.response.WatchedVideoDTO;
@@ -28,7 +28,7 @@ public class VideoWatchedServiceImpl implements VideoWatchedService {
     @Override
     public ResponseDto findAllWatchedVideo(Long userId, Pageable pageableRequest) {
         User userOptional = userRepository.findById(userId).orElseThrow();
-        Page<WatchedVideo> watchedVideos = videoWatchedRepository.findByUser(userOptional, pageableRequest);
+        Page<UserWatchedVideo> watchedVideos = videoWatchedRepository.findByUser(userOptional, pageableRequest);
 
         List<WatchedVideoDTO> watchedVideoDTOPage = watchedVideoConverter.apply(watchedVideos);
 
