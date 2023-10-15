@@ -75,5 +75,5 @@ public class User {
     private List<UserWatchedVideo> userWatchedVideos;
 
     @OneToMany(mappedBy = "user")
-    private List<userLikedVideo> userLikedVideos;
+    private List<UserLikedVideo> UserLikedVideos;
 }
