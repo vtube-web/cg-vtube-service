@@ -31,7 +31,6 @@ public class VideoWatchedServiceImpl implements VideoWatchedService {
     public ResponseDto findAllWatchedVideo(UserDetails currentUser, Pageable pageableRequest) {
         User user = userRepository.findByEmail(currentUser.getUsername()).orElse(new User());
         Page<UserWatchedVideo> watchedVideos = videoWatchedRepository.findByUser(user, pageableRequest);
-
         List<WatchedVideoDTO> watchedVideoDTOPage = watchedVideoConverter.apply(watchedVideos);
 
         PageResponseDTO<WatchedVideoDTO> pageResponseDTO = new PageResponseDTO<>();

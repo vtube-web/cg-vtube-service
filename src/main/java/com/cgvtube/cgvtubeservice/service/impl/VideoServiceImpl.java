@@ -6,6 +6,8 @@ import com.cgvtube.cgvtubeservice.entity.*;
 import com.cgvtube.cgvtubeservice.payload.request.AddVideoReqDto;
 import com.cgvtube.cgvtubeservice.payload.request.VideoUpdateReqDto;
 import com.cgvtube.cgvtubeservice.payload.response.*;
+import com.cgvtube.cgvtubeservice.payload.response.AddVideoResDto;
+import com.cgvtube.cgvtubeservice.payload.response.ResponseDto;
 import com.cgvtube.cgvtubeservice.repository.UserRepository;
 import com.cgvtube.cgvtubeservice.repository.VideoRepository;
 import com.cgvtube.cgvtubeservice.repository.VideoWatchedRepository;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -35,9 +38,21 @@ public class VideoServiceImpl implements VideoService {
     private final VideoResponseConverter videoConverter;
     private final VideoWatchedRepository videoWatchedRepository;
 
-    public List<VideoResponseDto> findAllVideos() {
+    public ResponseDto findAllVideos() {
         List<Video> videoList = videoRepository.findAll();
-        return videoConverter.convert(videoList);
+        if (videoList.isEmpty()) {
+            return ResponseDto.builder()
+                    .message("Failed get video list")
+                    .status("400")
+                    .data(false)
+                    .build();
+        } else {
+            return ResponseDto.builder()
+                    .message("Succeed get video list")
+                    .status("200")
+                    .data(videoConverter.convert(videoList))
+                    .build();
+        }
     }
 
     @Override
@@ -105,7 +120,7 @@ public class VideoServiceImpl implements VideoService {
         User user = userRepository.findByEmail(currentUser.getUsername()).orElse(new User());
         Video video = videoRepository.findById(videoUpdateReqDto.getId()).orElse(new Video());
         ResponseDto responseDto;
-        if (user.getId() == video.getUser().getId()) {
+        if (Objects.equals(user.getId(), video.getUser().getId())) {
             List<Tag> tagList = tagService.performAddAndCheckTag(videoUpdateReqDto.getHashtags());
             Video videoConvert = videoProcessing.convert(video, videoUpdateReqDto);
             videoConvert.setTagSet(tagList);

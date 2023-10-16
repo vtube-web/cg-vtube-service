@@ -11,10 +11,12 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.function.Function;
+
 @Component
 @RequiredArgsConstructor
 public class LikedVideoConverter implements Function<Page<UserLikedVideo>, List<LikedVideoDTO>> {
     private final VideoRepository videoRepository;
+
     public List<LikedVideoDTO> apply(Page<UserLikedVideo> likedVideos) {
         return likedVideos.map(likedVideo -> {
             LikedVideoDTO likedVideoDTO = new LikedVideoDTO();

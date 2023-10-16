@@ -1,6 +1,7 @@
 package com.cgvtube.cgvtubeservice.converter.impl;
-import com.cgvtube.cgvtubeservice.entity.Video;
+
 import com.cgvtube.cgvtubeservice.entity.UserWatchedVideo;
+import com.cgvtube.cgvtubeservice.entity.Video;
 import com.cgvtube.cgvtubeservice.payload.response.WatchedVideoDTO;
 import com.cgvtube.cgvtubeservice.repository.VideoRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,8 +14,9 @@ import java.util.function.Function;
 
 @Component
 @RequiredArgsConstructor
-public class WatchedVideoConverter implements Function<Page<UserWatchedVideo>, List<WatchedVideoDTO>>{
+public class WatchedVideoConverter implements Function<Page<UserWatchedVideo>, List<WatchedVideoDTO>> {
     private final VideoRepository videoRepository;
+
     public List<WatchedVideoDTO> apply(Page<UserWatchedVideo> watchedVideoPage) {
         return watchedVideoPage.map(watchedVideo -> {
             WatchedVideoDTO watchedVideoDTO = new WatchedVideoDTO();
@@ -32,7 +34,6 @@ public class WatchedVideoConverter implements Function<Page<UserWatchedVideo>, L
                 watchedVideoDTO.setUserId(video.getUser().getId());
                 watchedVideoDTO.setUserName(video.getUser().getUserName());
             }
-
             return watchedVideoDTO;
         }).getContent();
     }

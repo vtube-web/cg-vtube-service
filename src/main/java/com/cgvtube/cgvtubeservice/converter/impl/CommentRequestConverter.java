@@ -28,18 +28,10 @@ public class CommentRequestConverter implements GeneralConverter<Comment, Commen
     public Comment revert(CommentRequestDto target) {
         Comment source = new Comment();
         BeanUtils.copyProperties(target, source);
-        source.setUser(
-                userRepository.findById(target.getUserId()).orElseThrow(
-                        () -> new EntityNotFoundException(
-                                "User not foundwith ID: " + target.getUserId()
-                        ))
-        );
-        source.setVideo(
-                videoRepository.findById(target.getVideoId()).orElseThrow(
-                        () -> new EntityNotFoundException(
-                                "Video not foundwith ID: " + target.getVideoId()))
-        );
-        source.setReplyList(replyConverter.revert(target.getReplyResponseDtoList()));
+        source.setUser(userRepository.findById(target.getUserId())
+                .orElseThrow(() -> new EntityNotFoundException("User not found")));
+        source.setVideo(videoRepository.findById(target.getVideoId())
+                .orElseThrow(() -> new EntityNotFoundException("Video not found")));
         return source;
     }
 
@@ -49,7 +41,7 @@ public class CommentRequestConverter implements GeneralConverter<Comment, Commen
     }
 
     @Override
-    public List<Comment> revert(List<CommentRequestDto> targets) {
+    public List<com.cgvtube.cgvtubeservice.entity.Comment> revert(List<CommentRequestDto> targets) {
         return targets.stream().map(this::revert).toList();
     }
 }
