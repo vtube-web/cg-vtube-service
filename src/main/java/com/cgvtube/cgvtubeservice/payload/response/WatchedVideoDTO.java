@@ -2,7 +2,7 @@ package com.cgvtube.cgvtubeservice.payload.response;
 
 import lombok.*;
 
-import java.sql.Timestamp;
+
 import java.time.LocalDateTime;
 
 @Getter
@@ -17,7 +17,7 @@ public class WatchedVideoDTO {
     private String videoUrl;
     private String thumbnail;
     private Long views;
-    private Timestamp watchedAt;
+    private LocalDateTime watchedAt;
     private LocalDateTime createAt;
     private Long userId;
     private String userName;
