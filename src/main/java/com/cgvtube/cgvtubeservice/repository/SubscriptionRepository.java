@@ -10,4 +10,9 @@ public interface SubscriptionRepository extends JpaRepository<Subscription, Long
     Boolean existsByUserIdAndSubscriberId(Long id, Long subscriberId);
 
     List<Long> findSubscriptionByUser(User user);
+
+    int deleteByUserIdAndSubscriberId(Long id, Long channelId);
+
+    List<Long> findSubscriberIdByUserId(Long id);
+
 }

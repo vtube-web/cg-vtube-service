@@ -42,7 +42,7 @@ public class VideoServiceImpl implements VideoService {
 
     @Override
     public ResponseDto getVideoById(Long videoId, UserDetails currentUser) {
-        Video video = videoRepository.findById(videoId).orElse(null);
+        Video video = videoRepository.findById(videoId).orElse(new Video());
         if (currentUser != null) {
             User user = userRepository.findByEmail(currentUser.getUsername()).orElse(null);
             if (user != null) {
@@ -68,7 +68,7 @@ public class VideoServiceImpl implements VideoService {
     @Override
     public ResponseDto findAllVideosBySubscribedChannels(UserDetails currentUser, Pageable pageableRequest) {
         User user = userRepository.findByEmail(currentUser.getUsername()).orElse(new User());
-        List<Subscription> subscriptions  = user.getSubscriptions();
+        List<Subscription> subscriptions = user.getSubscriptions();
         List<Long> channelIds = subscriptions.stream().map(subscription -> subscription.getSubscriber().getId()).collect(Collectors.toList());
         Page<Video> videoPage = videoRepository.findVideosByChannelIds(channelIds, pageableRequest);
         PageResponseDTO<VideoResponseDto> pageResponseDTO = new PageResponseDTO<>();
@@ -125,8 +125,9 @@ public class VideoServiceImpl implements VideoService {
         }
         return responseDto;
     }
+
     private LocalDateTime getLastWatchedDate(User user, Long videoId) {
-        Optional<UserWatchedVideo> lastWatchedVideo  = videoWatchedRepository.findTopByUserIdAndVideoIdOrderByWatchedAtDesc(user.getId(), videoId);
+        Optional<UserWatchedVideo> lastWatchedVideo = videoWatchedRepository.findTopByUserIdAndVideoIdOrderByWatchedAtDesc(user.getId(), videoId);
         return lastWatchedVideo.map(UserWatchedVideo::getWatchedAt).orElse(null);
     }
 

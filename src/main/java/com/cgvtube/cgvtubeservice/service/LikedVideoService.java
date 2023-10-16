@@ -9,4 +9,6 @@ public interface LikedVideoService {
 
     ResponseDto deleteLikedVideo(Long videoId, UserDetails currentUser);
 
+    ResponseDto addLikeVideo(Long videoId, UserDetails currentUser);
+
 }

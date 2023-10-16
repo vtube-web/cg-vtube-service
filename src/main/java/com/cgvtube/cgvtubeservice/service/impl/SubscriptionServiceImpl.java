@@ -22,12 +22,12 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     private final UserRepository userRepository;
 
     @Override
-    public ResponseDto subscribe(UserDetails currentUser, Long subscriberId) {
+    public ResponseDto subscribe(UserDetails currentUser, Long channelId) {
         User user = userRepository.findByEmail(currentUser.getUsername()).orElse(new User());
-        Boolean isAlreadySubscribed  = subscriptionRepository.existsByUserIdAndSubscriberId(user.getId(), subscriberId);
+        Boolean isAlreadySubscribed  = subscriptionRepository.existsByUserIdAndSubscriberId(user.getId(), channelId);
         ResponseDto responseDto;
         if (!isAlreadySubscribed) {
-            User subcriber = userRepository.findById(subscriberId).orElse(new User());
+            User subcriber = userRepository.findById(channelId).orElse(new User());
             Subscription subscription = new Subscription(user, subcriber, LocalDateTime.now());
             subscriptionRepository.save(subscription);
             responseDto = ResponseDto.builder().message("Successfully subscribed to the channel").status("200").data(true).build();
@@ -41,5 +41,25 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     public List<Long> getAllSubscribedChannels(User user) {
         List<Long> channelsList = subscriptionRepository.findSubscriptionByUser(user);
         return channelsList;
+    }
+
+    @Override
+    public ResponseDto removeSubscribed(UserDetails currentUser, Long channelId) {
+        User user = userRepository.findByEmail(currentUser.getUsername()).orElse(new User());
+        int remove = subscriptionRepository.deleteByUserIdAndSubscriberId(user.getId(), channelId);
+        ResponseDto responseDto;
+        if (remove == 0) {
+            responseDto = ResponseDto.builder().message("No subscribed found for the user with userId: " + user.getId() + " & channelId: " + channelId).status("404").data(false).build();
+        } else {
+            responseDto = ResponseDto.builder().message("Success remove channelId: " + channelId).status("200").data(true).build();
+        }
+        return responseDto;
+    }
+
+    @Override
+    public ResponseDto getListChannels(UserDetails currentUser) {
+        User user = userRepository.findByEmail(currentUser.getUsername()).orElse(new User());
+        List<Long> listChannelId = subscriptionRepository.findSubscriberIdByUserId(user.getId());
+        return ResponseDto.builder().message("Success get list subscribed channelId by userId: " + user.getId()).status("200").data(listChannelId).build();
     }
 }

@@ -11,4 +11,6 @@ public interface LikedVideoRepository extends JpaRepository<UserLikedVideo, Long
 
     int deleteByUserIdAndVideoId(Long userId, Long videoId);
 
+    Boolean existsByUserIdAndVideoId(Long id, Long videoId);
+
 }

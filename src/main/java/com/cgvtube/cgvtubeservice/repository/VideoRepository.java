@@ -1,6 +1,5 @@
 package com.cgvtube.cgvtubeservice.repository;
 
-import com.cgvtube.cgvtubeservice.entity.Subscription;
 import com.cgvtube.cgvtubeservice.entity.Video;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

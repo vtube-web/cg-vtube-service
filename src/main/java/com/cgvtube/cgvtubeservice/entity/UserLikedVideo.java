@@ -3,7 +3,7 @@ package com.cgvtube.cgvtubeservice.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -18,7 +18,7 @@ public class UserLikedVideo {
     private Long id;
 
     @Column(name = "liked_at")
-    private Timestamp likedAt;
+    private LocalDateTime likedAt;
 
     @ManyToOne
     @JoinColumn(
@@ -33,4 +33,10 @@ public class UserLikedVideo {
             nullable = false,
             referencedColumnName = "id")
     private Video video;
+
+    public UserLikedVideo(User user, Video video, LocalDateTime now) {
+        this.user = user;
+        this.video = video;
+        this.likedAt = now;
+    }
 }

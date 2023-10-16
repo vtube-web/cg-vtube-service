@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.*;
 public class SubscriptionController {
     private final SubscriptionService subscriptionService;
 
-    @PostMapping("/{subscriberId}")
-    public ResponseEntity<ResponseDto> subscribe (@PathVariable Long subscriberId, HttpSession session) {
+    @PostMapping("/{channelId}")
+    public ResponseEntity<ResponseDto> subscribe (@PathVariable Long channelId, HttpSession session) {
         UserDetails currentUser = (UserDetails) session.getAttribute("currentUser");
-        ResponseDto responseDto = subscriptionService.subscribe(currentUser, subscriberId);
+        ResponseDto responseDto = subscriptionService.subscribe(currentUser, channelId);
         if (responseDto.getStatus() == "200") {
             return new ResponseEntity<>(responseDto, HttpStatus.OK);
         } else {
@@ -26,4 +26,21 @@ public class SubscriptionController {
         }
     }
 
+    @DeleteMapping("/{channelId}")
+    public ResponseEntity<?> deleteSubscribe (@PathVariable Long channelId, HttpSession session) {
+        UserDetails currentUser = (UserDetails) session.getAttribute("currentUser");
+        ResponseDto responseDto = subscriptionService.removeSubscribed(currentUser, channelId);
+        if (responseDto.getStatus() == "200") {
+            return new ResponseEntity<>(responseDto, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(responseDto, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/list-channel")
+    public ResponseEntity<ResponseDto> getListChannels(HttpSession session) {
+        UserDetails currentUser = (UserDetails) session.getAttribute("currentUser");
+        ResponseDto responseDto = subscriptionService.getListChannels(currentUser);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
 }

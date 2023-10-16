@@ -35,4 +35,11 @@ public class LikedVideoController {
             return new ResponseEntity<>(responseDto, HttpStatus.BAD_REQUEST);
         }
     }
+
+    @PostMapping("/{videoId}")
+    public ResponseEntity<?> addLikeVideo (@PathVariable Long videoId, HttpSession session) {
+        UserDetails currentUser = (UserDetails) session.getAttribute("currentUser");
+        ResponseDto responseDto = likedVideoService.addLikeVideo(videoId, currentUser);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
 }
