@@ -8,4 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface LikedVideoRepository extends JpaRepository<UserLikedVideo, Long> {
     Page<UserLikedVideo> findByUser(User user, Pageable pageableRequest);
+
+    int deleteByUserIdAndVideoId(Long userId, Long videoId);
+
 }

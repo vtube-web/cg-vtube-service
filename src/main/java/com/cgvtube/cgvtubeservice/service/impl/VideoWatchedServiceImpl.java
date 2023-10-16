@@ -13,12 +13,14 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class VideoWatchedServiceImpl implements VideoWatchedService {
 
     private final VideoWatchedRepository videoWatchedRepository;
@@ -26,10 +28,9 @@ public class VideoWatchedServiceImpl implements VideoWatchedService {
     private final UserRepository userRepository;
 
     @Override
-    public ResponseDto findAllWatchedVideo(Long userId, Pageable pageableRequest) {
-        User userOptional = userRepository.findById(userId).orElseThrow();
-        Page<UserWatchedVideo> watchedVideos = videoWatchedRepository.findByUser(userOptional, pageableRequest);
-
+    public ResponseDto findAllWatchedVideo(UserDetails currentUser, Pageable pageableRequest) {
+        User user = userRepository.findByEmail(currentUser.getUsername()).orElse(new User());
+        Page<UserWatchedVideo> watchedVideos = videoWatchedRepository.findByUser(user, pageableRequest);
         List<WatchedVideoDTO> watchedVideoDTOPage = watchedVideoConverter.apply(watchedVideos);
 
         PageResponseDTO<WatchedVideoDTO> pageResponseDTO = new PageResponseDTO<>();
@@ -40,32 +41,32 @@ public class VideoWatchedServiceImpl implements VideoWatchedService {
         pageResponseDTO.setHasPrevious(watchedVideos.hasPrevious());
         pageResponseDTO.setTotalElements(watchedVideos.getTotalElements());
         pageResponseDTO.setCurrentPageNumber(watchedVideos.getNumber());
-        ResponseDto responseDto = ResponseDto.builder().message("list video watched").status("200").data(pageResponseDTO).build();
+        ResponseDto responseDto = ResponseDto.builder().message("Successfully retrieved list of watched videos by userId: " + user.getId()).status("200").data(pageResponseDTO).build();
         return responseDto;
     }
 
     @Override
-    @Transactional
-    public ResponseDto deleteWatchedVideo(Long userId, Long videoId) throws Exception {
-        int deletedCount = videoWatchedRepository.deleteByUserIdAndVideoId(userId, videoId);
+    public ResponseDto deleteWatchedVideo(UserDetails currentUser, Long videoId) {
+        User user = userRepository.findByEmail(currentUser.getUsername()).orElse(new User());
+        int deletedCount = videoWatchedRepository.deleteByUserIdAndVideoId(user.getId(), videoId);
         ResponseDto responseDto;
         if (deletedCount == 0) {
-            responseDto = ResponseDto.builder().message("No watched videos found for the user with userId: " + userId + " & videoId: " + videoId).status("403").data(false).build();
+            responseDto = ResponseDto.builder().message("No watched videos found for the user with userId: " + user.getId() + " & videoId: " + videoId).status("403").data(false).build();
         } else {
-            responseDto = ResponseDto.builder().message("Delete videoId: " + videoId + "success").status("200").data(true).build();
+            responseDto = ResponseDto.builder().message("Success delete videoId: " + videoId).status("200").data(true).build();
         }
         return responseDto;
     }
 
     @Override
-    @Transactional
-    public ResponseDto deleteWatchedVideosByUserId(Long userId) throws Exception {
-        int deletedCount = videoWatchedRepository.deleteByUserId(userId);
+    public ResponseDto deleteWatchedVideosByUserId(UserDetails currentUser) {
+        User user = userRepository.findByEmail(currentUser.getUsername()).orElse(new User());
+        int deletedCount = videoWatchedRepository.deleteByUserId(user.getId());
         ResponseDto responseDto;
         if (deletedCount == 0) {
-            responseDto = ResponseDto.builder().message("No watched videos found for the user with userId: " + userId).status("403").data(false).build();
+            responseDto = ResponseDto.builder().message("No watched videos found for the user with userId: " + user.getId()).status("403").data(false).build();
         } else {
-            responseDto = ResponseDto.builder().message("Delete all videos watched with userId: " + userId + "success").status("200").data(true).build();
+            responseDto = ResponseDto.builder().message("Delete all videos watched with userId: " + user.getId() + "success").status("200").data(true).build();
         }
         return responseDto;
     }

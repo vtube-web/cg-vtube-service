@@ -34,7 +34,6 @@ public class WatchedVideoConverter implements Function<Page<UserWatchedVideo>, L
                 watchedVideoDTO.setUserId(video.getUser().getId());
                 watchedVideoDTO.setUserName(video.getUser().getUserName());
             }
-
             return watchedVideoDTO;
         }).getContent();
     }

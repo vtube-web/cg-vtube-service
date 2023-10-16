@@ -11,6 +11,5 @@ public interface VideoService {
     ResponseDto addVideo(AddVideoReqDto addVideoReqDto, UserDetails currentUser);
     ResponseDto updateVideo(VideoUpdateReqDto videoUpdateReqDto, UserDetails currentUser);
     ResponseDto findAllVideos();
-    ResponseDto getVideoById(Long videoId);
-
+    ResponseDto getVideoById(Long videoId, UserDetails currentUser);
 }
