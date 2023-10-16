@@ -5,8 +5,6 @@ import com.cgvtube.cgvtubeservice.entity.Comment;
 import com.cgvtube.cgvtubeservice.payload.request.CommentRequestDto;
 import com.cgvtube.cgvtubeservice.repository.UserRepository;
 import com.cgvtube.cgvtubeservice.repository.VideoRepository;
-import com.cgvtube.cgvtubeservice.service.impl.UserImpl;
-import com.cgvtube.cgvtubeservice.service.impl.UserServiceImpl;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
