@@ -25,7 +25,7 @@ public class ShortsServiceImpl implements ShortsService {
         return ResponseDto.builder()
                 .message("success")
                 .status("200")
-                .data( shortsConverter.convert(shortsList))
+                .data(shortsConverter.convert(shortsList))
                 .build();
     }
 }

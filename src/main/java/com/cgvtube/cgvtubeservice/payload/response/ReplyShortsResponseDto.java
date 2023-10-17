@@ -6,23 +6,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ShortsResponseDto {
-
+public class ReplyShortsResponseDto {
     private Long id;
-    private Long views;
     private Long likes;
     private Long dislikes;
-    private String title;
-    private String shortsUrl;
+    private String content;
     private LocalDateTime createAt;
-
-    private UserResponseDto userDto;
-    private List<CommentShortsResponseDto> commentShortsDtoList;
-    private List<TagShortsResponseDto> tagShortsDtoList;
+    private UserResponseDto userResponseDto;
+    private Long commentShortsId;
 }

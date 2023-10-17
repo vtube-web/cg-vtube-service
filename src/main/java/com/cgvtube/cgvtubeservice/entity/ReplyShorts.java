@@ -38,7 +38,7 @@ public class ReplyShorts {
 
     @ManyToOne
     @JoinColumn(
-            name = "comment_short_id",
+            name = "comment_shorts_id",
             nullable = false,
             referencedColumnName = "id")
     private CommentShorts commentShorts;

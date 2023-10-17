@@ -60,4 +60,5 @@ public class Shorts {
 
     @OneToMany(mappedBy = "shorts")
     private List<LikedShorts> likedShorts;
+
 }

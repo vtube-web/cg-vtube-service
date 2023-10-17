@@ -3,6 +3,7 @@ package com.cgvtube.cgvtubeservice.converter.impl;
 import com.cgvtube.cgvtubeservice.converter.GeneralConverter;
 import com.cgvtube.cgvtubeservice.entity.Shorts;
 import com.cgvtube.cgvtubeservice.payload.response.ShortsResponseDto;
+import com.cgvtube.cgvtubeservice.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
@@ -14,11 +15,13 @@ import java.util.List;
 public class ShortsResponseConverter implements GeneralConverter<Shorts, ShortsResponseDto> {
 
     private final UserResponseConverter userResponseDtoConverter;
+    private final CommentService commentService;
     @Override
     public ShortsResponseDto convert(Shorts source) {
         ShortsResponseDto target = new ShortsResponseDto();
         BeanUtils.copyProperties(source, target);
         target.setUserDto(userResponseDtoConverter.revert(source.getUser()));
+        target.setCommentShortsDtoList(commentService.getListCommentDtoByShorts(source));
         return target;
     }
 

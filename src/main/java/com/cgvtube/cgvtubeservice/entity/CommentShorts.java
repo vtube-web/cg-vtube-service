@@ -47,7 +47,7 @@ public class CommentShorts {
 
     @ManyToOne
     @JoinColumn(
-            name = "short_id",
+            name = "shorts_id",
             nullable = false,
             referencedColumnName = "id")
     private Shorts shorts;

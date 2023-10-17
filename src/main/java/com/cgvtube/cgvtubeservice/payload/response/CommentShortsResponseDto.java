@@ -12,17 +12,13 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ShortsResponseDto {
-
+public class CommentShortsResponseDto {
     private Long id;
-    private Long views;
     private Long likes;
     private Long dislikes;
-    private String title;
-    private String shortsUrl;
+    private Long shortsId;
+    private String content;
+    private List<ReplyShortsResponseDto> replyShortsDtoList;
     private LocalDateTime createAt;
-
-    private UserResponseDto userDto;
-    private List<CommentShortsResponseDto> commentShortsDtoList;
-    private List<TagShortsResponseDto> tagShortsDtoList;
+    private UserResponseDto userResponseDto;
 }

@@ -31,8 +31,8 @@ CREATE TABLE IF NOT EXISTS replies_shorts
     likes       BIGINT    DEFAULT 0,
     dislikes    BIGINT    DEFAULT 0,
     content    TEXT,
-    comments_short_id BIGINT,
+    comment_shorts_id BIGINT,
     create_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (comments_short_id) REFERENCES comments_shorts(id),
+    FOREIGN KEY (comment_shorts_id) REFERENCES comments_shorts(id),
     FOREIGN KEY (user_id) REFERENCES user (id)
 );

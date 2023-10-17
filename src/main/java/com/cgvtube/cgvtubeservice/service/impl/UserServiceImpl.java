@@ -33,7 +33,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public CurrentUserServiceImpl getCurrentUser() {
         try {
-            return (CurrentUserServiceImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            Object object = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            CurrentUserServiceImpl user = (CurrentUserServiceImpl) object;
+            return user;
         } catch (ClassCastException e) {
             e.printStackTrace();
             return null;

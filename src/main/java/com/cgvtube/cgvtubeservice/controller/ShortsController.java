@@ -29,4 +29,5 @@ public class ShortsController {
         ResponseDto responseDto = shortsService.findAllShorts(pageableRequest);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
+
 }
