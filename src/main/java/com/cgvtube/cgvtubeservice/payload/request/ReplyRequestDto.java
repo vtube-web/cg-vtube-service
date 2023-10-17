@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CommentRequestDto {
-    private Long videoId;
+public class ReplyRequestDto {
+    private Long commentId;
     private Long userId;
     private String content;
 }

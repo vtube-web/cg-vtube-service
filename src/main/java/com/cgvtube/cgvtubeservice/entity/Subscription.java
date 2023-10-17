@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -11,14 +12,14 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "user_liked_video")
-public class LikedVideo {
+@Table(name = "subscribe")
+public class Subscription {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "liked_at")
-    private Timestamp likedAt;
+    @Column(name = "subscribe_at")
+    private LocalDateTime subscribeAt;
 
     @ManyToOne
     @JoinColumn(
@@ -29,8 +30,15 @@ public class LikedVideo {
 
     @ManyToOne
     @JoinColumn(
-            name = "video_id",
+            name = "subscriber_id",
             nullable = false,
             referencedColumnName = "id")
-    private Video video;
+    private User subscriber;
+
+
+    public Subscription(User user, User subcriber, LocalDateTime now) {
+        this.user = user;
+        this.subscriber = subcriber;
+        this.subscribeAt = now;
+    }
 }

@@ -4,10 +4,12 @@ import com.cgvtube.cgvtubeservice.payload.request.CheckEmailReqDto;
 import com.cgvtube.cgvtubeservice.payload.request.UserRegisterRequestDto;
 import com.cgvtube.cgvtubeservice.payload.response.ResponseDto;
 import com.cgvtube.cgvtubeservice.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
@@ -48,8 +50,13 @@ public class UserController {
     public ResponseEntity<ResponseDto> checkEmailIsExist(@RequestBody CheckEmailReqDto emailReqDto) {
         ResponseDto responseDto = userService.checkValidEmail(emailReqDto);
       return ResponseEntity.ok(responseDto);
+    }
 
-
+    @GetMapping
+    public ResponseEntity<?> getUserInfo(HttpSession session) {
+        UserDetails currentUser = (UserDetails) session.getAttribute("currentUser");
+        ResponseDto responseDto = userService.getUserInfo(currentUser);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 }
 
