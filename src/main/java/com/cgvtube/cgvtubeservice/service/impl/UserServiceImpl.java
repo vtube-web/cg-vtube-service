@@ -2,11 +2,13 @@ package com.cgvtube.cgvtubeservice.service.impl;
 
 import com.cgvtube.cgvtubeservice.configuration.security.JwtTokenProvider;
 import com.cgvtube.cgvtubeservice.converter.impl.UserRegisterConverter;
+import com.cgvtube.cgvtubeservice.converter.impl.UserResponseConverter;
 import com.cgvtube.cgvtubeservice.entity.Subscription;
 import com.cgvtube.cgvtubeservice.entity.User;
 import com.cgvtube.cgvtubeservice.entity.UserLikedVideo;
 import com.cgvtube.cgvtubeservice.entity.Video;
 import com.cgvtube.cgvtubeservice.payload.request.CheckEmailReqDto;
+import com.cgvtube.cgvtubeservice.payload.request.UserIdListReqDto;
 import com.cgvtube.cgvtubeservice.payload.request.UserLoginRequestDto;
 import com.cgvtube.cgvtubeservice.payload.request.UserRegisterRequestDto;
 import com.cgvtube.cgvtubeservice.payload.response.ResponseDto;
@@ -37,6 +39,7 @@ public class UserServiceImpl implements UserService {
     private final JwtTokenProvider jwtUtil;
     private final AuthenticationManager authenticationManager;
     private final UserRegisterConverter userRegisterConverter;
+    private final UserResponseConverter userResponseConverter;
 
     @Override
     public UserImpl getCurrentUser() {
@@ -124,6 +127,16 @@ public class UserServiceImpl implements UserService {
                 .message("Successful get info userId: " + user.getId())
                 .status("200").
                 data(userInfoDto)
+                .build();
+    }
+
+    @Override
+    public ResponseDto getUserList(UserIdListReqDto userIdList) {
+        List<User> userList = userRepository.findAllById(userIdList.getUserIdList());
+        return ResponseDto.builder()
+                .message("Successful get list user")
+                .status("200").
+                data(userResponseConverter.revert(userList))
                 .build();
     }
 
