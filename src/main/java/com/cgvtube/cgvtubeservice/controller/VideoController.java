@@ -1,12 +1,18 @@
 package com.cgvtube.cgvtubeservice.controller;
 
 import com.cgvtube.cgvtubeservice.payload.request.AddVideoReqDto;
+import com.cgvtube.cgvtubeservice.payload.request.DeleteContentReqDto;
+import com.cgvtube.cgvtubeservice.payload.request.EditContentReqDto;
 import com.cgvtube.cgvtubeservice.payload.request.VideoUpdateReqDto;
+import com.cgvtube.cgvtubeservice.payload.response.PageResponseDTO;
 import com.cgvtube.cgvtubeservice.payload.response.ResponseDto;
+import com.cgvtube.cgvtubeservice.payload.response.VideoChannelResDto;
 import com.cgvtube.cgvtubeservice.payload.response.VideoResponseDto;
 import com.cgvtube.cgvtubeservice.service.VideoService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,18 +27,21 @@ public class VideoController {
     private final VideoService videoService;
 
     @GetMapping
-    public ResponseEntity<List<VideoResponseDto>> getFirst40Videos() {
-        List<VideoResponseDto> videoResponseDtoList = videoService.getFirst40Videos();
+    public ResponseEntity<List<VideoResponseDto>> findAllVideos() {
+        List<VideoResponseDto> videoResponseDtoList = videoService.findAllVideos();
         return new ResponseEntity<>(videoResponseDtoList, HttpStatus.OK);
     }
-
+    @GetMapping("/{id}")
+    public ResponseEntity<VideoResponseDto> getVideo(@PathVariable("id") Long videoId) {
+        VideoResponseDto videoResponseDto = videoService.getVideoById(videoId);
+        return new ResponseEntity<>(videoResponseDto, HttpStatus.OK);
+    }
     @PostMapping("/add")
     public ResponseEntity<ResponseDto> addVideo(@RequestBody AddVideoReqDto addVideoReqDto, HttpSession session) {
         UserDetails currentUser = (UserDetails) session.getAttribute("currentUser");
         ResponseDto responseDto = videoService.addVideo(addVideoReqDto, currentUser);
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
-
     @PutMapping("/update")
     public ResponseEntity<ResponseDto> updateVideo(@RequestBody VideoUpdateReqDto videoUpdateReqDto, HttpSession session) {
         UserDetails currentUser = (UserDetails) session.getAttribute("currentUser");
@@ -42,6 +51,27 @@ public class VideoController {
         } else {
             return new ResponseEntity<>(responseDto, HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @GetMapping("/content")
+    public ResponseEntity<ResponseDto> findAllByIdChannel(@PageableDefault(value = 10) Pageable pageable, HttpSession session, @RequestParam String title,@RequestParam String status,@RequestParam String views ){
+        UserDetails currentUser = (UserDetails) session.getAttribute("currentUser");
+        ResponseDto responseDto  = videoService.findAllByIdChannel(pageable,title,status,views,currentUser);
+        return new ResponseEntity<>(responseDto,HttpStatus.OK);
+    }
+
+    @PutMapping("/content/edit")
+    public ResponseEntity<ResponseDto> editFormVideoContent(@RequestParam String param, @RequestBody EditContentReqDto editContentReqDto, HttpSession session){
+        UserDetails currentUser = (UserDetails) session.getAttribute("currentUser");
+        ResponseDto responseDto  = videoService.editFormVideoContent(param,editContentReqDto,currentUser);
+        return new ResponseEntity<>(responseDto,HttpStatus.OK);
+    }
+
+    @PutMapping("/content/delete")
+    public ResponseEntity<ResponseDto> deleteVideoContent(@RequestBody DeleteContentReqDto deleteContentReqDto, HttpSession session){
+        UserDetails currentUser = (UserDetails) session.getAttribute("currentUser");
+        ResponseDto responseDto  = videoService.deleteVideoContent(deleteContentReqDto,currentUser);
+        return new ResponseEntity<>(responseDto,HttpStatus.OK);
     }
 }
 

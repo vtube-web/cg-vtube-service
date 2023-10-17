@@ -1,6 +1,8 @@
 package com.cgvtube.cgvtubeservice.controller;
 
+import com.cgvtube.cgvtubeservice.payload.request.CheckEmailReqDto;
 import com.cgvtube.cgvtubeservice.payload.request.UserRegisterRequestDto;
+import com.cgvtube.cgvtubeservice.payload.response.ResponseDto;
 import com.cgvtube.cgvtubeservice.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -8,10 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -44,4 +43,14 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.OK);
         }
     }
+
+    @PostMapping("/check_email")
+    public ResponseEntity<ResponseDto> checkEmailIsExist(@RequestBody CheckEmailReqDto emailReqDto) {
+        ResponseDto responseDto = userService.checkValidEmail(emailReqDto);
+      return ResponseEntity.ok(responseDto);
+
+
+    }
 }
+
+

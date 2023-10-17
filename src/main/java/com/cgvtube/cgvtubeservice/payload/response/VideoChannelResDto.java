@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -13,13 +12,17 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CommentResponseDto {
+public class VideoChannelResDto {
     private Long id;
+    private Long views;
     private Long likes;
     private Long dislikes;
-    private Long videoId;
-    private String content;
-    private List<ReplyResponseDto> replyDtoList;
+    private String thumbnail;
+    private String title;
+    private String description;
+    private String videoUrl;
+    private Boolean isPrivate;
+    private LocalDateTime releaseDate;
     private LocalDateTime createAt;
-    private UserResponseDto userResponseDto;
+    private Long totalComment;
 }

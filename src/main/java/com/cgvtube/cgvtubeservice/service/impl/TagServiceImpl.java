@@ -12,19 +12,20 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class TagServiceImpl implements TagService {
-    private TagRepository tagRepository;
+    private final TagRepository tagRepository;
 
     @Override
     public List<Tag> performAddAndCheckTag(List<String> hashtags) {
         List<Tag> tagList = new ArrayList<>();
-        if(hashtags != null){
+
+        if(hashtags !=null){
             for(String name: hashtags){
-                Tag tagẼxist=tagRepository.findByName(name);
-                if(tagẼxist == null){
+                Tag tagExist=tagRepository.findByName(name);
+                if(tagExist == null){
                     Tag tag = Tag.builder().name(name).build();
                     tagList.add(tagRepository.save(tag));
                 }else {
-                    tagList.add(tagRepository.save(tagẼxist));
+                    tagList.add(tagRepository.save(tagExist));
                 }
             }
         }

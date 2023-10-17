@@ -20,7 +20,6 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import java.time.LocalDateTime;
-
 import java.util.List;
 
 @Getter
@@ -38,15 +37,17 @@ public class Video {
     private String title;
     private String description;
     private String thumbnail;
+    @Column(name ="video_url")
     private String videoUrl;
-    private LocalDateTime release_date;
-    private Boolean is_private;
+    @Column(name = "release_date")
+    private LocalDateTime releaseDate;
+    @Column(name = "is_private")
+    private Boolean isPrivate;
     private Long views;
     private Long likes;
-    private Long dislike;
+    private Long dislikes;
     @Column(name = "create_at")
     private LocalDateTime createAt;
-
 
     @OneToMany(mappedBy = "video")
     private List<Comment> commentList;
@@ -67,4 +68,9 @@ public class Video {
             referencedColumnName = "id")
     private User user;
 
+    @OneToMany(mappedBy = "video")
+    private List<WatchedVideo> watchedVideos;
+
+    @OneToMany(mappedBy = "video")
+    private List<LikedVideo> likedVideos;
 }

@@ -24,11 +24,11 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "replies")
 public class Reply {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Long id;
-    private Long like;
-    private Long dislike;
+    private Long likes;
+    private Long dislikes;
     private String content;
 
     @Column(name = "create_at")
