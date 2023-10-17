@@ -35,6 +35,9 @@ public class User {
     @Column(name = "id")
     private Long id;
 
+    @Column(name = "name")
+    private String name;
+
     @Column(name = "email", nullable = false)
     private String email;
 
@@ -76,4 +79,6 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<LikedVideo> likedVideos;
+
+
 }

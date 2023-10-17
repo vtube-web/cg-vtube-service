@@ -20,6 +20,7 @@ public class CommentController {
     public ResponseEntity<?> saveComment(@RequestBody CommentRequestDto commentRequestDto) {
         commentService.save(commentRequestDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
+
     }
 
 }

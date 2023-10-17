@@ -26,4 +26,12 @@ public class UserRegisterRequestDto {
 
     @NotBlank
     private String userName;
+
+    @NotBlank
+    private String name;
+
+    @NotBlank
+    private String avatar;
+
+
 }
