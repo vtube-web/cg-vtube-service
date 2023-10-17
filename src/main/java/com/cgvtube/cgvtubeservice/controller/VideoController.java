@@ -6,6 +6,9 @@ import com.cgvtube.cgvtubeservice.payload.response.ResponseDto;
 import com.cgvtube.cgvtubeservice.service.VideoService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -53,6 +56,14 @@ public class VideoController {
         } else {
             return new ResponseEntity<>(responseDto, HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @GetMapping("/subscribed")
+    public ResponseEntity<ResponseDto> getAllVideosBySubscribedChannels(Pageable pageable, HttpSession session) {
+        Pageable pageableRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.Direction.DESC, "createAt");
+        UserDetails currentUser = (UserDetails) session.getAttribute("currentUser");
+        ResponseDto responseDto = videoService.findAllVideosBySubscribedChannels(currentUser, pageableRequest);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 }
 

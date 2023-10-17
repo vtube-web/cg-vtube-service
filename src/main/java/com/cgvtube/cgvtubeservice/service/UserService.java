@@ -6,6 +6,7 @@ import com.cgvtube.cgvtubeservice.payload.request.UserRegisterRequestDto;
 import com.cgvtube.cgvtubeservice.payload.response.ResponseDto;
 import com.cgvtube.cgvtubeservice.payload.response.UserLoginResponseDto;
 import com.cgvtube.cgvtubeservice.service.impl.UserImpl;
+import org.springframework.security.core.userdetails.UserDetails;
 
 public interface UserService {
 
@@ -18,4 +19,7 @@ public interface UserService {
     String refreshToken();
 
     ResponseDto checkValidEmail(CheckEmailReqDto emailReqDto);
+
+    ResponseDto getUserInfo(UserDetails currentUser);
+
 }

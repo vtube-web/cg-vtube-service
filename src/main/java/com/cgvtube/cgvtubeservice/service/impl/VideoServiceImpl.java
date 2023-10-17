@@ -2,12 +2,10 @@ package com.cgvtube.cgvtubeservice.service.impl;
 
 import com.cgvtube.cgvtubeservice.converter.VideoProcessing;
 import com.cgvtube.cgvtubeservice.converter.impl.VideoResponseConverter;
-import com.cgvtube.cgvtubeservice.entity.Tag;
-import com.cgvtube.cgvtubeservice.entity.User;
-import com.cgvtube.cgvtubeservice.entity.UserWatchedVideo;
-import com.cgvtube.cgvtubeservice.entity.Video;
+import com.cgvtube.cgvtubeservice.entity.*;
 import com.cgvtube.cgvtubeservice.payload.request.AddVideoReqDto;
 import com.cgvtube.cgvtubeservice.payload.request.VideoUpdateReqDto;
+import com.cgvtube.cgvtubeservice.payload.response.*;
 import com.cgvtube.cgvtubeservice.payload.response.AddVideoResDto;
 import com.cgvtube.cgvtubeservice.payload.response.ResponseDto;
 import com.cgvtube.cgvtubeservice.repository.UserRepository;
@@ -15,8 +13,9 @@ import com.cgvtube.cgvtubeservice.repository.VideoRepository;
 import com.cgvtube.cgvtubeservice.repository.VideoWatchedRepository;
 import com.cgvtube.cgvtubeservice.service.TagService;
 import com.cgvtube.cgvtubeservice.service.VideoService;
-import com.cgvtube.cgvtubeservice.service.VideoWatchedService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +24,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -36,7 +36,6 @@ public class VideoServiceImpl implements VideoService {
     private final Function<Video, AddVideoResDto> mapVideoToResponseDto;
     private final VideoProcessing videoProcessing;
     private final VideoResponseConverter videoConverter;
-    private final VideoWatchedService videoWatchedService;
     private final VideoWatchedRepository videoWatchedRepository;
 
     public ResponseDto findAllVideos() {
@@ -58,7 +57,7 @@ public class VideoServiceImpl implements VideoService {
 
     @Override
     public ResponseDto getVideoById(Long videoId, UserDetails currentUser) {
-        Video video = videoRepository.findById(videoId).orElse(null);
+        Video video = videoRepository.findById(videoId).orElse(new Video());
         if (currentUser != null) {
             User user = userRepository.findByEmail(currentUser.getUsername()).orElse(null);
             if (user != null) {
@@ -78,6 +77,27 @@ public class VideoServiceImpl implements VideoService {
                 .message("Successfully retrieve video and record history")
                 .status("200")
                 .data(videoConverter.convert(video))
+                .build();
+    }
+
+    @Override
+    public ResponseDto findAllVideosBySubscribedChannels(UserDetails currentUser, Pageable pageableRequest) {
+        User user = userRepository.findByEmail(currentUser.getUsername()).orElse(new User());
+        List<Subscription> subscriptions = user.getSubscriptions();
+        List<Long> channelIds = subscriptions.stream().map(subscription -> subscription.getSubscriber().getId()).collect(Collectors.toList());
+        Page<Video> videoPage = videoRepository.findVideosByChannelIds(channelIds, pageableRequest);
+        PageResponseDTO<VideoResponseDto> pageResponseDTO = new PageResponseDTO<>();
+        pageResponseDTO.setContent(videoConverter.convert(videoPage.getContent()));
+        pageResponseDTO.setPageSize(videoPage.getSize());
+        pageResponseDTO.setTotalPages(videoPage.getTotalPages());
+        pageResponseDTO.setHasNext(videoPage.hasNext());
+        pageResponseDTO.setHasPrevious(videoPage.hasPrevious());
+        pageResponseDTO.setTotalElements(videoPage.getTotalElements());
+        pageResponseDTO.setCurrentPageNumber(videoPage.getNumber());
+        return ResponseDto.builder()
+                .message("Successfully retrieved all videos according to the subscription channel")
+                .status("200")
+                .data(pageResponseDTO)
                 .build();
     }
 

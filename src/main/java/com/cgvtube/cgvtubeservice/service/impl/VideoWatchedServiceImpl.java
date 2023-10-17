@@ -51,7 +51,7 @@ public class VideoWatchedServiceImpl implements VideoWatchedService {
         int deletedCount = videoWatchedRepository.deleteByUserIdAndVideoId(user.getId(), videoId);
         ResponseDto responseDto;
         if (deletedCount == 0) {
-            responseDto = ResponseDto.builder().message("No watched videos found for the user with userId: " + user.getId() + " & videoId: " + videoId).status("403").data(false).build();
+            responseDto = ResponseDto.builder().message("No watched videos found for the user with userId: " + user.getId() + " & videoId: " + videoId).status("404").data(false).build();
         } else {
             responseDto = ResponseDto.builder().message("Success delete videoId: " + videoId).status("200").data(true).build();
         }
@@ -64,7 +64,7 @@ public class VideoWatchedServiceImpl implements VideoWatchedService {
         int deletedCount = videoWatchedRepository.deleteByUserId(user.getId());
         ResponseDto responseDto;
         if (deletedCount == 0) {
-            responseDto = ResponseDto.builder().message("No watched videos found for the user with userId: " + user.getId()).status("403").data(false).build();
+            responseDto = ResponseDto.builder().message("No watched videos found for the user with userId: " + user.getId()).status("404").data(false).build();
         } else {
             responseDto = ResponseDto.builder().message("Delete all videos watched with userId: " + user.getId() + "success").status("200").data(true).build();
         }
