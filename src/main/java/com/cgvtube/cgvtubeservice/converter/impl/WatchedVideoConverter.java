@@ -22,7 +22,7 @@ public class WatchedVideoConverter implements Function<Page<UserWatchedVideo>, L
             WatchedVideoDTO watchedVideoDTO = new WatchedVideoDTO();
             BeanUtils.copyProperties(watchedVideo, watchedVideoDTO);
 
-            Video video = videoRepository.findById(watchedVideo.getVideo().getId()).orElse(null);
+            Video video = videoRepository.findById(watchedVideo.getVideo().getId()).orElse(new Video());
             if (video != null) {
                 watchedVideoDTO.setVideoId(video.getId());
                 watchedVideoDTO.setTitle(video.getTitle());

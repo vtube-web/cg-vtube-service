@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
     List<Comment> findAllByVideo(Video video);
+    List<Comment> findAllByVideoId(long id);
 }
