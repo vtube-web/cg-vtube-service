@@ -78,6 +78,9 @@ public class UserServiceImpl implements UserService {
         return UserLoginResponseDto.builder()
                 .id(user.getId())
                 .email(user.getEmail())
+                .userName(user.getUserName())
+                .name(user.getName())
+                .avatar(user.getAvatar())
                 .accessToken(token)
                 .refreshToken(refreshToken)
                 .build();
