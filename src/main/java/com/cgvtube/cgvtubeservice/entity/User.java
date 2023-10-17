@@ -1,17 +1,7 @@
 package com.cgvtube.cgvtubeservice.entity;
 
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -75,10 +65,12 @@ public class User {
     private List<Reply> replyList;
 
     @OneToMany(mappedBy = "user")
-    private List<WatchedVideo> watchedVideos;
+    private List<UserWatchedVideo> watchedVideos;
 
     @OneToMany(mappedBy = "user")
-    private List<LikedVideo> likedVideos;
+    private List<UserLikedVideo> likedVideos;
 
+    @OneToMany(mappedBy = "user")
+    private List<Subscription> subscriptions;
 
 }

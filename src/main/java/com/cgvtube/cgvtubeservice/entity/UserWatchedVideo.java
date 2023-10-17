@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -12,13 +13,13 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @Entity
 @Table(name = "user_watched_video")
-public class WatchedVideo {
+public class UserWatchedVideo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "watched_at")
-    private Timestamp watchedAt;
+    private LocalDateTime watchedAt;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(
@@ -33,4 +34,10 @@ public class WatchedVideo {
             nullable = false,
             referencedColumnName = "id")
     private Video video;
+
+    public UserWatchedVideo(Video video, User user, LocalDateTime now) {
+        this.video = video;
+        this.user = user;
+        this.watchedAt = now;
+    }
 }

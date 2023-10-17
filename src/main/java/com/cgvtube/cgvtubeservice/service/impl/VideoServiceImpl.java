@@ -2,25 +2,29 @@ package com.cgvtube.cgvtubeservice.service.impl;
 
 import com.cgvtube.cgvtubeservice.converter.VideoProcessing;
 import com.cgvtube.cgvtubeservice.converter.impl.VideoResponseConverter;
-import com.cgvtube.cgvtubeservice.entity.Tag;
-import com.cgvtube.cgvtubeservice.entity.User;
-import com.cgvtube.cgvtubeservice.entity.Video;
+import com.cgvtube.cgvtubeservice.entity.*;
 import com.cgvtube.cgvtubeservice.payload.request.AddVideoReqDto;
 import com.cgvtube.cgvtubeservice.payload.request.VideoUpdateReqDto;
+import com.cgvtube.cgvtubeservice.payload.response.*;
 import com.cgvtube.cgvtubeservice.payload.response.AddVideoResDto;
 import com.cgvtube.cgvtubeservice.payload.response.ResponseDto;
-import com.cgvtube.cgvtubeservice.payload.response.VideoResponseDto;
 import com.cgvtube.cgvtubeservice.repository.UserRepository;
 import com.cgvtube.cgvtubeservice.repository.VideoRepository;
+import com.cgvtube.cgvtubeservice.repository.VideoWatchedRepository;
 import com.cgvtube.cgvtubeservice.service.TagService;
 import com.cgvtube.cgvtubeservice.service.VideoService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -32,16 +36,69 @@ public class VideoServiceImpl implements VideoService {
     private final Function<Video, AddVideoResDto> mapVideoToResponseDto;
     private final VideoProcessing videoProcessing;
     private final VideoResponseConverter videoConverter;
+    private final VideoWatchedRepository videoWatchedRepository;
 
-    public List<VideoResponseDto> findAllVideos() {
+    public ResponseDto findAllVideos() {
         List<Video> videoList = videoRepository.findAll();
-        return videoConverter.convert(videoList);
+        if (videoList.isEmpty()) {
+            return ResponseDto.builder()
+                    .message("Failed get video list")
+                    .status("400")
+                    .data(false)
+                    .build();
+        } else {
+            return ResponseDto.builder()
+                    .message("Succeed get video list")
+                    .status("200")
+                    .data(videoConverter.convert(videoList))
+                    .build();
+        }
     }
 
     @Override
-    public VideoResponseDto getVideoById(Long videoId) {
-        Video video = videoRepository.findById(videoId).orElse(null);
-        return videoConverter.convert(video);
+    public ResponseDto getVideoById(Long videoId, UserDetails currentUser) {
+        Video video = videoRepository.findById(videoId).orElse(new Video());
+        if (currentUser != null) {
+            User user = userRepository.findByEmail(currentUser.getUsername()).orElse(null);
+            if (user != null) {
+                LocalDateTime lastWatchedDate = getLastWatchedDate(user, videoId);
+                if (lastWatchedDate != null && isSameDay(lastWatchedDate, LocalDateTime.now())) {
+                    updateLastWatchedDate(user, videoId, LocalDateTime.now());
+                    incrementViews(video);
+                } else {
+                    videoWatchedRepository.save(new UserWatchedVideo(video, user, LocalDateTime.now()));
+                    incrementViews(video);
+                }
+            }
+        } else {
+            incrementViews(video);
+        }
+        return ResponseDto.builder()
+                .message("Successfully retrieve video and record history")
+                .status("200")
+                .data(videoConverter.convert(video))
+                .build();
+    }
+
+    @Override
+    public ResponseDto findAllVideosBySubscribedChannels(UserDetails currentUser, Pageable pageableRequest) {
+        User user = userRepository.findByEmail(currentUser.getUsername()).orElse(new User());
+        List<Subscription> subscriptions = user.getSubscriptions();
+        List<Long> channelIds = subscriptions.stream().map(subscription -> subscription.getSubscriber().getId()).collect(Collectors.toList());
+        Page<Video> videoPage = videoRepository.findVideosByChannelIds(channelIds, pageableRequest);
+        PageResponseDTO<VideoResponseDto> pageResponseDTO = new PageResponseDTO<>();
+        pageResponseDTO.setContent(videoConverter.convert(videoPage.getContent()));
+        pageResponseDTO.setPageSize(videoPage.getSize());
+        pageResponseDTO.setTotalPages(videoPage.getTotalPages());
+        pageResponseDTO.setHasNext(videoPage.hasNext());
+        pageResponseDTO.setHasPrevious(videoPage.hasPrevious());
+        pageResponseDTO.setTotalElements(videoPage.getTotalElements());
+        pageResponseDTO.setCurrentPageNumber(videoPage.getNumber());
+        return ResponseDto.builder()
+                .message("Successfully retrieved all videos according to the subscription channel")
+                .status("200")
+                .data(pageResponseDTO)
+                .build();
     }
 
     @Override
@@ -63,7 +120,7 @@ public class VideoServiceImpl implements VideoService {
         User user = userRepository.findByEmail(currentUser.getUsername()).orElse(new User());
         Video video = videoRepository.findById(videoUpdateReqDto.getId()).orElse(new Video());
         ResponseDto responseDto;
-        if (user.getId() == video.getUser().getId()) {
+        if (Objects.equals(user.getId(), video.getUser().getId())) {
             List<Tag> tagList = tagService.performAddAndCheckTag(videoUpdateReqDto.getHashtags());
             Video videoConvert = videoProcessing.convert(video, videoUpdateReqDto);
             videoConvert.setTagSet(tagList);
@@ -82,5 +139,27 @@ public class VideoServiceImpl implements VideoService {
                     .build();
         }
         return responseDto;
+    }
+
+    private LocalDateTime getLastWatchedDate(User user, Long videoId) {
+        Optional<UserWatchedVideo> lastWatchedVideo = videoWatchedRepository.findTopByUserIdAndVideoIdOrderByWatchedAtDesc(user.getId(), videoId);
+        return lastWatchedVideo.map(UserWatchedVideo::getWatchedAt).orElse(null);
+    }
+
+    private void updateLastWatchedDate(User user, Long videoId, LocalDateTime newWatchedDate) {
+        Optional<UserWatchedVideo> lastWatchedVideo = videoWatchedRepository.findTopByUserIdAndVideoIdOrderByWatchedAtDesc(user.getId(), videoId);
+        lastWatchedVideo.ifPresent(video -> {
+            video.setWatchedAt(newWatchedDate);
+            videoWatchedRepository.save(video);
+        });
+    }
+
+    private boolean isSameDay(LocalDateTime date1, LocalDateTime date2) {
+        return date1.toLocalDate().isEqual(date2.toLocalDate());
+    }
+
+    private void incrementViews(Video video) {
+        video.setViews(video.getViews() + 1);
+        videoRepository.save(video);
     }
 }
