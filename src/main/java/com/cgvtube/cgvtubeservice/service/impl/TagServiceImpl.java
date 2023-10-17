@@ -17,6 +17,7 @@ public class TagServiceImpl implements TagService {
     @Override
     public List<Tag> performAddAndCheckTag(List<String> hashtags) {
         List<Tag> tagList = new ArrayList<>();
+
         if(hashtags !=null){
             for(String name: hashtags){
                 Tag tagExist=tagRepository.findByName(name);
@@ -28,6 +29,7 @@ public class TagServiceImpl implements TagService {
                 }
             }
         }
+
 
         return tagList;
     }

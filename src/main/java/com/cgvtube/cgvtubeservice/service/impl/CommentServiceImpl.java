@@ -62,4 +62,10 @@ public class CommentServiceImpl implements CommentService {
                 .data(true)
                 .build();
     }
+
+    @Override
+    public Long getTotalCommentByIdVideo(Long id) {
+        List<Comment> commentList = commentRepository.findAllByVideoId(id);
+        return (long) commentList.size();
+    }
 }

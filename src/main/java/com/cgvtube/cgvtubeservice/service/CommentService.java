@@ -13,6 +13,7 @@ import java.util.List;
 public interface CommentService {
     List<CommentResponseDto> getListCommentDtoByVideo(Video id);
     ResponseDto save(Long videoId, CommentRequestDto commentRequestDto);
-
     ResponseDto delete(Long commentId);
+
+    Long getTotalCommentByIdVideo(Long id);
 }
