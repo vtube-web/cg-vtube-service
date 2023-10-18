@@ -20,5 +20,5 @@ public interface CommentService {
 
     List<CommentShortsResponseDto> getListCommentDtoByShorts(Shorts id);
     ResponseDto save(Long shortsId, CommentShortsRequestDto commentShortsRequestDto);
-
+    Long getTotalCommentByIdVideo(Long id);
 }

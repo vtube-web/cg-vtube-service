@@ -30,6 +30,9 @@ public class UserRegisterConverter implements GeneralConverter<UserRegisterReque
                 .email(source.getEmail())
                 .password(passwordEncoder.encode(source.getPassword()))
                 .userName(source.getUserName())
+                .channelName(null)
+                .avatar(source.getAvatar())
+                .banner(null)
                 .createdAt(LocalDateTime.now())
                 .roles(roleSet)
                 .build();

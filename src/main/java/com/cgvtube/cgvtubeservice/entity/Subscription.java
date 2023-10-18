@@ -12,32 +12,32 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "user_watched_video")
-public class UserWatchedVideo {
+@Table(name = "subscribe")
+public class Subscription {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "watched_at")
-    private LocalDateTime watchedAt;
+    @Column(name = "subscribe_at")
+    private LocalDateTime subscribeAt;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(
             name = "user_id",
             nullable = false,
             referencedColumnName = "id")
     private User user;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(
-            name = "video_id",
+            name = "subscriber_id",
             nullable = false,
             referencedColumnName = "id")
-    private Video video;
+    private User subscriber;
 
-    public UserWatchedVideo(Video video, User user, LocalDateTime now) {
-        this.video = video;
+    public Subscription(User user, User subcriber, LocalDateTime now) {
         this.user = user;
-        this.watchedAt = now;
+        this.subscriber = subcriber;
+        this.subscribeAt = now;
     }
 }

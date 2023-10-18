@@ -12,7 +12,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class VideoResponseDto {
+public class VideoChannelResDto {
     private Long id;
     private Long views;
     private Long likes;
@@ -21,10 +21,8 @@ public class VideoResponseDto {
     private String title;
     private String description;
     private String videoUrl;
-    private LocalDateTime createAt;
-    private LocalDateTime releaseDate;
     private Boolean isPrivate;
-    private UserResponseDto userDto;
-    private List<CommentResponseDto> commentDtoList;
-    private List<TagResponseDto> tagDtoList;
+    private LocalDateTime releaseDate;
+    private LocalDateTime createAt;
+    private Long totalComment;
 }
