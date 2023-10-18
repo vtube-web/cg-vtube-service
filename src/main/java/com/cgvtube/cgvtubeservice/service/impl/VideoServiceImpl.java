@@ -114,9 +114,7 @@ public class VideoServiceImpl implements VideoService {
         List<Video> videoListResult = new ArrayList<>();
         getVideosTitle(title, videoList, videoListResult);
         getVideosViews(views, videoListResult, videoList);
-
-        Page<Video> videoPageResult = getVideosPageResult(videoListResult, videoList, title, status, views);
-
+        Page<Video> videoPageResult = getVideosPageResult(videoListResult, videoList, title, status, views,videoPage);
         ResponseDto responseDto = ResponseDto.builder()
                 .message("List video channel").status("200")
                 .data(pageResponseDTOFunction.apply(videoPageResult))
@@ -224,13 +222,12 @@ public class VideoServiceImpl implements VideoService {
         return responseDto;
     }
 
-    private static Page<Video> getVideosPageResult(List<Video> videoListResult, List<Video> videoList, String title, String status, String views) {
+    private static Page<Video> getVideosPageResult(List<Video> videoListResult, List<Video> videoList, String title, String status, String views,Page<Video> videoPage) {
         Page<Video> videoPageResult;
-        if (videoListResult.size() >= 0 && (!title.equals("") && title != null || !status.equals("") && status != null || !views.equals("") && views != null)) {
-            videoPageResult = new PageImpl<>(videoListResult, PageRequest.of(0, 10), videoListResult.size());
-
+        if (videoListResult.size() >= 0 && (!title.equals("") && title != null || !views.equals("") && views != null)) {
+                videoPageResult = new PageImpl<>(videoListResult, PageRequest.of(videoPage.getNumber(), 5), videoPage.getTotalElements());
         } else {
-            videoPageResult = new PageImpl<>(videoList, PageRequest.of(0, 10), videoList.size());
+            videoPageResult = new PageImpl<>(videoList, PageRequest.of(videoPage.getNumber(), 5), videoPage.getTotalElements());
 
         }
         return videoPageResult;

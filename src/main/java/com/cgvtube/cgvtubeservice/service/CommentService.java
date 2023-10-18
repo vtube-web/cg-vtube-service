@@ -7,6 +7,8 @@ import com.cgvtube.cgvtubeservice.payload.request.CommentShortsRequestDto;
 import com.cgvtube.cgvtubeservice.payload.response.CommentResponseDto;
 import com.cgvtube.cgvtubeservice.payload.response.CommentShortsResponseDto;
 import com.cgvtube.cgvtubeservice.payload.response.ResponseDto;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -21,4 +23,6 @@ public interface CommentService {
     List<CommentShortsResponseDto> getListCommentDtoByShorts(Shorts id);
     ResponseDto save(Long shortsId, CommentShortsRequestDto commentShortsRequestDto);
     Long getTotalCommentByIdVideo(Long id);
+
+    ResponseDto getCommentByChannel(Pageable pageable, UserDetails currentUser);
 }
