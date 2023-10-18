@@ -1,9 +1,11 @@
 package com.cgvtube.cgvtubeservice.service;
 
+import com.cgvtube.cgvtubeservice.entity.Shorts;
 import com.cgvtube.cgvtubeservice.entity.Video;
 import com.cgvtube.cgvtubeservice.payload.request.CommentRequestDto;
-import com.cgvtube.cgvtubeservice.payload.request.ContentCommentRequestDto;
+import com.cgvtube.cgvtubeservice.payload.request.CommentShortsRequestDto;
 import com.cgvtube.cgvtubeservice.payload.response.CommentResponseDto;
+import com.cgvtube.cgvtubeservice.payload.response.CommentShortsResponseDto;
 import com.cgvtube.cgvtubeservice.payload.response.ResponseDto;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,6 +19,9 @@ public interface CommentService {
     ResponseDto save(Long videoId, CommentRequestDto commentRequestDto);
     ResponseDto delete(Long commentId);
 
+
+    List<CommentShortsResponseDto> getListCommentDtoByShorts(Shorts id);
+    ResponseDto save(Long shortsId, CommentShortsRequestDto commentShortsRequestDto);
     Long getTotalCommentByIdVideo(Long id);
 
     ResponseDto getCommentByChannel(Pageable pageable, UserDetails currentUser);

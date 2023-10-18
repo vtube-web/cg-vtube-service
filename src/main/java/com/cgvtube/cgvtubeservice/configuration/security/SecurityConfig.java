@@ -70,7 +70,8 @@ public class SecurityConfig {
                         "/api/auth/login",
                         "/api/users/check_email",
                         "/api/forgot_password",
-                        "/api/videos")
+                        "/api/videos",
+                        "/api/shorts")
                 .permitAll();
 
         http.authorizeHttpRequests()

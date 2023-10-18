@@ -40,5 +40,5 @@ out/
 .vscode/
 
 #### Active profile ###
-src/main/resources/application-phong.properties
+src/main/resources/application-tam.properties
 
