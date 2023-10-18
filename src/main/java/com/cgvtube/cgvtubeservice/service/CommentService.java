@@ -5,6 +5,8 @@ import com.cgvtube.cgvtubeservice.payload.request.CommentRequestDto;
 import com.cgvtube.cgvtubeservice.payload.request.ContentCommentRequestDto;
 import com.cgvtube.cgvtubeservice.payload.response.CommentResponseDto;
 import com.cgvtube.cgvtubeservice.payload.response.ResponseDto;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -16,4 +18,6 @@ public interface CommentService {
     ResponseDto delete(Long commentId);
 
     Long getTotalCommentByIdVideo(Long id);
+
+    ResponseDto getCommentByChannel(Pageable pageable, UserDetails currentUser);
 }

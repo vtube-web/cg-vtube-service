@@ -226,9 +226,8 @@ public class VideoServiceImpl implements VideoService {
 
     private static Page<Video> getVideosPageResult(List<Video> videoListResult, List<Video> videoList, String title, String status, String views) {
         Page<Video> videoPageResult;
-        if (videoListResult.size() >= 0 && (!title.equals("") && title != null || !status.equals("") && status != null || !views.equals("") && views != null)) {
-            videoPageResult = new PageImpl<>(videoListResult, PageRequest.of(0, 10), videoListResult.size());
-
+        if (videoListResult.size() >= 0 && (!title.equals("") && title != null || !views.equals("") && views != null)) {
+                videoPageResult = new PageImpl<>(videoListResult, PageRequest.of(0, 10), videoListResult.size());
         } else {
             videoPageResult = new PageImpl<>(videoList, PageRequest.of(0, 10), videoList.size());
 
