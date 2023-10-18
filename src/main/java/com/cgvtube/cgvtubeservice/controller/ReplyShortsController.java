@@ -1,6 +1,5 @@
 package com.cgvtube.cgvtubeservice.controller;
 
-import com.cgvtube.cgvtubeservice.payload.request.ReplyRequestDto;
 import com.cgvtube.cgvtubeservice.payload.request.ReplyShortsRequestDto;
 import com.cgvtube.cgvtubeservice.payload.response.ResponseDto;
 import com.cgvtube.cgvtubeservice.service.ReplyService;
@@ -20,10 +19,10 @@ public class ReplyShortsController {
 
     private final ReplyService replyService;
 
-    @PostMapping("/{commentShortsId}/reply")
+    @PostMapping("/{commentShortsId}/replyShort")
     public ResponseEntity<ResponseDto> saveReply(@PathVariable("commentShortsId") Long commentShortsId,
                                                  @RequestBody ReplyShortsRequestDto replyShortsRequestDto) {
-        ResponseDto responseDto = replyService.save(commentShortsId, replyShortsRequestDto);
+        ResponseDto responseDto = replyService.saveShorts(commentShortsId, replyShortsRequestDto);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 }

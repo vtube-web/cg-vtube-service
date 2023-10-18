@@ -50,7 +50,7 @@ public class ReplyServiceImpl implements ReplyService {
     }
 
     @Override
-    public ResponseDto save(Long shortsId, ReplyShortsRequestDto replyShortsRequestDto) {
+    public ResponseDto saveShorts(Long shortsId, ReplyShortsRequestDto replyShortsRequestDto) {
         ReplyShorts replyShorts = ReplyShorts.builder()
                 .user(userRepository.findById(userService.getCurrentUser().getId())
                         .orElseThrow(() -> new EntityNotFoundException("User not found")))

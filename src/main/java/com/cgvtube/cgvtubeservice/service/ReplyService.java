@@ -8,5 +8,5 @@ public interface ReplyService {
 
     ResponseDto save (Long commentId, ReplyRequestDto replyRequestDto);
 
-    ResponseDto save (Long shortsId, ReplyShortsRequestDto replyShortsRequestDto);
+    ResponseDto saveShorts(Long shortsId, ReplyShortsRequestDto replyShortsRequestDto);
 }
