@@ -35,7 +35,6 @@ public class Subscription {
             referencedColumnName = "id")
     private User subscriber;
 
-
     public Subscription(User user, User subcriber, LocalDateTime now) {
         this.user = user;
         this.subscriber = subcriber;

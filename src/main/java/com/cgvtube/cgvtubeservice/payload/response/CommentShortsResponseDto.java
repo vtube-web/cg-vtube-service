@@ -12,19 +12,13 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class VideoResponseDto {
+public class CommentShortsResponseDto {
     private Long id;
-    private Long views;
     private Long likes;
     private Long dislikes;
-    private String thumbnail;
-    private String title;
-    private String description;
-    private String videoUrl;
+    private Long shortsId;
+    private String content;
+    private List<ReplyShortsResponseDto> replyShortsDtoList;
     private LocalDateTime createAt;
-    private LocalDateTime releaseDate;
-    private Boolean isPrivate;
-    private UserResponseDto userDto;
-    private List<CommentResponseDto> commentDtoList;
-    private List<TagResponseDto> tagDtoList;
+    private UserResponseDto userResponseDto;
 }

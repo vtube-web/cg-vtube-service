@@ -25,6 +25,9 @@ public class User {
     @Column(name = "id")
     private Long id;
 
+    @Column(name = "channel_name")
+    private String channelName;
+
     @Column(name = "email", nullable = false)
     private String email;
 
@@ -39,6 +42,9 @@ public class User {
 
     @Column(name = "avatar")
     private String avatar;
+
+    @Column(name ="banner")
+    private String banner;
 
     @ManyToMany(targetEntity = Role.class, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinTable(name = "user_role",
@@ -69,4 +75,5 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<Subscription> subscriptions;
+
 }
