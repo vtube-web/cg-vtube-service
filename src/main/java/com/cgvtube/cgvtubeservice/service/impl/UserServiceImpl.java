@@ -39,10 +39,10 @@ public class UserServiceImpl implements UserService {
     private final UserRegisterConverter userRegisterConverter;
 
     @Override
-    public UserImpl getCurrentUser() {
+    public CurrentUserServiceImpl getCurrentUser() {
         try {
             Object object = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            UserImpl user = (UserImpl) object;
+            CurrentUserServiceImpl user = (CurrentUserServiceImpl) object;
             return user;
         } catch (ClassCastException e) {
             e.printStackTrace();
@@ -78,7 +78,8 @@ public class UserServiceImpl implements UserService {
         return UserLoginResponseDto.builder()
                 .id(user.getId())
                 .email(user.getEmail())
-                .username(user.getUserName())
+                .userName(user.getUserName())
+                .name(user.getChannelName())
                 .avatar(user.getAvatar())
                 .accessToken(token)
                 .refreshToken(refreshToken)

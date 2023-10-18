@@ -13,9 +13,11 @@ import lombok.Setter;
 @Setter
 public class UserLoginResponseDto {
     private Long id;
-    private String email;
+    private String name;
+    private String userName;
     private String avatar;
-    private String username;
+    private String email;
+    private String banner;
     private String accessToken;
     private String refreshToken;
 }

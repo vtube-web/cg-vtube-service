@@ -5,12 +5,12 @@ import com.cgvtube.cgvtubeservice.payload.request.UserLoginRequestDto;
 import com.cgvtube.cgvtubeservice.payload.request.UserRegisterRequestDto;
 import com.cgvtube.cgvtubeservice.payload.response.ResponseDto;
 import com.cgvtube.cgvtubeservice.payload.response.UserLoginResponseDto;
-import com.cgvtube.cgvtubeservice.service.impl.UserImpl;
+import com.cgvtube.cgvtubeservice.service.impl.CurrentUserServiceImpl;
 import org.springframework.security.core.userdetails.UserDetails;
 
 public interface UserService {
 
-    UserImpl getCurrentUser();
+    CurrentUserServiceImpl getCurrentUser();
 
     void save(UserRegisterRequestDto userRegisterRequestDto);
 
