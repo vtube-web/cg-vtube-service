@@ -29,4 +29,5 @@ public class Tag {
     private String name;
     @ManyToMany(mappedBy = "tagSet")
     private Set<Video> videoSet;
+
 }

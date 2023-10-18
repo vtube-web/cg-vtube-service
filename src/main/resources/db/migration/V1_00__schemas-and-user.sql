@@ -7,7 +7,9 @@ CREATE TABLE IF NOT EXISTS user
     email        varchar(255) UNIQUE NOT NULL,
     password     varchar(255)        NOT NULL,
     user_name    varchar(255)        NOT NULL,
-    avatar       varchar(255),
+    avatar       TEXT,
+    banner       TEXT,
+    channel_name varchar(255),
     created_at   datetime
 );
 
