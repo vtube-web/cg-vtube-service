@@ -20,6 +20,9 @@ public class UserLikedVideo {
     @Column(name = "liked_at")
     private LocalDateTime likedAt;
 
+    @Column(name = "liked_status")
+    private boolean likedStatus;
+
     @ManyToOne
     @JoinColumn(
             name = "user_id",

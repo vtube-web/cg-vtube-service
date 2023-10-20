@@ -4,6 +4,7 @@ import com.cgvtube.cgvtubeservice.converter.impl.LikedVideoConverter;
 import com.cgvtube.cgvtubeservice.entity.UserLikedVideo;
 import com.cgvtube.cgvtubeservice.entity.User;
 import com.cgvtube.cgvtubeservice.entity.Video;
+import com.cgvtube.cgvtubeservice.payload.request.LikeOrDislikeReqDto;
 import com.cgvtube.cgvtubeservice.payload.response.LikedVideoDTO;
 import com.cgvtube.cgvtubeservice.payload.response.PageResponseDTO;
 import com.cgvtube.cgvtubeservice.payload.response.ResponseDto;
@@ -44,8 +45,7 @@ public class LikedVideoServiceImpl implements LikedVideoService {
         pageResponseDTO.setTotalPages(likedVideos.getTotalPages());
         pageResponseDTO.setCurrentPageNumber(likedVideos.getNumber());
         pageResponseDTO.setTotalElements(likedVideos.getTotalElements());
-        ResponseDto responseDto = ResponseDto.builder().message("Successfully retrieved list of watched videos by userId: " + user.getId()).status("200").data(pageResponseDTO).build();
-        return responseDto;
+        return ResponseDto.builder().message("Successfully retrieved list of watched videos by userId: " + user.getId()).status("200").data(pageResponseDTO).build();
     }
 
     @Override
@@ -55,39 +55,77 @@ public class LikedVideoServiceImpl implements LikedVideoService {
         int deletedCount = likedVideoRepository.deleteByUserIdAndVideoId(user.getId(), videoId);
         ResponseDto responseDto;
         if (deletedCount == 0) {
-            responseDto = ResponseDto.builder().message("No watched videos found for the user with userId: " + user.getId() + " & videoId: " + videoId).status("403").data(false).build();
+            responseDto = ResponseDto.builder().message("No watched videos found for the user with userId: " + user.getId() + " & videoId: " + videoId).status("404").data(false).build();
         } else {
-            decrementLikes(video);
+            removeExistingLikeOrDislike(user, videoId, true);
             responseDto = ResponseDto.builder().message("Success delete videoId: " + videoId).status("200").data(true).build();
         }
         return responseDto;
     }
 
     @Override
-    public ResponseDto addLikeVideo(Long videoId, UserDetails currentUser) {
+    public ResponseDto addLikeOrDislikeVideo(LikeOrDislikeReqDto likeOrDislikeReqDto, UserDetails currentUser) {
         User user = userRepository.findByEmail(currentUser.getUsername()).orElse(new User());
-        Boolean isAlreadyLiked = likedVideoRepository.existsByUserIdAndVideoId(user.getId(), videoId);
+        Long videoId = likeOrDislikeReqDto.getVideoId();
+        Boolean likedStatus = likeOrDislikeReqDto.isLikedStatus();
+        UserLikedVideo existingLikeStatus = likedVideoRepository.findByUserIdAndVideoId(user.getId(), videoId);
         ResponseDto responseDto;
-        if (!isAlreadyLiked) {
-            Video video = videoRepository.findById(videoId).orElse(new Video());
-            UserLikedVideo userLikedVideo = new UserLikedVideo(user, video, LocalDateTime.now());
-            likedVideoRepository.save(userLikedVideo);
-            incrementLikes(video);
-            responseDto = ResponseDto.builder().message("Successfully liked to the video").status("200").data(true).build();
+        if (existingLikeStatus == null) {
+            addNewLikeOrDislike(user, videoId, likedStatus);
+            responseDto = ResponseDto.builder().message("Successfully liked/disliked the video").status("200").data(likedStatus).build();
+        } else if (existingLikeStatus.isLikedStatus() == likedStatus) {
+            removeExistingLikeOrDislike(user, videoId, likedStatus);
+            responseDto = ResponseDto.builder().message("Removed like/dislike").status("200").data(0).build();
         } else {
-            responseDto = ResponseDto.builder().message("You are already Liked to this video").status("404").data(false).build();
+            updateExistingLikeOrDislike(user, videoId, likedStatus);
+            responseDto = ResponseDto.builder().message("Successfully updated like/dislike status").status("200").data(likedStatus).build();
         }
         return responseDto;
     }
 
-    private void incrementLikes(Video video) {
-        video.setLikes(video.getLikes() + 1);
+    private void addNewLikeOrDislike(User user, Long videoId, Boolean likedStatus) {
+        Video video = videoRepository.findById(videoId).orElse(new Video());
+        UserLikedVideo userLikedVideo = new UserLikedVideo(user, video, LocalDateTime.now());
+        userLikedVideo.setLikedStatus(likedStatus);
+        likedVideoRepository.save(userLikedVideo);
+        updateLikesDislikes(videoId, likedStatus, 1);
+    }
+
+    private void removeExistingLikeOrDislike(User user, Long videoId, Boolean likedStatus) {
+        likedVideoRepository.deleteByUserIdAndVideoId(user.getId(), videoId);
+        updateLikesDislikes(videoId, likedStatus, -1);
+    }
+
+    private void updateExistingLikeOrDislike(User user, Long videoId, Boolean likedStatus) {
+        updateLikedStatus(user.getId(), videoId, likedStatus);
+        changeLikesDislikes(videoId, likedStatus);
+    }
+
+    private void updateLikedStatus(Long userId, Long videoId, boolean likeStatus) {
+        UserLikedVideo userLikedVideo = likedVideoRepository.findByUserIdAndVideoId(userId, videoId);
+        userLikedVideo.setLikedStatus(likeStatus);
+        likedVideoRepository.save(userLikedVideo);
+    }
+
+    private void updateLikesDislikes(Long videoId, boolean likeStatus, int increment) {
+        Video video = videoRepository.findById(videoId).orElse(new Video());
+        if (likeStatus) {
+            video.setLikes(video.getLikes() + increment);
+        } else {
+            video.setDislikes(video.getDislikes() + increment);
+        }
         videoRepository.save(video);
     }
 
-
-    private void decrementLikes(Video video) {
-        video.setLikes(video.getLikes() - 1);
+    private void changeLikesDislikes(Long videoId, boolean likeStatus) {
+        Video video = videoRepository.findById(videoId).orElse(new Video());
+        if (likeStatus) {
+            video.setLikes(video.getLikes() + 1);
+            video.setDislikes(video.getDislikes() - 1);
+        } else {
+            video.setLikes(video.getLikes() - 1);
+            video.setDislikes(video.getDislikes() + 1);
+        }
         videoRepository.save(video);
     }
 }
