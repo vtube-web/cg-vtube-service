@@ -1,5 +1,6 @@
 package com.cgvtube.cgvtubeservice.controller;
 
+import com.cgvtube.cgvtubeservice.payload.request.LikeOrDislikeReqDto;
 import com.cgvtube.cgvtubeservice.payload.response.ResponseDto;
 import com.cgvtube.cgvtubeservice.service.LikedVideoService;
 import jakarta.servlet.http.HttpSession;
@@ -26,20 +27,16 @@ public class LikedVideoController {
     }
 
     @DeleteMapping("/{videoId}")
-    public ResponseEntity<?> deleteLikedVideo(@PathVariable Long videoId, HttpSession session) {
+    public ResponseEntity<ResponseDto> deleteLikedVideo(@PathVariable Long videoId, HttpSession session) {
         UserDetails currentUser = (UserDetails) session.getAttribute("currentUser");
         ResponseDto responseDto = likedVideoService.deleteLikedVideo(videoId, currentUser);
-        if (responseDto.getStatus() == "200") {
-            return new ResponseEntity<>(responseDto, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(responseDto, HttpStatus.BAD_REQUEST);
-        }
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
-    @PostMapping("/{videoId}")
-    public ResponseEntity<?> addLikeVideo (@PathVariable Long videoId, HttpSession session) {
+    @PostMapping
+    public ResponseEntity<ResponseDto> addLikeVideo (@RequestBody LikeOrDislikeReqDto likeOrDislikeReqDto, HttpSession session) {
         UserDetails currentUser = (UserDetails) session.getAttribute("currentUser");
-        ResponseDto responseDto = likedVideoService.addLikeVideo(videoId, currentUser);
+        ResponseDto responseDto = likedVideoService.addLikeOrDislikeVideo(likeOrDislikeReqDto, currentUser);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 }

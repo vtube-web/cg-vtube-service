@@ -1,16 +1,15 @@
 package com.cgvtube.cgvtubeservice.service.impl;
 
 import com.cgvtube.cgvtubeservice.configuration.security.JwtTokenProvider;
+import com.cgvtube.cgvtubeservice.converter.impl.UserInfoConverter;
 import com.cgvtube.cgvtubeservice.converter.impl.UserRegisterConverter;
-import com.cgvtube.cgvtubeservice.entity.Subscription;
+import com.cgvtube.cgvtubeservice.converter.impl.UserResponseConverter;
 import com.cgvtube.cgvtubeservice.entity.User;
-import com.cgvtube.cgvtubeservice.entity.UserLikedVideo;
-import com.cgvtube.cgvtubeservice.entity.Video;
 import com.cgvtube.cgvtubeservice.payload.request.CheckEmailReqDto;
+import com.cgvtube.cgvtubeservice.payload.request.UserIdListReqDto;
 import com.cgvtube.cgvtubeservice.payload.request.UserLoginRequestDto;
 import com.cgvtube.cgvtubeservice.payload.request.UserRegisterRequestDto;
 import com.cgvtube.cgvtubeservice.payload.response.ResponseDto;
-import com.cgvtube.cgvtubeservice.payload.response.UserInfoDto;
 import com.cgvtube.cgvtubeservice.payload.response.UserLoginResponseDto;
 import com.cgvtube.cgvtubeservice.repository.UserRepository;
 import com.cgvtube.cgvtubeservice.service.UserService;
@@ -26,7 +25,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -37,6 +35,8 @@ public class UserServiceImpl implements UserService {
     private final JwtTokenProvider jwtUtil;
     private final AuthenticationManager authenticationManager;
     private final UserRegisterConverter userRegisterConverter;
+    private final UserResponseConverter userResponseConverter;
+    private final UserInfoConverter userInfoConverter;
 
     @Override
     public CurrentUserServiceImpl getCurrentUser() {
@@ -116,41 +116,21 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseDto getUserInfo(UserDetails currentUser) {
         User user = userRepository.findByEmail(currentUser.getUsername()).orElse(new User());
-        UserInfoDto userInfoDto = new UserInfoDto();
-        userInfoDto.setId(user.getId());
-        userInfoDto.setUserName(user.getUserName());
-        userInfoDto.setAvatar(user.getAvatar());
-        userInfoDto.setVideoList(getVideoIds(user.getVideoList()));
-        userInfoDto.setLikedVideos(getVideoIds(getVideoLikeIds(user.getLikedVideos())));
-        userInfoDto.setSubscriptions(getChannelId(getUser(user.getSubscriptions())));
         return ResponseDto.builder()
                 .message("Successful get info userId: " + user.getId())
-                .status("200").
-                data(userInfoDto)
+                .status("200")
+                .data(userInfoConverter.revert(user))
                 .build();
     }
 
-    private List<Long> getVideoIds(List<Video> videos) {
-        return videos.stream()
-                .map(Video::getId)
-                .collect(Collectors.toList());
+    @Override
+    public ResponseDto getUserList(UserIdListReqDto userIdList) {
+        List<User> userList = userRepository.findAllById(userIdList.getUserIdList());
+        return ResponseDto.builder()
+                .message("Successful get list user")
+                .status("200").
+                data(userResponseConverter.revert(userList))
+                .build();
     }
 
-    private List<Video> getVideoLikeIds(List<UserLikedVideo> videos) {
-        return videos.stream()
-                .map(UserLikedVideo::getVideo)
-                .collect(Collectors.toList());
-    }
-
-    private List<User> getUser(List<Subscription> subscriptions) {
-        return subscriptions.stream()
-                .map(Subscription::getSubscriber)
-                .collect(Collectors.toList());
-    }
-
-    private List<Long> getChannelId(List<User> users) {
-        return users.stream()
-                .map(User::getId)
-                .collect(Collectors.toList());
-    }
 }
