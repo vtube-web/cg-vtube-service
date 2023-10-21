@@ -104,12 +104,12 @@ public class VideoServiceImpl implements VideoService {
     }
 
     @Override
-    public ResponseDto findAllByIdChannel(Pageable pageable, String title, String status, String views, UserDetails currentUser) {
+    public ResponseDto findAllByIdChannel(Pageable pageable, String title, String status, String views,Boolean isShort, UserDetails currentUser) {
         User user = userRepository.findByEmail(currentUser.getUsername()).orElse(new User());
         Sort sort = Sort.by(Sort.Direction.DESC, "createAt");
         Pageable pageableNew = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
         Page<Video> videoPage;
-        videoPage = getVideosIsPrivate(status, pageableNew, user);
+        videoPage = getVideosIsPrivate(status, pageableNew, user,isShort);
         List<Video> videoList = videoPage.getContent();
         List<Video> videoListResult = new ArrayList<>();
         getVideosTitle(title, videoList, videoListResult);
@@ -243,16 +243,16 @@ public class VideoServiceImpl implements VideoService {
         }
     }
 
-    private Page<Video> getVideosIsPrivate(String status, Pageable pageableNew, User user) {
+    private Page<Video> getVideosIsPrivate(String status, Pageable pageableNew, User user,Boolean isShort) {
         Page<Video> videoPage;
         if (!status.equals("") && status != null) {
             if (status.equals("private")) {
-                videoPage = videoRepository.findAllByUserIdAndIsPrivate(pageableNew, user.getId(), true);
+                videoPage = videoRepository.findAllByUserIdAndIsPrivateAndIsShorts(pageableNew, user.getId(), true,isShort);
             } else {
-                videoPage = videoRepository.findAllByUserIdAndIsPrivate(pageableNew, user.getId(), false);
+                videoPage = videoRepository.findAllByUserIdAndIsPrivateAndIsShorts(pageableNew, user.getId(), false,isShort);
             }
         } else {
-            videoPage = videoRepository.findAllByUserId(pageableNew, user.getId());
+            videoPage = videoRepository.findAllByUserIdAndIsShorts(pageableNew, user.getId(),isShort);
         }
         return videoPage;
     }
@@ -262,6 +262,9 @@ public class VideoServiceImpl implements VideoService {
     public ResponseDto addVideo(AddVideoReqDto addVideoReqDto, UserDetails currentUser) {
         User user = userRepository.findByEmail(currentUser.getUsername()).orElse(new User());
         Video video = mapToVideo.apply(addVideoReqDto);
+        video.setLikes(0L);
+        video.setDislikes(0L);
+        video.setViews(0L);
         video.setUser(user);
         Video videoResult = (Video) videoRepository.save(video);
         AddVideoResDto addVideoResDto = mapVideoToResponseDto.apply(videoResult);

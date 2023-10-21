@@ -20,4 +20,5 @@ public class VideoUpdateReqDto {
     private LocalDateTime release_date;
     private Boolean is_private;
     private List<String> hashtags;
+    private Boolean is_shorts;
 }

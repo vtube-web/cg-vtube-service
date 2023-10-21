@@ -8,4 +8,5 @@ public class AddVideoResDto {
     private long id;
     private String title;
     private String videoUrl;
+    private String duration;
 }
