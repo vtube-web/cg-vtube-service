@@ -46,6 +46,12 @@ public class User {
     @Column(name ="banner")
     private String banner;
 
+    @Column(name ="description")
+    private String description;
+
+    @Column(name ="subscribers")
+    private Long subscribers;
+
     @ManyToMany(targetEntity = Role.class, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),

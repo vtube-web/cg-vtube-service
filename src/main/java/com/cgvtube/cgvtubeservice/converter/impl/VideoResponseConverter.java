@@ -2,7 +2,6 @@ package com.cgvtube.cgvtubeservice.converter.impl;
 
 import com.cgvtube.cgvtubeservice.converter.GeneralConverter;
 import com.cgvtube.cgvtubeservice.entity.Video;
-import com.cgvtube.cgvtubeservice.payload.response.CommentResponseDto;
 import com.cgvtube.cgvtubeservice.payload.response.VideoResponseDto;
 import com.cgvtube.cgvtubeservice.service.CommentService;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class VideoResponseConverter implements GeneralConverter<Video, VideoResponseDto> {
     private final TagConverter tagConverter;
-    private final UserResponseConverter userResponseDtoConverter;
+    private final UserInfoConverter userInfoConverter;
     private final CommentService commentService;
 
     @Override
@@ -23,7 +22,7 @@ public class VideoResponseConverter implements GeneralConverter<Video, VideoResp
         VideoResponseDto target = new VideoResponseDto();
         BeanUtils.copyProperties(source, target);
         target.setTagDtoList(tagConverter.convert(source.getTagSet()));
-        target.setUserDto(userResponseDtoConverter.revert(source.getUser()));
+        target.setUserDto(userInfoConverter.revert(source.getUser()));
         target.setCommentDtoList(commentService.getListCommentDtoByVideo(source));
         return target;
     }

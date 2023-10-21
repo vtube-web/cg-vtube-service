@@ -20,4 +20,5 @@ public class LikedVideoDTO {
     private LocalDateTime createAt;
     private Long userId;
     private String userName;
+    private boolean likedStatus;
 }

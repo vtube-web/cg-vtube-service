@@ -24,7 +24,7 @@ public class VideoResponseDto {
     private LocalDateTime createAt;
     private LocalDateTime releaseDate;
     private Boolean isPrivate;
-    private UserResponseDto userDto;
+    private UserInfoDto userDto;
     private List<CommentResponseDto> commentDtoList;
     private List<TagResponseDto> tagDtoList;
 }

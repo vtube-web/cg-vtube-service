@@ -1,6 +1,7 @@
 package com.cgvtube.cgvtubeservice.controller;
 
 import com.cgvtube.cgvtubeservice.payload.request.CheckEmailReqDto;
+import com.cgvtube.cgvtubeservice.payload.request.UserIdListReqDto;
 import com.cgvtube.cgvtubeservice.payload.request.UserRegisterRequestDto;
 import com.cgvtube.cgvtubeservice.payload.response.ResponseDto;
 import com.cgvtube.cgvtubeservice.service.UserService;
@@ -53,9 +54,15 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getUserInfo(HttpSession session) {
+    public ResponseEntity<ResponseDto> getUserInfo(HttpSession session) {
         UserDetails currentUser = (UserDetails) session.getAttribute("currentUser");
         ResponseDto responseDto = userService.getUserInfo(currentUser);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
+
+    @PostMapping("/list-user")
+    public ResponseEntity<?> getListUser(@RequestBody UserIdListReqDto userIdList) {
+        ResponseDto responseDto = userService.getUserList(userIdList);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 }
