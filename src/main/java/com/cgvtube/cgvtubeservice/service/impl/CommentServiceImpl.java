@@ -40,6 +40,8 @@ public class CommentServiceImpl implements CommentService {
     private final ShortsRepository shortsRepository;
     private final Function<Page<Comment>,PageResponseDTO<CommentChannelResDto>> pageResponseDTOFunction;
     private final ReplyRepository replyRepository;
+    private final LikesDislikesCommentRepository likesDislikesCommentRepository;
+    private final LikesDislikesReplyRepository likesDislikesReplyRepository;
 
     @Override
     public List<CommentResponseDto> getListCommentDtoByVideo(Video video) {
@@ -69,7 +71,12 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public ResponseDto delete(Long commentId) {
+        List<Reply> replyList = replyRepository.findAllByCommentId(commentId);
+        for(Reply element: replyList){
+            likesDislikesReplyRepository.deleteAllByReplyId(element.getId());
+        }
         replyRepository.deleteAllByCommentId(commentId);
+        likesDislikesCommentRepository.deleteAllByCommentId(commentId);
         commentRepository.deleteById(commentId);
         return ResponseDto.builder()
                 .message("Success")

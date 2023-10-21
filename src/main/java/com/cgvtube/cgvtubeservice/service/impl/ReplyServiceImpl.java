@@ -6,11 +6,7 @@ import com.cgvtube.cgvtubeservice.payload.request.ContentReplyReqDto;
 import com.cgvtube.cgvtubeservice.payload.request.ReplyRequestDto;
 import com.cgvtube.cgvtubeservice.payload.request.ReplyShortsRequestDto;
 import com.cgvtube.cgvtubeservice.payload.response.ResponseDto;
-import com.cgvtube.cgvtubeservice.repository.CommentRepository;
-import com.cgvtube.cgvtubeservice.repository.CommentShortsRepository;
-import com.cgvtube.cgvtubeservice.repository.ReplyRepository;
-import com.cgvtube.cgvtubeservice.repository.ReplyShortsRepository;
-import com.cgvtube.cgvtubeservice.repository.UserRepository;
+import com.cgvtube.cgvtubeservice.repository.*;
 import com.cgvtube.cgvtubeservice.service.ReplyService;
 import com.cgvtube.cgvtubeservice.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
@@ -29,6 +25,8 @@ public class ReplyServiceImpl implements ReplyService {
 
     private final CommentShortsRepository commentShortsRepository;
     private final ReplyShortsRepository replyShortsRepository;
+    private final LikesDislikesReplyRepository likesDislikesReplyRepository;
+
 
     @Override
     public ResponseDto save(Long commentId, ReplyRequestDto replyRequestDto) {
@@ -84,6 +82,7 @@ public class ReplyServiceImpl implements ReplyService {
 
     @Override
     public ResponseDto deleteContentOfReplyByUser(Long id) {
+        likesDislikesReplyRepository.deleteAllByReplyId(id);
         replyRepository.deleteById(id);
         return ResponseDto.builder()
                 .message("Success to save reply")
