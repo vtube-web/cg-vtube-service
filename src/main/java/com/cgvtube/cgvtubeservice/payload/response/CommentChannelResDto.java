@@ -1,5 +1,6 @@
 package com.cgvtube.cgvtubeservice.payload.response;
 
+import com.cgvtube.cgvtubeservice.entity.UserLikesDislikesComments;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,4 +22,5 @@ public class CommentChannelResDto {
     private List<ReplyResponseDto> replyDtoList;
     private LocalDateTime createAt;
     private UserResponseDto userResponseDto;
+    private LikesDislikesCommentsResDto userVoteCommentDto;
 }

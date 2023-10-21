@@ -19,4 +19,5 @@ public class ReplyResponseDto {
     private LocalDateTime createAt;
     private UserResponseDto userResponseDto;
     private Long commentId;
+    private LikesDislikesReplyResDto userVoteCommentDto;
 }
