@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -33,6 +34,8 @@ public class UserResponseConverter implements GeneralConverter<UserResponseDto, 
 
     @Override
     public List<UserResponseDto> revert(List<User> targets) {
-        return null;
+        return targets.stream()
+                .map(this::revert)
+                .collect(Collectors.toList());
     }
 }
