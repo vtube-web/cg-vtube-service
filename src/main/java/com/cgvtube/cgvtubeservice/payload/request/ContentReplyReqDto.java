@@ -1,10 +1,15 @@
 package com.cgvtube.cgvtubeservice.payload.request;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
-public class ContentCommentRequestDto {
+@NoArgsConstructor
+@Builder
+public class ContentReplyReqDto {
+    private long id;
     private String content;
 }

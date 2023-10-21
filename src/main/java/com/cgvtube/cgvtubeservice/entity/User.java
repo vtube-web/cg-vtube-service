@@ -76,4 +76,10 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Subscription> subscriptions;
 
+    @OneToMany(mappedBy = "user")
+    private List<UserLikesDislikesComments> likesDislikesComments;
+
+    @OneToMany(mappedBy = "user")
+    private List<UserLikesDislikesReply> likesDislikesReplies;
+
 }

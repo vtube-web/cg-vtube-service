@@ -2,6 +2,7 @@ package com.cgvtube.cgvtubeservice.service.impl;
 
 import com.cgvtube.cgvtubeservice.entity.Reply;
 import com.cgvtube.cgvtubeservice.entity.ReplyShorts;
+import com.cgvtube.cgvtubeservice.payload.request.ContentReplyReqDto;
 import com.cgvtube.cgvtubeservice.payload.request.ReplyRequestDto;
 import com.cgvtube.cgvtubeservice.payload.request.ReplyShortsRequestDto;
 import com.cgvtube.cgvtubeservice.payload.response.ResponseDto;
@@ -68,4 +69,28 @@ public class ReplyServiceImpl implements ReplyService {
                 .data(true)
                 .build();
     }
+
+    @Override
+    public ResponseDto editContentOfReplyByUser(ContentReplyReqDto contentReplyReqDto) {
+        Reply reply = replyRepository.findById(contentReplyReqDto.getId()).orElse(new Reply());
+        reply.setContent(contentReplyReqDto.getContent());
+        replyRepository.save(reply);
+        return ResponseDto.builder()
+                .message("Success to save reply")
+                .status("200")
+                .data(true)
+                .build();
+    }
+
+    @Override
+    public ResponseDto deleteContentOfReplyByUser(Long id) {
+        replyRepository.deleteById(id);
+        return ResponseDto.builder()
+                .message("Success to save reply")
+                .status("200")
+                .data(true)
+                .build();
+    }
+
+
 }
