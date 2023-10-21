@@ -37,15 +37,19 @@ public class Video {
     private String title;
     private String description;
     private String thumbnail;
-    @Column(name ="video_url")
-    private String videoUrl;
-    @Column(name = "release_date")
-    private LocalDateTime releaseDate;
-    @Column(name = "is_private")
-    private Boolean isPrivate;
     private Long views;
     private Long likes;
     private Long dislikes;
+
+    @Column(name = "video_url")
+    private String videoUrl;
+
+    @Column(name = "release_date")
+    private LocalDateTime releaseDate;
+
+    @Column(name = "is_private")
+    private Boolean isPrivate;
+
     @Column(name = "create_at")
     private LocalDateTime createAt;
 
@@ -73,4 +77,7 @@ public class Video {
 
     @OneToMany(mappedBy = "video")
     private List<UserLikedVideo> likedUser;
+
+    @ManyToMany(targetEntity = Playlist.class, mappedBy = "videoList")
+    private List<Playlist> playlist;
 }

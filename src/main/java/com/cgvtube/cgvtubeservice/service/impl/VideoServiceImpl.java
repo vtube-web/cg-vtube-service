@@ -2,19 +2,31 @@ package com.cgvtube.cgvtubeservice.service.impl;
 
 import com.cgvtube.cgvtubeservice.converter.VideoProcessing;
 import com.cgvtube.cgvtubeservice.converter.impl.VideoResponseConverter;
-import com.cgvtube.cgvtubeservice.entity.*;
+import com.cgvtube.cgvtubeservice.entity.Subscription;
+import com.cgvtube.cgvtubeservice.entity.Tag;
+import com.cgvtube.cgvtubeservice.entity.User;
+import com.cgvtube.cgvtubeservice.entity.UserWatchedVideo;
+import com.cgvtube.cgvtubeservice.entity.Video;
 import com.cgvtube.cgvtubeservice.payload.request.AddVideoReqDto;
 import com.cgvtube.cgvtubeservice.payload.request.DeleteContentReqDto;
 import com.cgvtube.cgvtubeservice.payload.request.EditContentReqDto;
 import com.cgvtube.cgvtubeservice.payload.request.VideoUpdateReqDto;
-import com.cgvtube.cgvtubeservice.payload.response.*;
+import com.cgvtube.cgvtubeservice.payload.response.AddVideoResDto;
+import com.cgvtube.cgvtubeservice.payload.response.PageResponseDTO;
+import com.cgvtube.cgvtubeservice.payload.response.ResponseDto;
+import com.cgvtube.cgvtubeservice.payload.response.VideoChannelResDto;
+import com.cgvtube.cgvtubeservice.payload.response.VideoResponseDto;
 import com.cgvtube.cgvtubeservice.repository.UserRepository;
 import com.cgvtube.cgvtubeservice.repository.VideoRepository;
 import com.cgvtube.cgvtubeservice.repository.VideoWatchedRepository;
 import com.cgvtube.cgvtubeservice.service.TagService;
 import com.cgvtube.cgvtubeservice.service.VideoService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -56,8 +68,25 @@ public class VideoServiceImpl implements VideoService {
         }
     }
 
+//    public ResponseDto findAllByUserId(Long userId) {
+//        List<Video> videoList = videoRepository.findVideosByUserId(userId);
+//        List<VideoResponseDto> videoResponseDtoList = videoConverter.convert(videoList);
+//        if (videoResponseDtoList != null) {
+//            Page<VideoResponseDto> videoResponseDtoPage = (Page<VideoResponseDto>) videoResponseDtoList;
+//            return ResponseDto.builder()
+//                    .status("200")
+//                    .message("Succeed get the video list of user")
+//                    .data(videoResponseDtoPage)
+//                    .build();
+//        }else{
+//            return ResponseDto.builder()
+//                    .status("200")
+//                    .message("Succeed get the video list of user")
+//                    .data(null)
+//                    .build();
+//        }
+//    }
     @Override
-
     public ResponseDto getVideoById(Long videoId, UserDetails currentUser) {
         Video video = videoRepository.findById(videoId).orElse(new Video());
         if (currentUser != null) {
@@ -222,10 +251,15 @@ public class VideoServiceImpl implements VideoService {
         return responseDto;
     }
 
-    private static Page<Video> getVideosPageResult(List<Video> videoListResult, List<Video> videoList, String title, String status, String views,Page<Video> videoPage) {
+    private static Page<Video> getVideosPageResult(List<Video> videoListResult,
+                                                   List<Video> videoList,
+                                                   String title,
+                                                   String status,
+                                                   String views,
+                                                   Page<Video> videoPage) {
         Page<Video> videoPageResult;
         if (videoListResult.size() >= 0 && (!title.equals("") && title != null || !views.equals("") && views != null)) {
-                videoPageResult = new PageImpl<>(videoListResult, PageRequest.of(videoPage.getNumber(), 5), videoPage.getTotalElements());
+            videoPageResult = new PageImpl<>(videoListResult, PageRequest.of(videoPage.getNumber(), 5), videoPage.getTotalElements());
         } else {
             videoPageResult = new PageImpl<>(videoList, PageRequest.of(videoPage.getNumber(), 5), videoPage.getTotalElements());
 

@@ -22,4 +22,5 @@ public interface VideoService {
     ResponseDto editFormVideoContent(String param, EditContentReqDto editContentReqDto, UserDetails currentUser);
 
     ResponseDto deleteVideoContent(DeleteContentReqDto deleteContentReqDto, UserDetails currentUser);
+
 }

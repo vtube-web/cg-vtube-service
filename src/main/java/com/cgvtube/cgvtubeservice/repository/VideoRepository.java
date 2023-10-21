@@ -1,5 +1,6 @@
 package com.cgvtube.cgvtubeservice.repository;
 
+import com.cgvtube.cgvtubeservice.entity.User;
 import com.cgvtube.cgvtubeservice.entity.Video;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +18,8 @@ public interface VideoRepository extends JpaRepository<Video, Long> {
     List<Video> findAll();
     Video save(Video video);
     Page<Video> findAllByUserId(Pageable pageable, long id);
+    List<Video> findVideosByUserId(Long userId);
     Page<Video> findAllByUserIdAndIsPrivate(Pageable pageable, long id,boolean status);
     void delete (Video video);
+    List<Video> findVideosByWatchedUser(User user);
 }

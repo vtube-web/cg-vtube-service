@@ -32,6 +32,7 @@ public class VideoResponseConverter implements GeneralConverter<Video, VideoResp
     public Video revert(VideoResponseDto target) {
         Video source = new Video();
         BeanUtils.copyProperties(source, target);
+
         return source;
     }
 
