@@ -6,10 +6,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface PlaylistService {
-    ResponseDto getWatchedPlaylistByUserId(Long userId);
-
+    ResponseDto getWatchedPlaylist();
 
     ResponseDto getPlaylistsByUserId(Long userId);
 
     ResponseDto savePlaylist(PlaylistRequestDto playlistRequestDto);
+
 }

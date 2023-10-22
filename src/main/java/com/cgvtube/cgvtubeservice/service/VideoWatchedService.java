@@ -1,6 +1,8 @@
 package com.cgvtube.cgvtubeservice.service;
 
+import com.cgvtube.cgvtubeservice.entity.Playlist;
 import com.cgvtube.cgvtubeservice.entity.UserWatchedVideo;
+import com.cgvtube.cgvtubeservice.payload.response.PlaylistResponseDto;
 import com.cgvtube.cgvtubeservice.payload.response.ResponseDto;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
