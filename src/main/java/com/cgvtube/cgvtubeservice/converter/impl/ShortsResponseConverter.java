@@ -6,6 +6,10 @@ import com.cgvtube.cgvtubeservice.payload.response.ShortsResponseDto;
 import com.cgvtube.cgvtubeservice.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
