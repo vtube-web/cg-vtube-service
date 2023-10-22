@@ -33,6 +33,7 @@ public class LikedVideoConverter implements Function<Page<UserLikedVideo>, List<
                 likedVideoDTO.setCreateAt(video.getCreateAt());
                 likedVideoDTO.setUserId(video.getUser().getId());
                 likedVideoDTO.setUserName(video.getUser().getUserName());
+                likedVideoDTO.setUserLike(likedVideo.getUser().getUserName());
             }
             return likedVideoDTO;
         }).getContent();

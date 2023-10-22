@@ -30,7 +30,7 @@ public class UserRegisterConverter implements GeneralConverter<UserRegisterReque
                 .email(source.getEmail())
                 .password(passwordEncoder.encode(source.getPassword()))
                 .userName(source.getUserName())
-                .channelName(null)
+                .channelName(source.getChannelName())
                 .avatar(source.getAvatar())
                 .banner(null)
                 .createdAt(LocalDateTime.now())

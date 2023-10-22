@@ -21,4 +21,5 @@ public class LikedVideoDTO {
     private Long userId;
     private String userName;
     private boolean likedStatus;
+    private String userLike;
 }
