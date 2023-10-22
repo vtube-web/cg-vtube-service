@@ -46,6 +46,9 @@ public class Video {
     private Long views;
     private Long likes;
     private Long dislikes;
+    private String duration;
+    @Column(name = "is_shorts")
+    private Boolean isShorts;
     @Column(name = "create_at")
     private LocalDateTime createAt;
 

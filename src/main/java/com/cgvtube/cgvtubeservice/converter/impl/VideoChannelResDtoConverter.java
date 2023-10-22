@@ -28,7 +28,8 @@ public class VideoChannelResDtoConverter implements Function<Page<Video>, PageRe
             channelResDto.setTotalComment(commentService.getTotalCommentByIdVideo(channelResDto.getId()));
             videoChannelResDtos.add(channelResDto);
         }
-
+        System.out.println(videoPage.hasNext());
+        System.out.println(videoPage.hasPrevious());
         pageResponseDTO.setContent(videoChannelResDtos);
         pageResponseDTO.setPageSize(videoPage.getSize());
         pageResponseDTO.setTotalPages(videoPage.getTotalPages());
