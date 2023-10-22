@@ -52,5 +52,8 @@ public class Comment {
 
     @OneToMany(mappedBy = "comment")
     private List<Reply> replyList;
+
+    @OneToMany(mappedBy = "comment")
+    private List<UserLikesDislikesComments> userLikesDislikes;
 }
 

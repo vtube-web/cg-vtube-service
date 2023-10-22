@@ -63,9 +63,9 @@ public class VideoController {
     }
 
     @GetMapping("/content")
-    public ResponseEntity<ResponseDto> findAllByIdChannel(@PageableDefault(value = 5) Pageable pageable, HttpSession session, @RequestParam String title,@RequestParam String status,@RequestParam String views ){
+    public ResponseEntity<ResponseDto> findAllByIdChannel(@PageableDefault(value = 10) Pageable pageable, HttpSession session, @RequestParam String title,@RequestParam String status,@RequestParam String views,@RequestParam Boolean isShort ){
         UserDetails currentUser = (UserDetails) session.getAttribute("currentUser");
-        ResponseDto responseDto  = videoService.findAllByIdChannel(pageable,title,status,views,currentUser);
+        ResponseDto responseDto  = videoService.findAllByIdChannel(pageable,title,status,views,isShort,currentUser);
         return new ResponseEntity<>(responseDto,HttpStatus.OK);
     }
 

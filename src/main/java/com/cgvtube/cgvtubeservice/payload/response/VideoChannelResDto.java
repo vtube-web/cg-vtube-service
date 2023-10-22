@@ -25,4 +25,5 @@ public class VideoChannelResDto {
     private LocalDateTime releaseDate;
     private LocalDateTime createAt;
     private Long totalComment;
+    private String duration;
 }
