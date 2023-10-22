@@ -20,4 +20,6 @@ public class UserLoginResponseDto {
     private String banner;
     private String accessToken;
     private String refreshToken;
+    private String description;
+    private String channelName;
 }

@@ -12,11 +12,13 @@ CREATE TABLE IF NOT EXISTS video
     video_url    TEXT,
     thumbnail    TEXT,
     release_date TIMESTAMP,
-    is_private   BOOLEAN,
-    views        BIGINT,
-    likes        BIGINT,
-    dislikes     BIGINT,
-    user_id      BIGINT,
+    is_private BOOLEAN,
+    views       BIGINT DEFAULT 0,
+    likes      BIGINT DEFAULT 0,
+    dislikes  BIGINT DEFAULT 0,
+    duration TEXT,
+    is_shorts BOOLEAN,
+    user_id     BIGINT,
     create_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES user (id)
 );

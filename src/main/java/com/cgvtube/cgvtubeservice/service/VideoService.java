@@ -13,7 +13,7 @@ public interface VideoService {
 
     ResponseDto findAllVideosBySubscribedChannels(UserDetails currentUser, Pageable pageableRequest);
 
-    ResponseDto findAllByIdChannel(Pageable pageable,String title,String status,String views, UserDetails currentUser);
+    ResponseDto findAllByIdChannel(Pageable pageable,String title,String status,String views,Boolean isShort ,UserDetails currentUser);
 
     ResponseDto editFormVideoContent(String param, EditContentReqDto editContentReqDto, UserDetails currentUser);
 

@@ -2,6 +2,8 @@ package com.cgvtube.cgvtubeservice.converter.impl;
 
 import com.cgvtube.cgvtubeservice.converter.GeneralConverter;
 import com.cgvtube.cgvtubeservice.entity.Reply;
+import com.cgvtube.cgvtubeservice.entity.UserLikesDislikesReply;
+import com.cgvtube.cgvtubeservice.payload.response.LikesDislikesReplyResDto;
 import com.cgvtube.cgvtubeservice.payload.response.ReplyResponseDto;
 import com.cgvtube.cgvtubeservice.repository.CommentRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -10,17 +12,21 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.function.Function;
+
 @Component
 @RequiredArgsConstructor
 public class ReplyResponseConverter implements GeneralConverter<Reply, ReplyResponseDto> {
     private final UserResponseConverter userResponseDtoConverter;
     private final CommentRepository commentRepository;
+    private final Function<List<UserLikesDislikesReply>, LikesDislikesReplyResDto> voteFunctionConverter;
     @Override
     public ReplyResponseDto convert(Reply source) {
         ReplyResponseDto target = new ReplyResponseDto();
         BeanUtils.copyProperties(source, target);
         target.setUserResponseDto(userResponseDtoConverter.revert(source.getUser()));
         target.setCommentId(source.getComment().getId());
+        target.setUserVoteCommentDto(voteFunctionConverter.apply(source.getUserLikesDislikes()));
         return target;
     }
 

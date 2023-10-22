@@ -20,6 +20,8 @@ public interface VideoRepository extends JpaRepository<Video, Long> {
     Page<Video> findAllByUserId(Pageable pageable, long id);
     List<Video> findVideosByUserId(Long userId);
     Page<Video> findAllByUserIdAndIsPrivate(Pageable pageable, long id,boolean status);
+    Page<Video> findAllByUserIdAndIsShorts(Pageable pageable, long id,Boolean isShort);
+    Page<Video> findAllByUserIdAndIsPrivateAndIsShorts(Pageable pageable, long id,boolean status,Boolean isShort);
     void delete (Video video);
     List<Video> findVideosByWatchedUser(User user);
 }

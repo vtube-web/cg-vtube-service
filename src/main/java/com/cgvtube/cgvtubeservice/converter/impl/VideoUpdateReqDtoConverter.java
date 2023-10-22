@@ -15,6 +15,9 @@ public class VideoUpdateReqDtoConverter implements VideoProcessing {
     public Video convert(Video video, VideoUpdateReqDto videoUpdateReqDto) {
         Video videoDefault = video;
         BeanUtils.copyProperties(videoUpdateReqDto,videoDefault);
+        videoDefault.setIsShorts(videoUpdateReqDto.getIs_shorts());
+        videoDefault.setIsPrivate(videoUpdateReqDto.getIs_private());
+        videoDefault.setReleaseDate(videoUpdateReqDto.getRelease_date());
         return videoDefault;
     }
 }

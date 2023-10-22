@@ -22,7 +22,7 @@ public class ReplyShortsController {
     @PostMapping("/{commentShortsId}/replyShort")
     public ResponseEntity<ResponseDto> saveReply(@PathVariable("commentShortsId") Long commentShortsId,
                                                  @RequestBody ReplyShortsRequestDto replyShortsRequestDto) {
-        ResponseDto responseDto = replyService.saveShorts(commentShortsId, replyShortsRequestDto);
+        ResponseDto responseDto = replyService.save(commentShortsId, replyShortsRequestDto);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 }

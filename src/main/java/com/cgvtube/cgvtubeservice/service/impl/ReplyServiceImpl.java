@@ -2,14 +2,11 @@ package com.cgvtube.cgvtubeservice.service.impl;
 
 import com.cgvtube.cgvtubeservice.entity.Reply;
 import com.cgvtube.cgvtubeservice.entity.ReplyShorts;
+import com.cgvtube.cgvtubeservice.payload.request.ContentReplyReqDto;
 import com.cgvtube.cgvtubeservice.payload.request.ReplyRequestDto;
 import com.cgvtube.cgvtubeservice.payload.request.ReplyShortsRequestDto;
 import com.cgvtube.cgvtubeservice.payload.response.ResponseDto;
-import com.cgvtube.cgvtubeservice.repository.CommentRepository;
-import com.cgvtube.cgvtubeservice.repository.CommentShortsRepository;
-import com.cgvtube.cgvtubeservice.repository.ReplyRepository;
-import com.cgvtube.cgvtubeservice.repository.ReplyShortsRepository;
-import com.cgvtube.cgvtubeservice.repository.UserRepository;
+import com.cgvtube.cgvtubeservice.repository.*;
 import com.cgvtube.cgvtubeservice.service.ReplyService;
 import com.cgvtube.cgvtubeservice.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
@@ -28,6 +25,8 @@ public class ReplyServiceImpl implements ReplyService {
 
     private final CommentShortsRepository commentShortsRepository;
     private final ReplyShortsRepository replyShortsRepository;
+    private final LikesDislikesReplyRepository likesDislikesReplyRepository;
+
 
     @Override
     public ResponseDto save(Long commentId, ReplyRequestDto replyRequestDto) {
@@ -50,7 +49,7 @@ public class ReplyServiceImpl implements ReplyService {
     }
 
     @Override
-    public ResponseDto saveShorts(Long shortsId, ReplyShortsRequestDto replyShortsRequestDto) {
+    public ResponseDto save(Long shortsId, ReplyShortsRequestDto replyShortsRequestDto) {
         ReplyShorts replyShorts = ReplyShorts.builder()
                 .user(userRepository.findById(userService.getCurrentUser().getId())
                         .orElseThrow(() -> new EntityNotFoundException("User not found")))
@@ -68,4 +67,29 @@ public class ReplyServiceImpl implements ReplyService {
                 .data(true)
                 .build();
     }
+
+    @Override
+    public ResponseDto editContentOfReplyByUser(ContentReplyReqDto contentReplyReqDto) {
+        Reply reply = replyRepository.findById(contentReplyReqDto.getId()).orElse(new Reply());
+        reply.setContent(contentReplyReqDto.getContent());
+        replyRepository.save(reply);
+        return ResponseDto.builder()
+                .message("Success to save reply")
+                .status("200")
+                .data(true)
+                .build();
+    }
+
+    @Override
+    public ResponseDto deleteContentOfReplyByUser(Long id) {
+        likesDislikesReplyRepository.deleteAllByReplyId(id);
+        replyRepository.deleteById(id);
+        return ResponseDto.builder()
+                .message("Success to save reply")
+                .status("200")
+                .data(true)
+                .build();
+    }
+
+
 }

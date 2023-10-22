@@ -1,6 +1,7 @@
 package com.cgvtube.cgvtubeservice.controller;
 
 import com.cgvtube.cgvtubeservice.payload.request.CommentRequestDto;
+import com.cgvtube.cgvtubeservice.payload.request.ContentCommentReqDto;
 import com.cgvtube.cgvtubeservice.payload.response.ResponseDto;
 import com.cgvtube.cgvtubeservice.service.CommentService;
 import jakarta.servlet.http.HttpSession;
@@ -31,9 +32,14 @@ public class CommentController {
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
     @GetMapping("/comment")
-    public ResponseEntity<ResponseDto> getCommentByChannel(@PageableDefault(value = 5) Pageable pageable, HttpSession session){
+    public ResponseEntity<ResponseDto> getCommentByChannel(@PageableDefault(value = 5) Pageable pageable,@RequestParam String content, HttpSession session){
         UserDetails currentUser = (UserDetails) session.getAttribute("currentUser");
-        ResponseDto responseDto = commentService.getCommentByChannel(pageable,currentUser);
+        ResponseDto responseDto = commentService.getCommentByChannel(pageable,content,currentUser);
+        return new ResponseEntity<>(responseDto,HttpStatus.OK);
+    }
+    @PutMapping("/comment")
+    public ResponseEntity<ResponseDto> editContentOfCommentByUser(@RequestBody ContentCommentReqDto contentCommentReqDto){
+        ResponseDto responseDto = commentService.editContentOfCommentByUser(contentCommentReqDto);
         return new ResponseEntity<>(responseDto,HttpStatus.OK);
     }
 }
