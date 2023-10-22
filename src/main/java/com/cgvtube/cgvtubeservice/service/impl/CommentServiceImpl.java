@@ -137,17 +137,20 @@ public class CommentServiceImpl implements CommentService {
         List<Comment> allComments = new ArrayList<>();
         if(content.equals("")){
             for (Video video : videos) {
-                List<Comment> comments = commentRepository.findAllByVideoId(video.getId());
-                allComments.addAll(comments);
+                if(video.getIsShorts() == false){
+                    List<Comment> comments = commentRepository.findAllByVideoId(video.getId());
+                    allComments.addAll(comments);
+                }
             }
         }else {
             String contentLike = "%".concat(content).concat("%");
             for (Video video : videos) {
-                List<Comment> comments = commentRepository.findAllByVideoIdAndContentLike(video.getId(),contentLike);
-                allComments.addAll(comments);
+                if(video.getIsShorts() == false) {
+                    List<Comment> comments = commentRepository.findAllByVideoIdAndContentLike(video.getId(), contentLike);
+                    allComments.addAll(comments);
+                }
             }
         }
-
 
         ComparatorCommentCreateAt comparatorCommentCreateAt = new ComparatorCommentCreateAt();
         Collections.sort(allComments, comparatorCommentCreateAt);
