@@ -56,7 +56,7 @@ public class VideoController {
     }
     @GetMapping("/subscribed")
     public ResponseEntity<ResponseDto> getAllVideosBySubscribedChannels(Pageable pageable, HttpSession session) {
-        Pageable pageableRequest = PageRequest.of(pageable.getPageNumber(), 18, Sort.by(Sort.Order.desc("createAt")));
+        Pageable pageableRequest = PageRequest.of(pageable.getPageNumber(), 12, Sort.by(Sort.Order.desc("createAt")));
         UserDetails currentUser = (UserDetails) session.getAttribute("currentUser");
         ResponseDto responseDto = videoService.findAllVideosBySubscribedChannels(currentUser, pageableRequest);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);

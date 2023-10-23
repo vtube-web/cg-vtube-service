@@ -16,6 +16,8 @@ public class LikedVideoDTO {
     private String videoUrl;
     private String thumbnail;
     private Long views;
+    private String duration;
+    private Boolean isShorts;
     private LocalDateTime likedAt;
     private LocalDateTime createAt;
     private Long userId;
