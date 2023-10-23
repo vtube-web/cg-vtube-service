@@ -17,3 +17,5 @@ public class UserInfoDto {
     private List<Long> likedVideos;
     private List<Long> subscriptions;
 }
+
+

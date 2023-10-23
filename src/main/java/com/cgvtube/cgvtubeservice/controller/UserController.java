@@ -58,6 +58,7 @@ public class UserController {
         ResponseDto responseDto = userService.getUserInfo(currentUser);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
+
 }
 
 

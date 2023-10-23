@@ -25,6 +25,7 @@ public class LikedVideoController {
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
+
     @DeleteMapping("/{videoId}")
     public ResponseEntity<?> deleteLikedVideo(@PathVariable Long videoId, HttpSession session) {
         UserDetails currentUser = (UserDetails) session.getAttribute("currentUser");
