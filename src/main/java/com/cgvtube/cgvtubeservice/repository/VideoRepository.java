@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -24,4 +25,9 @@ public interface VideoRepository extends JpaRepository<Video, Long> {
     Page<Video> findAllByUserIdAndIsPrivateAndIsShorts(Pageable pageable, long id,boolean status,Boolean isShort);
     void delete (Video video);
     List<Video> findVideosByWatchedUser(User user);
+
+    Page<Video> findVideosByTitleContaining(String search, Pageable pageable);
+
+    @Query("SELECT v.title FROM Video v WHERE v.title LIKE %:searchTitle%")
+    Page<String> findVideoTitlesContaining(@Param("searchTitle") String searchTitle, Pageable pageable);
 }

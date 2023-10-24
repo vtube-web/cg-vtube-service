@@ -6,9 +6,12 @@ import com.cgvtube.cgvtubeservice.payload.response.VideoResponseDto;
 import com.cgvtube.cgvtubeservice.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -43,5 +46,13 @@ public class VideoResponseConverter implements GeneralConverter<Video, VideoResp
     @Override
     public List<Video> revert(List<VideoResponseDto> targets) {
         return targets.stream().map(this::revert).toList();
+    }
+
+    public Page<VideoResponseDto> convert(Page<Video> sources) {
+        List<VideoResponseDto> convertedList = sources.getContent().stream()
+                .map(this::convert)
+                .collect(Collectors.toList());
+
+        return new PageImpl<>(convertedList, sources.getPageable(), sources.getTotalElements());
     }
 }

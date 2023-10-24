@@ -68,24 +68,6 @@ public class VideoServiceImpl implements VideoService {
         }
     }
 
-//    public ResponseDto findAllByUserId(Long userId) {
-//        List<Video> videoList = videoRepository.findVideosByUserId(userId);
-//        List<VideoResponseDto> videoResponseDtoList = videoConverter.convert(videoList);
-//        if (videoResponseDtoList != null) {
-//            Page<VideoResponseDto> videoResponseDtoPage = (Page<VideoResponseDto>) videoResponseDtoList;
-//            return ResponseDto.builder()
-//                    .status("200")
-//                    .message("Succeed get the video list of user")
-//                    .data(videoResponseDtoPage)
-//                    .build();
-//        }else{
-//            return ResponseDto.builder()
-//                    .status("200")
-//                    .message("Succeed get the video list of user")
-//                    .data(null)
-//                    .build();
-//        }
-//    }
     @Override
     public ResponseDto getVideoById(Long videoId, UserDetails currentUser) {
         Video video = videoRepository.findById(videoId).orElse(new Video());
