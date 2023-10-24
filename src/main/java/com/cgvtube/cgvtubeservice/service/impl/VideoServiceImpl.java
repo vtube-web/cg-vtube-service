@@ -2,31 +2,20 @@ package com.cgvtube.cgvtubeservice.service.impl;
 
 import com.cgvtube.cgvtubeservice.converter.VideoProcessing;
 import com.cgvtube.cgvtubeservice.converter.impl.VideoResponseConverter;
-import com.cgvtube.cgvtubeservice.entity.Subscription;
-import com.cgvtube.cgvtubeservice.entity.Tag;
-import com.cgvtube.cgvtubeservice.entity.User;
-import com.cgvtube.cgvtubeservice.entity.UserWatchedVideo;
-import com.cgvtube.cgvtubeservice.entity.Video;
+import com.cgvtube.cgvtubeservice.entity.*;
 import com.cgvtube.cgvtubeservice.payload.request.AddVideoReqDto;
 import com.cgvtube.cgvtubeservice.payload.request.DeleteContentReqDto;
 import com.cgvtube.cgvtubeservice.payload.request.EditContentReqDto;
 import com.cgvtube.cgvtubeservice.payload.request.VideoUpdateReqDto;
-import com.cgvtube.cgvtubeservice.payload.response.AddVideoResDto;
-import com.cgvtube.cgvtubeservice.payload.response.PageResponseDTO;
-import com.cgvtube.cgvtubeservice.payload.response.ResponseDto;
-import com.cgvtube.cgvtubeservice.payload.response.VideoChannelResDto;
-import com.cgvtube.cgvtubeservice.payload.response.VideoResponseDto;
+import com.cgvtube.cgvtubeservice.payload.response.*;
+import com.cgvtube.cgvtubeservice.repository.SubscriptionRepository;
 import com.cgvtube.cgvtubeservice.repository.UserRepository;
 import com.cgvtube.cgvtubeservice.repository.VideoRepository;
 import com.cgvtube.cgvtubeservice.repository.VideoWatchedRepository;
 import com.cgvtube.cgvtubeservice.service.TagService;
 import com.cgvtube.cgvtubeservice.service.VideoService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -50,6 +39,8 @@ public class VideoServiceImpl implements VideoService {
     private final VideoResponseConverter videoConverter;
     private final Function<Page<Video>, PageResponseDTO<VideoChannelResDto>> pageResponseDTOFunction;
     private final VideoWatchedRepository videoWatchedRepository;
+    private final Function<List<Video>,StatisticalVideoResDto> statisticalDTOFunction;
+    private final SubscriptionRepository subscriptionRepository;
 
     public ResponseDto findAllVideos() {
         List<Video> videoList = videoRepository.findAll();
@@ -69,6 +60,7 @@ public class VideoServiceImpl implements VideoService {
     }
 
     @Override
+
     public ResponseDto getVideoById(Long videoId, UserDetails currentUser) {
         Video video = videoRepository.findById(videoId).orElse(new Video());
         if (currentUser != null) {
@@ -115,17 +107,17 @@ public class VideoServiceImpl implements VideoService {
     }
 
     @Override
-    public ResponseDto findAllByIdChannel(Pageable pageable, String title, String status, String views,Boolean isShort, UserDetails currentUser) {
+    public ResponseDto findAllByIdChannel(Pageable pageable, String title, String status, String views, Boolean isShort, UserDetails currentUser) {
         User user = userRepository.findByEmail(currentUser.getUsername()).orElse(new User());
         Sort sort = Sort.by(Sort.Direction.DESC, "createAt");
         Pageable pageableNew = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
         Page<Video> videoPage;
-        videoPage = getVideosIsPrivate(status, pageableNew, user,isShort);
+        videoPage = getVideosIsPrivate(status, pageableNew, user, isShort);
         List<Video> videoList = videoPage.getContent();
         List<Video> videoListResult = new ArrayList<>();
         getVideosTitle(title, videoList, videoListResult);
         getVideosViews(views, videoListResult, videoList);
-        Page<Video> videoPageResult = getVideosPageResult(videoListResult, videoList, title, status, views,videoPage);
+        Page<Video> videoPageResult = getVideosPageResult(videoListResult, videoList, title, status, views, videoPage);
         ResponseDto responseDto = ResponseDto.builder()
                 .message("List video channel").status("200")
                 .data(pageResponseDTOFunction.apply(videoPageResult))
@@ -184,7 +176,7 @@ public class VideoServiceImpl implements VideoService {
             case "hashtag":
                 for (Video element : videoList) {
                     List<Tag> tagList = tagService.performAddAndCheckTag(List.of(editContentReqDto.getValue().split("#")));
-                   element.setTagSet(tagList);
+                    element.setTagSet(tagList);
                 }
                 break;
             case "displayMode":
@@ -233,15 +225,31 @@ public class VideoServiceImpl implements VideoService {
         return responseDto;
     }
 
-    private static Page<Video> getVideosPageResult(List<Video> videoListResult,
-                                                   List<Video> videoList,
-                                                   String title,
-                                                   String status,
-                                                   String views,
-                                                   Page<Video> videoPage) {
+    @Override
+    public ResponseDto getStatisticalVideosDateNew(Long userId) {
+        User user = userRepository.findById(userId).orElse(new User());
+        if (user == null) {
+            return ResponseDto
+                    .builder()
+                    .message("Authorization user token")
+                    .status("401")
+                    .data(false).build();
+        }
+        List<Video> video = videoRepository.findAllByUserId(user.getId());
+        StatisticalVideoResDto statisticalVideoResDto = statisticalDTOFunction.apply(video);
+        List<Subscription> subscriptions = subscriptionRepository.findAllByUserId(user.getId());
+        statisticalVideoResDto.setSubscribe((long) subscriptions.size());
+        return ResponseDto
+                .builder()
+                .message("get latest video success")
+                .status("200")
+                .data(statisticalVideoResDto).build();
+    }
+
+    private static Page<Video> getVideosPageResult(List<Video> videoListResult, List<Video> videoList, String title, String status, String views, Page<Video> videoPage) {
         Page<Video> videoPageResult;
         if (videoListResult.size() >= 0 && (!title.equals("") && title != null || !views.equals("") && views != null)) {
-                videoPageResult = new PageImpl<>(videoListResult, PageRequest.of(videoPage.getNumber(), 10), videoPage.getTotalElements());
+            videoPageResult = new PageImpl<>(videoListResult, PageRequest.of(videoPage.getNumber(), 10), videoPage.getTotalElements());
         } else {
             videoPageResult = new PageImpl<>(videoList, PageRequest.of(videoPage.getNumber(), 10), videoPage.getTotalElements());
 
@@ -259,16 +267,16 @@ public class VideoServiceImpl implements VideoService {
         }
     }
 
-    private Page<Video> getVideosIsPrivate(String status, Pageable pageableNew, User user,Boolean isShort) {
+    private Page<Video> getVideosIsPrivate(String status, Pageable pageableNew, User user, Boolean isShort) {
         Page<Video> videoPage;
         if (!status.equals("") && status != null) {
             if (status.equals("private")) {
-                videoPage = videoRepository.findAllByUserIdAndIsPrivateAndIsShorts(pageableNew, user.getId(), true,isShort);
+                videoPage = videoRepository.findAllByUserIdAndIsPrivateAndIsShorts(pageableNew, user.getId(), true, isShort);
             } else {
-                videoPage = videoRepository.findAllByUserIdAndIsPrivateAndIsShorts(pageableNew, user.getId(), false,isShort);
+                videoPage = videoRepository.findAllByUserIdAndIsPrivateAndIsShorts(pageableNew, user.getId(), false, isShort);
             }
         } else {
-            videoPage = videoRepository.findAllByUserIdAndIsShorts(pageableNew, user.getId(),isShort);
+            videoPage = videoRepository.findAllByUserIdAndIsShorts(pageableNew, user.getId(), isShort);
         }
         return videoPage;
     }
