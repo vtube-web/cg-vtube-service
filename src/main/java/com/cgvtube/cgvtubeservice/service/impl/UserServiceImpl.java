@@ -5,10 +5,7 @@ import com.cgvtube.cgvtubeservice.converter.impl.UserInfoConverter;
 import com.cgvtube.cgvtubeservice.converter.impl.UserRegisterConverter;
 import com.cgvtube.cgvtubeservice.converter.impl.UserResponseConverter;
 import com.cgvtube.cgvtubeservice.entity.User;
-import com.cgvtube.cgvtubeservice.payload.request.CheckEmailReqDto;
-import com.cgvtube.cgvtubeservice.payload.request.UserIdListReqDto;
-import com.cgvtube.cgvtubeservice.payload.request.UserLoginRequestDto;
-import com.cgvtube.cgvtubeservice.payload.request.UserRegisterRequestDto;
+import com.cgvtube.cgvtubeservice.payload.request.*;
 import com.cgvtube.cgvtubeservice.payload.response.ResponseDto;
 import com.cgvtube.cgvtubeservice.payload.response.UserLoginResponseDto;
 import com.cgvtube.cgvtubeservice.repository.UserRepository;
@@ -25,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 
 @Service
 @Transactional
@@ -37,6 +35,7 @@ public class UserServiceImpl implements UserService {
     private final UserRegisterConverter userRegisterConverter;
     private final UserResponseConverter userResponseConverter;
     private final UserInfoConverter userInfoConverter;
+    private final Function<User, UserLoginResponseDto> responseDtoFunction;
 
     @Override
     public CurrentUserServiceImpl getCurrentUser() {
@@ -81,6 +80,9 @@ public class UserServiceImpl implements UserService {
                 .userName(user.getUserName())
                 .name(user.getChannelName())
                 .avatar(user.getAvatar())
+                .banner(user.getBanner())
+                .description(user.getDescription())
+                .channelName(user.getChannelName())
                 .accessToken(token)
                 .refreshToken(refreshToken)
                 .build();
@@ -93,7 +95,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseDto checkValidEmail(CheckEmailReqDto emailReqDto) {
+    public ResponseDto  checkValidEmail(CheckEmailReqDto emailReqDto) {
 
         Optional<User> user = userRepository.findByEmail(emailReqDto.getEmail());
         ResponseDto responseDto;
@@ -131,6 +133,41 @@ public class UserServiceImpl implements UserService {
                 .status("200").
                 data(userInfoConverter.revert(userList))
                 .build();
+    }
+
+    @Override
+    public ResponseDto editUserProfile(UserEditProfileReqDto userEditProfileReqDto, UserDetails userDetails) {
+        User user = userRepository.findByEmail(userDetails.getUsername()).orElse(new User());
+        if (user == null || !user.getId().equals(userEditProfileReqDto.getId())){
+            return ResponseDto.builder().message("user author error").status("401").data(false).build();
+        }
+        user.setUserName(userEditProfileReqDto.getUserName());
+        user.setChannelName(userEditProfileReqDto.getChannelName());
+        user.setDescription(userEditProfileReqDto.getDescription());
+        User userResult = userRepository.save(user);
+        return ResponseDto.builder().message("Edit success").status("200").data(responseDtoFunction.apply(userResult)).build();
+    }
+
+    @Override
+    public ResponseDto editUserAvatar(UserEditAvatarReqDto userEditAvatarReqDto, UserDetails userDetails) {
+        User user = userRepository.findByEmail(userDetails.getUsername()).orElse(new User());
+        if (user == null || !user.getId().equals(userEditAvatarReqDto.getId())){
+            return ResponseDto.builder().message("user author error").status("401").data(false).build();
+        }
+        user.setAvatar(userEditAvatarReqDto.getAvatar());
+        userRepository.save(user);
+        return ResponseDto.builder().message("Edit success").status("200").data(true).build();
+    }
+
+    @Override
+    public ResponseDto editUserBanner(UserEditBannerReqDto userEditBannerReqDto, UserDetails userDetails) {
+        User user = userRepository.findByEmail(userDetails.getUsername()).orElse(new User());
+        if (user == null || !user.getId().equals(userEditBannerReqDto.getId())){
+            return ResponseDto.builder().message("user author error").status("401").data(false).build();
+        }
+        user.setBanner(userEditBannerReqDto.getBanner());
+        userRepository.save(user);
+        return ResponseDto.builder().message("Edit success").status("200").data(true).build();
     }
 
 }

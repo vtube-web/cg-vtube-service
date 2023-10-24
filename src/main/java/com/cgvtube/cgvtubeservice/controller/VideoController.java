@@ -83,5 +83,11 @@ public class VideoController {
         return new ResponseEntity<>(responseDto,HttpStatus.OK);
     }
 
+    @GetMapping("/statistical/{userId}")
+    public ResponseEntity<ResponseDto> getStatisticalVideosDateNew (@PathVariable Long userId){
+        ResponseDto responseDto  = videoService.getStatisticalVideosDateNew(userId);
+        return new ResponseEntity<>(responseDto,HttpStatus.OK);
+    }
+
 }
 

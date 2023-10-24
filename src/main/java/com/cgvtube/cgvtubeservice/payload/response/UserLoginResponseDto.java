@@ -19,4 +19,7 @@ public class UserLoginResponseDto {
     private String email;
     private String accessToken;
     private String refreshToken;
+    private String banner;
+    private String description;
+    private String channelName;
 }
