@@ -67,6 +67,7 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests()
                 .requestMatchers(
+                        "/api/search/**",
                         "/api/auth/login",
                         "/api/users/check_email",
                         "/api/forgot_password",
