@@ -21,6 +21,7 @@ public class VideoResponseDto {
     private String title;
     private String description;
     private String videoUrl;
+    private String duration;
     private LocalDateTime createAt;
     private LocalDateTime releaseDate;
     private Boolean isPrivate;

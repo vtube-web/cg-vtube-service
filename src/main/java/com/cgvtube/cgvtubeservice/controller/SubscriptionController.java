@@ -27,7 +27,7 @@ public class SubscriptionController {
     }
 
     @DeleteMapping("/{channelId}")
-    public ResponseEntity<?> deleteSubscribe (@PathVariable Long channelId, HttpSession session) {
+    public ResponseEntity<ResponseDto> deleteSubscribe (@PathVariable Long channelId, HttpSession session) {
         UserDetails currentUser = (UserDetails) session.getAttribute("currentUser");
         ResponseDto responseDto = subscriptionService.removeSubscribed(currentUser, channelId);
         if (responseDto.getStatus() == "200") {
