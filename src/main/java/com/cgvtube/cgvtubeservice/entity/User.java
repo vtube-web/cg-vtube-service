@@ -68,6 +68,9 @@ public class User {
     private List<Video> likedVideo;
 
     @OneToMany(mappedBy = "user")
+    private List<Playlist> playlists;
+
+    @OneToMany(mappedBy = "user")
     private List<Comment> commentList;
 
     @OneToMany(mappedBy = "user")

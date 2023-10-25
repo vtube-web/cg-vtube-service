@@ -17,6 +17,7 @@ public class WatchedVideoDTO {
     private String videoUrl;
     private String thumbnail;
     private Long views;
+    private String duration;
     private LocalDateTime watchedAt;
     private LocalDateTime createAt;
     private Long userId;

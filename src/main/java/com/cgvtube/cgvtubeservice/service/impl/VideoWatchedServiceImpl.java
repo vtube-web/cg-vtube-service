@@ -1,10 +1,13 @@
 package com.cgvtube.cgvtubeservice.service.impl;
 
 import com.cgvtube.cgvtubeservice.converter.impl.WatchedVideoConverter;
+import com.cgvtube.cgvtubeservice.entity.Playlist;
 import com.cgvtube.cgvtubeservice.entity.User;
 import com.cgvtube.cgvtubeservice.entity.UserWatchedVideo;
 import com.cgvtube.cgvtubeservice.payload.response.PageResponseDTO;
+import com.cgvtube.cgvtubeservice.payload.response.PlaylistResponseDto;
 import com.cgvtube.cgvtubeservice.payload.response.ResponseDto;
+import com.cgvtube.cgvtubeservice.payload.response.UserWatchedVideoResponseDto;
 import com.cgvtube.cgvtubeservice.payload.response.WatchedVideoDTO;
 import com.cgvtube.cgvtubeservice.repository.UserRepository;
 import com.cgvtube.cgvtubeservice.repository.VideoWatchedRepository;

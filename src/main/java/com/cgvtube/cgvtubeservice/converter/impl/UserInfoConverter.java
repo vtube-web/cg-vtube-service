@@ -9,6 +9,7 @@ import com.cgvtube.cgvtubeservice.payload.response.UserInfoDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,7 +47,11 @@ public class UserInfoConverter implements GeneralConverter<UserInfoDto, User> {
 
     @Override
     public List<UserInfoDto> revert(List<User> targets) {
-        return null;
+        List<UserInfoDto> userDtoList = new ArrayList<>();
+        for (User target : targets) {
+            userDtoList.add(revert(target));
+        }
+        return userDtoList;
     }
 
     private List<Long> getVideoIds(List<Video> videos) {

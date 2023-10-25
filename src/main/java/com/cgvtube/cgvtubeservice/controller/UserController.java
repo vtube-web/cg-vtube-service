@@ -64,7 +64,7 @@ public class UserController {
     }
 
     @PostMapping("/list-user")
-    public ResponseEntity<?> getListUser(@RequestBody UserIdListReqDto userIdList) {
+    public ResponseEntity<ResponseDto> getListUser(@RequestBody UserIdListReqDto userIdList) {
         ResponseDto responseDto = userService.getUserList(userIdList);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }

@@ -56,7 +56,7 @@ public class VideoController {
     }
     @GetMapping("/subscribed")
     public ResponseEntity<ResponseDto> getAllVideosBySubscribedChannels(Pageable pageable, HttpSession session) {
-        Pageable pageableRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.Direction.DESC, "createAt");
+        Pageable pageableRequest = PageRequest.of(pageable.getPageNumber(), 12, Sort.by(Sort.Order.desc("createAt")));
         UserDetails currentUser = (UserDetails) session.getAttribute("currentUser");
         ResponseDto responseDto = videoService.findAllVideosBySubscribedChannels(currentUser, pageableRequest);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
@@ -80,6 +80,12 @@ public class VideoController {
     public ResponseEntity<ResponseDto> deleteVideoContent(@RequestBody DeleteContentReqDto deleteContentReqDto, HttpSession session){
         UserDetails currentUser = (UserDetails) session.getAttribute("currentUser");
         ResponseDto responseDto  = videoService.deleteVideoContent(deleteContentReqDto,currentUser);
+        return new ResponseEntity<>(responseDto,HttpStatus.OK);
+    }
+
+    @GetMapping("/statistical/{userId}")
+    public ResponseEntity<ResponseDto> getStatisticalVideosDateNew (@PathVariable Long userId){
+        ResponseDto responseDto  = videoService.getStatisticalVideosDateNew(userId);
         return new ResponseEntity<>(responseDto,HttpStatus.OK);
     }
 

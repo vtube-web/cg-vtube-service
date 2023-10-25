@@ -140,7 +140,7 @@ public class UserServiceImpl implements UserService {
         return ResponseDto.builder()
                 .message("Successful get list user")
                 .status("200").
-                data(userResponseConverter.revert(userList))
+                data(userInfoConverter.revert(userList))
                 .build();
     }
     @Override
