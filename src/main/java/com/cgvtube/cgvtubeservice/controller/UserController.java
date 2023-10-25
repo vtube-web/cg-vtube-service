@@ -1,8 +1,6 @@
 package com.cgvtube.cgvtubeservice.controller;
 
-import com.cgvtube.cgvtubeservice.payload.request.CheckEmailReqDto;
-import com.cgvtube.cgvtubeservice.payload.request.UserIdListReqDto;
-import com.cgvtube.cgvtubeservice.payload.request.UserRegisterRequestDto;
+import com.cgvtube.cgvtubeservice.payload.request.*;
 import com.cgvtube.cgvtubeservice.payload.response.ResponseDto;
 import com.cgvtube.cgvtubeservice.service.UserService;
 import jakarta.servlet.http.HttpSession;
@@ -59,12 +57,37 @@ public class UserController {
         ResponseDto responseDto = userService.getUserInfo(currentUser);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
+    @GetMapping("/{userName}")
+    public ResponseEntity<ResponseDto> getUserInfoByUserName(@PathVariable("userName") String userName) {
+        ResponseDto responseDto = userService.getUserInfoByUserName(userName);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
 
     @PostMapping("/list-user")
-    public ResponseEntity<?> getListUser(@RequestBody UserIdListReqDto userIdList) {
+    public ResponseEntity<ResponseDto> getListUser(@RequestBody UserIdListReqDto userIdList) {
         ResponseDto responseDto = userService.getUserList(userIdList);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
+
+    @PutMapping()
+    public ResponseEntity<ResponseDto> editUserProfile(@RequestBody UserEditProfileReqDto userEditProfileReqDto, HttpSession session){
+        UserDetails userDetails = (UserDetails) session.getAttribute("currentUser");
+        ResponseDto responseDto = userService.editUserProfile(userEditProfileReqDto,userDetails);
+        return new ResponseEntity<>(responseDto,HttpStatus.OK);
+    }
+    @PutMapping("/edit-avatar")
+    public ResponseEntity<ResponseDto> editUserAvatar(@RequestBody UserEditAvatarReqDto userEditAvatarReqDto, HttpSession session){
+        UserDetails userDetails = (UserDetails) session.getAttribute("currentUser");
+        ResponseDto responseDto = userService.editUserAvatar(userEditAvatarReqDto,userDetails);
+        return new ResponseEntity<>(responseDto,HttpStatus.OK);
+    }
+    @PutMapping("/edit-banner")
+    public ResponseEntity<ResponseDto> editUserBanner(@RequestBody UserEditBannerReqDto userEditBannerReqDto, HttpSession session){
+        UserDetails userDetails = (UserDetails) session.getAttribute("currentUser");
+        ResponseDto responseDto = userService.editUserBanner(userEditBannerReqDto,userDetails);
+        return new ResponseEntity<>(responseDto,HttpStatus.OK);
+    }
+
 }
 
 

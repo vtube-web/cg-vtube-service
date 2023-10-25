@@ -17,6 +17,9 @@ public class UserLoginResponseDto {
     private String userName;
     private String avatar;
     private String email;
+    private String banner;
     private String accessToken;
     private String refreshToken;
+    private String description;
+    private String channelName;
 }

@@ -15,6 +15,7 @@ import java.util.function.Function;
 @Component
 @RequiredArgsConstructor
 public class WatchedVideoConverter implements Function<Page<UserWatchedVideo>, List<WatchedVideoDTO>> {
+
     private final VideoRepository videoRepository;
 
     public List<WatchedVideoDTO> apply(Page<UserWatchedVideo> watchedVideoPage) {
@@ -30,6 +31,7 @@ public class WatchedVideoConverter implements Function<Page<UserWatchedVideo>, L
                 watchedVideoDTO.setVideoUrl(video.getVideoUrl());
                 watchedVideoDTO.setCreateAt(video.getCreateAt());
                 watchedVideoDTO.setThumbnail(video.getThumbnail());
+                watchedVideoDTO.setDuration(video.getDuration());
                 watchedVideoDTO.setViews(video.getViews());
                 watchedVideoDTO.setUserId(video.getUser().getId());
                 watchedVideoDTO.setUserName(video.getUser().getUserName());

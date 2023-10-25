@@ -67,6 +67,7 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests()
                 .requestMatchers(
+                        "/api/search/**",
                         "/api/auth/login",
                         "/api/users/check_email",
                         "/api/forgot_password",
@@ -75,7 +76,7 @@ public class SecurityConfig {
                 .permitAll();
 
         http.authorizeHttpRequests()
-                .requestMatchers(HttpMethod.POST, "/api/users", "/api/oauth2/google/**")
+                .requestMatchers(HttpMethod.GET, "/api/users/**")
                 .permitAll();
 
         http.authorizeHttpRequests()

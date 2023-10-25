@@ -34,21 +34,26 @@ public class Video {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String title;
-    private String description;
-    private String thumbnail;
-    @Column(name ="video_url")
-    private String videoUrl;
-    @Column(name = "release_date")
-    private LocalDateTime releaseDate;
-    @Column(name = "is_private")
-    private Boolean isPrivate;
     private Long views;
     private Long likes;
+    private String title;
     private Long dislikes;
     private String duration;
+    private String thumbnail;
+    private String description;
+
+    @Column(name = "video_url")
+    private String videoUrl;
+
+    @Column(name = "release_date")
+    private LocalDateTime releaseDate;
+
+    @Column(name = "is_private")
+    private Boolean isPrivate;
+
     @Column(name = "is_shorts")
     private Boolean isShorts;
+
     @Column(name = "create_at")
     private LocalDateTime createAt;
 
@@ -79,4 +84,7 @@ public class Video {
 
     @OneToMany(mappedBy = "video")
     private List<UserLikedVideo> likedUser;
+
+    @ManyToMany(targetEntity = Playlist.class, mappedBy = "videoList")
+    private List<Playlist> playlist;
 }
