@@ -30,8 +30,5 @@ public class UserRegisterRequestDto {
 //    @NotBlank
     private String channelName;
 
-//    @NotBlank
-    private String avatar;
-
 
 }

@@ -15,6 +15,7 @@ import java.util.List;
 public interface VideoRepository extends JpaRepository<Video, Long> {
     @Query("SELECT v FROM Video v WHERE v.user.id IN :channelIds")
     Page<Video> findVideosByChannelIds(List<Long> channelIds, Pageable pageableRequest);
+
     List<Video> findAll();
     Video save(Video video);
     Page<Video> findAllByUserIdAndIsShorts(Pageable pageable, long id,Boolean isShort);

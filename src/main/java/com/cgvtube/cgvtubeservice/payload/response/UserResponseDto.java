@@ -15,4 +15,6 @@ public class UserResponseDto {
     private Long id;
     private String userName;
     private String avatar;
+    private String channelName;
+    private Long subscribers;
 }

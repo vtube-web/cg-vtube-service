@@ -24,6 +24,8 @@ public class UserResponseConverter implements GeneralConverter<UserResponseDto, 
                 .id(target.getId())
                 .userName(target.getUserName())
                 .avatar(target.getAvatar())
+                .channelName(target.getChannelName())
+                .subscribers(target.getSubscribers())
                 .build();
     }
 

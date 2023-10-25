@@ -6,8 +6,6 @@ import com.cgvtube.cgvtubeservice.payload.response.UserLoginResponseDto;
 import com.cgvtube.cgvtubeservice.service.impl.CurrentUserServiceImpl;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.List;
-
 public interface UserService {
 
     CurrentUserServiceImpl getCurrentUser();
@@ -21,6 +19,8 @@ public interface UserService {
     ResponseDto checkValidEmail(CheckEmailReqDto emailReqDto);
 
     ResponseDto getUserInfo(UserDetails currentUser);
+
+    ResponseDto getUserInfoByUserName(String userName);
 
     ResponseDto getUserList(UserIdListReqDto userIdList);
 

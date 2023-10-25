@@ -8,6 +8,7 @@ import com.cgvtube.cgvtubeservice.entity.User;
 import com.cgvtube.cgvtubeservice.payload.request.*;
 import com.cgvtube.cgvtubeservice.payload.response.ResponseDto;
 import com.cgvtube.cgvtubeservice.payload.response.UserLoginResponseDto;
+import com.cgvtube.cgvtubeservice.payload.response.UserResponseDto;
 import com.cgvtube.cgvtubeservice.repository.UserRepository;
 import com.cgvtube.cgvtubeservice.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -124,7 +125,15 @@ public class UserServiceImpl implements UserService {
                 .data(userInfoConverter.revert(user))
                 .build();
     }
-
+    @Override
+    public ResponseDto getUserInfoByUserName(String userName) {
+        User user = userRepository.findByUserName(userName).orElse(new User());
+        return ResponseDto.builder()
+                .message("Successful get info user By userName: " +user.getUserName())
+                .status("200")
+                .data(userInfoConverter.revert(user))
+                .build();
+    }
     @Override
     public ResponseDto getUserList(UserIdListReqDto userIdList) {
         List<User> userList = userRepository.findAllById(userIdList.getUserIdList());
@@ -134,7 +143,6 @@ public class UserServiceImpl implements UserService {
                 data(userInfoConverter.revert(userList))
                 .build();
     }
-
     @Override
     public ResponseDto editUserProfile(UserEditProfileReqDto userEditProfileReqDto, UserDetails userDetails) {
         User user = userRepository.findByEmail(userDetails.getUsername()).orElse(new User());

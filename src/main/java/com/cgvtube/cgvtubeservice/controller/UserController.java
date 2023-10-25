@@ -57,6 +57,11 @@ public class UserController {
         ResponseDto responseDto = userService.getUserInfo(currentUser);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
+    @GetMapping("/{userName}")
+    public ResponseEntity<ResponseDto> getUserInfoByUserName(@PathVariable("userName") String userName) {
+        ResponseDto responseDto = userService.getUserInfoByUserName(userName);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
 
     @PostMapping("/list-user")
     public ResponseEntity<ResponseDto> getListUser(@RequestBody UserIdListReqDto userIdList) {
@@ -82,6 +87,7 @@ public class UserController {
         ResponseDto responseDto = userService.editUserBanner(userEditBannerReqDto,userDetails);
         return new ResponseEntity<>(responseDto,HttpStatus.OK);
     }
+
 }
 
 
