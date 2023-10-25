@@ -16,7 +16,7 @@ public class CommentShortsResponseDto {
     private Long id;
     private Long likes;
     private Long dislikes;
-    private Long shortsId;
+    private Long videoId;
     private String content;
     private List<ReplyShortsResponseDto> replyShortsDtoList;
     private LocalDateTime createAt;

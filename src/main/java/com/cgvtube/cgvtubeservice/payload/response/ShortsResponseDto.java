@@ -19,7 +19,7 @@ public class ShortsResponseDto {
     private Long likes;
     private Long dislikes;
     private String title;
-    private String shortsUrl;
+    private String videoUrl;
     private LocalDateTime createAt;
 
     private UserResponseDto userDto;

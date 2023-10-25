@@ -1,6 +1,5 @@
 package com.cgvtube.cgvtubeservice.controller;
 
-import com.cgvtube.cgvtubeservice.payload.request.ContentCommentReqDto;
 import com.cgvtube.cgvtubeservice.payload.request.ContentReplyReqDto;
 import com.cgvtube.cgvtubeservice.payload.request.ReplyRequestDto;
 import com.cgvtube.cgvtubeservice.payload.response.ResponseDto;

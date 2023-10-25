@@ -1,7 +1,7 @@
 package com.cgvtube.cgvtubeservice.service.impl;
 
 import com.cgvtube.cgvtubeservice.converter.impl.ShortsResponseConverter;
-import com.cgvtube.cgvtubeservice.entity.Shorts;
+import com.cgvtube.cgvtubeservice.entity.Video;
 import com.cgvtube.cgvtubeservice.payload.response.PageResponseDTO;
 import com.cgvtube.cgvtubeservice.payload.response.ResponseDto;
 import com.cgvtube.cgvtubeservice.payload.response.ShortsResponseDto;
@@ -12,8 +12,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 public class ShortsServiceImpl implements ShortsService {
@@ -23,7 +21,7 @@ public class ShortsServiceImpl implements ShortsService {
 
     @Override
     public ResponseDto findAllShorts(Pageable pageable) {
-        Page<Shorts> shortsList = shortsRepository.findAll(pageable);
+        Page<Video> shortsList = shortsRepository.findAllByIsShortsTrue(pageable);
         PageResponseDTO<ShortsResponseDto> pageResponseDTO = new PageResponseDTO<>();
         pageResponseDTO.setContent(shortsConverter.convert(shortsList.getContent()));
         pageResponseDTO.setPageSize(shortsList.getSize());

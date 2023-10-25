@@ -1,27 +1,23 @@
 package com.cgvtube.cgvtubeservice.converter.impl;
 
 import com.cgvtube.cgvtubeservice.converter.GeneralConverter;
-import com.cgvtube.cgvtubeservice.entity.Shorts;
+import com.cgvtube.cgvtubeservice.entity.Video;
 import com.cgvtube.cgvtubeservice.payload.response.ShortsResponseDto;
 import com.cgvtube.cgvtubeservice.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class ShortsResponseConverter implements GeneralConverter<Shorts, ShortsResponseDto> {
+public class ShortsResponseConverter implements GeneralConverter<Video, ShortsResponseDto> {
 
     private final UserResponseConverter userResponseDtoConverter;
     private final CommentService commentService;
     @Override
-    public ShortsResponseDto convert(Shorts source) {
+    public ShortsResponseDto convert(Video source) {
         ShortsResponseDto target = new ShortsResponseDto();
         BeanUtils.copyProperties(source, target);
         target.setUserDto(userResponseDtoConverter.revert(source.getUser()));
@@ -30,19 +26,19 @@ public class ShortsResponseConverter implements GeneralConverter<Shorts, ShortsR
     }
 
     @Override
-    public Shorts revert(ShortsResponseDto target) {
-        Shorts source = new Shorts();
+    public Video revert(ShortsResponseDto target) {
+        Video source = new Video();
         BeanUtils.copyProperties(source, target);
         return source;
     }
 
     @Override
-    public List<ShortsResponseDto> convert(List<Shorts> sources) {
+    public List<ShortsResponseDto> convert(List<Video> sources) {
         return sources.stream().map(this::convert).toList();
     }
 
     @Override
-    public List<Shorts> revert(List<ShortsResponseDto> targets) {
+    public List<Video> revert(List<ShortsResponseDto> targets) {
         return targets.stream().map(this::revert).toList();
     }
 }
