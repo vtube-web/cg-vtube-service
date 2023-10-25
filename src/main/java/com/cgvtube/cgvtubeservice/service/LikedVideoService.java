@@ -1,5 +1,6 @@
 package com.cgvtube.cgvtubeservice.service;
 
+import com.cgvtube.cgvtubeservice.payload.request.LikeOrDislikeReqDto;
 import com.cgvtube.cgvtubeservice.payload.response.ResponseDto;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,6 +10,6 @@ public interface LikedVideoService {
 
     ResponseDto deleteLikedVideo(Long videoId, UserDetails currentUser);
 
-    ResponseDto addLikeVideo(Long videoId, UserDetails currentUser);
+    ResponseDto addLikeOrDislikeVideo(LikeOrDislikeReqDto likeOrDislikeReqDto, UserDetails currentUser);
 
 }

@@ -17,7 +17,7 @@ public interface VideoRepository extends JpaRepository<Video, Long> {
 
     List<Video> findAll();
     Video save(Video video);
-    Page<Video> findAllByUserId(Pageable pageable, long id);
-    Page<Video> findAllByUserIdAndIsPrivate(Pageable pageable, long id,boolean status);
+    Page<Video> findAllByUserIdAndIsShorts(Pageable pageable, long id,Boolean isShort);
+    Page<Video> findAllByUserIdAndIsPrivateAndIsShorts(Pageable pageable, long id,boolean status,Boolean isShort);
     void delete (Video video);
 }

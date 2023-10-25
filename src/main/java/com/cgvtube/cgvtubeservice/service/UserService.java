@@ -1,8 +1,6 @@
 package com.cgvtube.cgvtubeservice.service;
 
-import com.cgvtube.cgvtubeservice.payload.request.CheckEmailReqDto;
-import com.cgvtube.cgvtubeservice.payload.request.UserLoginRequestDto;
-import com.cgvtube.cgvtubeservice.payload.request.UserRegisterRequestDto;
+import com.cgvtube.cgvtubeservice.payload.request.*;
 import com.cgvtube.cgvtubeservice.payload.response.ResponseDto;
 import com.cgvtube.cgvtubeservice.payload.response.UserLoginResponseDto;
 import com.cgvtube.cgvtubeservice.service.impl.CurrentUserServiceImpl;
@@ -22,4 +20,13 @@ public interface UserService {
 
     ResponseDto getUserInfo(UserDetails currentUser);
 
+    ResponseDto getUserInfoByUserName(String userName);
+
+    ResponseDto getUserList(UserIdListReqDto userIdList);
+
+    ResponseDto editUserProfile(UserEditProfileReqDto userEditProfileReqDto, UserDetails userDetails);
+
+    ResponseDto editUserAvatar(UserEditAvatarReqDto userEditAvatarReqDto, UserDetails userDetails);
+
+    ResponseDto editUserBanner(UserEditBannerReqDto userEditBannerReqDto, UserDetails userDetails);
 }

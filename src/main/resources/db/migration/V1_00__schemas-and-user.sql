@@ -9,7 +9,9 @@ CREATE TABLE IF NOT EXISTS user
     user_name    varchar(255)        NOT NULL,
     avatar       TEXT,
     banner       TEXT,
+    description  TEXT,
     channel_name varchar(255),
+    subscribers BIGINT DEFAULT 0,
     created_at   datetime
 );
 

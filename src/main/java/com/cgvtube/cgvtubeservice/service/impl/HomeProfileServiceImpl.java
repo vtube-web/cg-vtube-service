@@ -26,7 +26,7 @@ public class HomeProfileServiceImpl implements HomeProfileService {
     public ResponseDto getVideos(String userName, Pageable pageableRequest) {
         User user = userRepository.findByUserName(userName).orElse(new User());
         long userId = user.getId();
-        Page<Video> videoPage = videoRepository.findAllByUserId(pageableRequest,userId);
+        Page<Video> videoPage = videoRepository.findAllByUserIdAndIsShorts(pageableRequest,userId,false);
         PageResponseDTO<VideoResponseDto> pageResponseDTO = new PageResponseDTO<>();
         pageResponseDTO.setContent(videoConverter.convert(videoPage.getContent()));
         pageResponseDTO.setPageSize(videoPage.getSize());
