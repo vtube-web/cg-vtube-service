@@ -23,9 +23,7 @@ public class ShortsController {
 
     @GetMapping
     public ResponseEntity<ResponseDto> findAllShorts(Pageable pageable) {
-        Pageable pageableRequest = PageRequest.of(
-                pageable.getPageNumber(),
-                pageable.getPageSize());
+        Pageable pageableRequest = PageRequest.of(pageable.getPageNumber(), 5);
         ResponseDto responseDto = shortsService.findAllShorts(pageableRequest);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }

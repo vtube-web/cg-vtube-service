@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CommentShortsRequestDto {
-    private Long shortsId;
+    private Long videoId;
     private Long userId;
     private String content;
 }

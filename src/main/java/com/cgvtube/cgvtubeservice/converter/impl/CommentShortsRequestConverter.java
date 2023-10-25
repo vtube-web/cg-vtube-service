@@ -29,7 +29,7 @@ public class CommentShortsRequestConverter implements GeneralConverter<CommentSh
         BeanUtils.copyProperties(target, source);
         source.setUser(userRepository.findById(target.getUserId())
                 .orElseThrow(() -> new EntityNotFoundException("User not found")));
-        source.setShorts(shortsRepository.findById(target.getShortsId())
+        source.setVideo(shortsRepository.findById(target.getVideoId())
                 .orElseThrow(() -> new EntityNotFoundException("Video not found")));
         return source;
     }

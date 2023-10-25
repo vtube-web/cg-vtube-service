@@ -19,7 +19,7 @@ public class CommentShortsResponseConverter implements GeneralConverter<CommentS
     public CommentShortsResponseDto convert(CommentShorts source) {
         CommentShortsResponseDto target = new CommentShortsResponseDto();
         BeanUtils.copyProperties(source, target);
-        target.setShortsId(source.getShorts().getId());
+        target.setVideoId(source.getVideo().getId());
         target.setCreateAt(source.getCreateAt());
         target.setUserResponseDto(userResponseConverter.revert(source.getUser()));
         target.setReplyShortsDtoList(replyShortsResponseConverter.convert(source.getReplyShortsList()));

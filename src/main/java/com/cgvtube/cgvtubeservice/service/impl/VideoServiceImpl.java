@@ -43,7 +43,7 @@ public class VideoServiceImpl implements VideoService {
     private final SubscriptionRepository subscriptionRepository;
 
     public ResponseDto findAllVideos() {
-        List<Video> videoList = videoRepository.findAll();
+        List<Video> videoList = videoRepository.findAllByIsShortsFalse();
         if (videoList.isEmpty()) {
             return ResponseDto.builder()
                     .message("Failed get video list")

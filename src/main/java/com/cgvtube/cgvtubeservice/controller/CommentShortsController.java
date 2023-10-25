@@ -18,10 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class CommentShortsController {
     private final CommentService commentService;
 
-    @PostMapping("/{shortsId}/commentShorts")
-    public ResponseEntity<ResponseDto> saveComment(@PathVariable("shortsId") Long shortsId,
+    @PostMapping("/{videoId}/commentShorts")
+    public ResponseEntity<ResponseDto> saveComment(@PathVariable("videoId") Long videoId,
                                                    @RequestBody CommentShortsRequestDto commentShortsRequestDto) {
-        ResponseDto responseDto = commentService.save(shortsId, commentShortsRequestDto);
+        ResponseDto responseDto = commentService.save(videoId, commentShortsRequestDto);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 }

@@ -60,6 +60,9 @@ public class Video {
     @OneToMany(mappedBy = "video")
     private List<Comment> commentList;
 
+    @OneToMany(mappedBy = "video")
+    private List<CommentShorts> commentShorts;
+
     @ManyToMany
     @JoinTable(
             name = "video_tag",

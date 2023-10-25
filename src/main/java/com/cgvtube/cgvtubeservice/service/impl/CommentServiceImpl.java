@@ -86,20 +86,20 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<CommentShortsResponseDto> getListCommentDtoByShorts(Shorts shorts) {
-        List<CommentShorts> commentShortsList = commentShortsRepository.findAllByShorts(shorts);
+    public List<CommentShortsResponseDto> getListCommentDtoByShorts(Video video) {
+        List<CommentShorts> commentShortsList = commentShortsRepository.findAllByVideo(video);
         return commentShortsResponseConverter.convert(commentShortsList);
     }
 
     @Override
-    public ResponseDto save(Long shortsId, CommentShortsRequestDto commentShortsRequestDto) {
+    public ResponseDto save(Long videoId, CommentShortsRequestDto commentShortsRequestDto) {
         CommentShorts commentShorts = CommentShorts.builder()
                 .user(userRepository.findById(userService.getCurrentUser().getId())
                         .orElseThrow(() -> new EntityNotFoundException("User not found")))
                 .content(commentShortsRequestDto.getContent())
                 .likes(0L)
                 .dislikes(0L)
-                .shorts(shortsRepository.findById(shortsId)
+                .video(shortsRepository.findById(videoId)
                         .orElseThrow(() -> new EntityNotFoundException("Video not found")))
                 .createAt(LocalDateTime.now())
                 .build();

@@ -1,6 +1,5 @@
 package com.cgvtube.cgvtubeservice.service;
 
-import com.cgvtube.cgvtubeservice.entity.Shorts;
 import com.cgvtube.cgvtubeservice.entity.Video;
 import com.cgvtube.cgvtubeservice.payload.request.CommentRequestDto;
 import com.cgvtube.cgvtubeservice.payload.request.CommentShortsRequestDto;
@@ -21,8 +20,9 @@ public interface CommentService {
     ResponseDto delete(Long commentId);
 
 
-    List<CommentShortsResponseDto> getListCommentDtoByShorts(Shorts id);
-    ResponseDto save(Long shortsId, CommentShortsRequestDto commentShortsRequestDto);
+    List<CommentShortsResponseDto> getListCommentDtoByShorts(Video id);
+    ResponseDto save(Long videoId, CommentShortsRequestDto commentShortsRequestDto);
+
     Long getTotalCommentByIdVideo(Long id);
 
     ResponseDto getCommentByChannel(Pageable pageable,String content, UserDetails currentUser);

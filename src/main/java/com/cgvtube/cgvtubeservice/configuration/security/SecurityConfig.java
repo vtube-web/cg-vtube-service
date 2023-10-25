@@ -76,7 +76,7 @@ public class SecurityConfig {
                 .permitAll();
 
         http.authorizeHttpRequests()
-                .requestMatchers(HttpMethod.POST, "/api/users", "/api/oauth2/google/**")
+                .requestMatchers(HttpMethod.GET, "/api/users/**")
                 .permitAll();
 
         http.authorizeHttpRequests()

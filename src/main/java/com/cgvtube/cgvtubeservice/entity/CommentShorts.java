@@ -47,10 +47,10 @@ public class CommentShorts {
 
     @ManyToOne
     @JoinColumn(
-            name = "shorts_id",
+            name = "video_id",
             nullable = false,
             referencedColumnName = "id")
-    private Shorts shorts;
+    private Video video;
 
     @OneToMany(mappedBy = "commentShorts")
     private List<ReplyShorts> replyShortsList;
