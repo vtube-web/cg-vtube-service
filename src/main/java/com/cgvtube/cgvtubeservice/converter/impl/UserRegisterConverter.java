@@ -21,9 +21,9 @@ public class UserRegisterConverter implements GeneralConverter<UserRegisterReque
     private final PasswordEncoder passwordEncoder;
     private final RoleService roleService;
 
-    private static final String AVATARDEFAULT = "https://firebasestorage.googleapis.com/v0/b/vtube-15.appspot.com/o/images%2F387123399_317289870909894_6318809251513139950_n.jpg?alt=media&token=9a676663-abbe-4324-aba8-a634e63b305c&_gl=1*1vll957*_ga*MTE0NzY2MDExNy4xNjkxMDI4NDc2*_ga_CW55HF8NVT*MTY5NzEyNTg4NC4yOC4xLjE2OTcxMjU5MjAuMjQuMC4w";
+    private static final String AVATAR_DEFAULT = "https://firebasestorage.googleapis.com/v0/b/vtube-15.appspot.com/o/images%2F387123399_317289870909894_6318809251513139950_n.jpg?alt=media&token=9a676663-abbe-4324-aba8-a634e63b305c&_gl=1*1vll957*_ga*MTE0NzY2MDExNy4xNjkxMDI4NDc2*_ga_CW55HF8NVT*MTY5NzEyNTg4NC4yOC4xLjE2OTcxMjU5MjAuMjQuMC4w";
 
-    private static final String BANNERDEFAULT = "https://images.unsplash.com/photo-1486597622250-f997d79907f8?w=1400&h=600&fit=crop";
+    private static final String BANNER_DEFAULT = "https://images.unsplash.com/photo-1486597622250-f997d79907f8?w=1400&h=600&fit=crop";
     @Override
     public User convert(UserRegisterRequestDto source) {
         Role role = roleService.findById(1L);
@@ -34,8 +34,8 @@ public class UserRegisterConverter implements GeneralConverter<UserRegisterReque
                 .password(passwordEncoder.encode(source.getPassword()))
                 .userName(source.getUserName())
                 .channelName(source.getChannelName())
-                .avatar(AVATARDEFAULT)
-                .banner(BANNERDEFAULT)
+                .avatar(AVATAR_DEFAULT)
+                .banner(BANNER_DEFAULT)
                 .description("")
                 .subscribers(0L)
                 .createdAt(LocalDateTime.now())
