@@ -71,14 +71,15 @@ public class SecurityConfig {
                         "/api/auth/login",
                         "/api/users/check_email",
                         "/api/forgot_password",
-                        "/api/videos",
                         "/api/shorts")
                 .permitAll();
 
         http.authorizeHttpRequests()
                 .requestMatchers(HttpMethod.GET, "/api/users/**")
                 .permitAll();
-
+http.authorizeHttpRequests()
+                .requestMatchers(HttpMethod.GET, "/api/videos/**")
+                .permitAll();
         http.authorizeHttpRequests()
                 .requestMatchers("/api/auth/refresh-token")
                 .permitAll();
